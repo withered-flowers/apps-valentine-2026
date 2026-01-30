@@ -4,4 +4,21 @@
   --color-lavender-blush: #fff0f5;
   --color-vivid-pink: #ff1493;
   --color-deep-raspberry: #872657;
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  --animate-heartbeat: heartbeat 1.5s ease-in-out infinite;
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/20 backdrop-blur-md border border-white/30 shadow-xl;
+  }
+  
+  .glass-dark {
+    @apply bg-deep-raspberry/10 backdrop-blur-md border border-deep-raspberry/20 shadow-xl;
+  }
 }
