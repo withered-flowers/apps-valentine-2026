@@ -71,7 +71,7 @@
   <button
     type="submit"
     disabled={form.submitting}
-    class="mt-4 bg-vivid-pink text-white font-bold py-3 rounded-xl shadow-lg hover:bg-deep-raspberry transition-colors disabled:opacity-50 animate-heartbeat"
+    class="mt-4 bg-vivid-pink text-white font-bold py-3 rounded-xl skeuo-button disabled:opacity-50 animate-heartbeat"
   >
     {form.submitting ? 'Sending...' : 'Send Love'}
   </button>

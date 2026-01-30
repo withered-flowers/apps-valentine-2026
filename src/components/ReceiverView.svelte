@@ -80,7 +80,7 @@
       <button
         onclick={handleYes}
         style="transform: scale({logic.yesButtonScale})"
-        class="bg-vivid-pink text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-deep-raspberry transition-all z-20"
+        class="bg-vivid-pink text-white font-bold py-3 px-8 rounded-full skeuo-button z-20"
       >
         Yes!
       </button>

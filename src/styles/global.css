@@ -15,10 +15,29 @@
 
 @layer utilities {
   .glass {
-    @apply bg-white/20 backdrop-blur-md border border-white/30 shadow-xl;
+    @apply bg-white/30 backdrop-blur-xl border border-white/40;
+    box-shadow: 
+      0 10px 15px -3px rgba(255, 20, 147, 0.1),
+      0 4px 6px -4px rgba(255, 20, 147, 0.1),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.4);
   }
   
   .glass-dark {
-    @apply bg-deep-raspberry/10 backdrop-blur-md border border-deep-raspberry/20 shadow-xl;
+    @apply bg-deep-raspberry/10 backdrop-blur-xl border border-deep-raspberry/20;
+    box-shadow: 0 20px 25px -5px rgba(135, 38, 87, 0.2);
+  }
+
+  .skeuo-button {
+    @apply relative transition-all duration-200 active:translate-y-0.5 active:shadow-inner;
+    box-shadow: 
+      0 4px 0 0 rgba(135, 38, 87, 0.8),
+      0 8px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .skeuo-button:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 
+      0 6px 0 0 rgba(135, 38, 87, 0.8),
+      0 12px 20px rgba(255, 20, 147, 0.2);
   }
 }
