@@ -11,7 +11,7 @@
     - [x] Verify tests pass. b754a5b
 - [~] Task: Conductor - User Manual Verification 'Phase 1: User Data Model & Service' (Protocol in workflow.md)
 
-## Phase 2: Lightweight Authentication UI
+## Phase 2: Lightweight Authentication UI [checkpoint: 8461883]
 - [x] Task: Implement the Auth state management using Svelte 5 Runes. b11550a
     - [x] Write failing tests for `src/lib/auth.svelte.ts` (handling login/logout/session). b11550a
     - [x] Implement `src/lib/auth.svelte.ts` using `$state`. b11550a
