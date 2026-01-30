@@ -12,13 +12,13 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Diagnosis & Reproduction' (Protocol in workflow.md)
 
 ## Phase 2: Fix & Verification [checkpoint: pending]
-- [ ] Task: Implement the fix in `CreateCardForm.svelte`.
-    - [ ] Correct the event handling logic to ensure `createCard` is called for authenticated users.
-    - [ ] Ensure any necessary arguments (like `senderId`) are correctly passed from the auth state.
-- [ ] Task: Verify with tests.
-    - [ ] Update the reproduction test to assert SUCCESS (submission handler is called, card created).
-    - [ ] Run all existing tests to ensure no regressions.
-- [ ] Task: Manual UX Check.
-    - [ ] Verify the button shows a loading state during submission.
-    - [ ] Verify success feedback/redirection works.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Fix & Verification' (Protocol in workflow.md)
+- [x] Task: Implement the fix in `CreateCardForm.svelte`. [checkpoint: 512d765]
+    - [x] Correct the event handling logic to ensure `createCard` is called for authenticated users.
+    - [x] Ensure any necessary arguments (like `senderId`) are correctly passed from the auth state.
+- [x] Task: Verify with tests. [checkpoint: 512d765]
+    - [x] Update the reproduction test to assert SUCCESS (submission handler is called, card created).
+    - [x] Run all existing tests to ensure no regressions.
+- [x] Task: Manual UX Check. [7208992]
+    - [x] Verify the button shows a loading state during submission.
+    - [x] Verify success feedback/redirection works.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Fix & Verification' (Protocol in workflow.md) [7208992]
