@@ -8,7 +8,8 @@
 
 ## Backend & Infrastructure
 - **Platform:** Firebase
-- **Database:** Firestore (Real-time synchronization using `onSnapshot` inside Svelte `$effect`)
+- **Database:** Firestore (Real-time synchronization using `onSnapshot` inside Svelte `$effect`). Restricted by custom security rules.
+- **Authentication:** Lightweight custom username-based identity management.
 - **Hosting:** Cloud-hosted PWA (Vercel/Netlify/Cloudflare) with Edge optimization
 
 ## Languages & Tools

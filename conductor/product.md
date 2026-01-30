@@ -14,9 +14,10 @@ A modern, delightful, and romantic Progressive Web App (PWA) designed to let use
 3. **Premium UX:** Deliver a high-quality, romantic aesthetic using modern design principles like glassmorphism and soft animations.
 
 ## Key Features
-- **Card Creation:** A streamlined form for senders to input details (Sender, Receiver, Message, and Card Type).
+- **Lightweight Authentication:** A simple, password-less login and signup flow using only usernames.
+- **Card Creation:** A streamlined form for authenticated senders to input details (Receiver, Message, and Card Type).
 - **Interactive Receiver View:** A dedicated page for the recipient featuring interactive elements (e.g., "Will you be my Valentine?" buttons).
-- **Status Dashboard:** A real-time tracker for the sender to monitor the status of their sent cards.
+- **Private Status Dashboard:** A secure, real-time tracker where senders can only monitor the status of their own sent cards.
 - **Easy Sharing:** Generation of unique, shareable links for distribution via messaging apps.
 
 ## Design Philosophy
