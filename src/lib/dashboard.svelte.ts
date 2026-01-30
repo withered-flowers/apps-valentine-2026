@@ -20,6 +20,15 @@ export class DashboardState {
         unsubscribe();
       };
     });
+
+    // Listen for updates from other components
+    if (typeof window !== 'undefined') {
+      const handleUpdate = () => this.loadIds();
+      window.addEventListener('card-created', handleUpdate);
+      $effect(() => {
+        return () => window.removeEventListener('card-created', handleUpdate);
+      });
+    }
   }
 
   private loadIds() {
@@ -35,6 +44,8 @@ export class DashboardState {
     this.cardIds = [...this.cardIds, id];
     if (typeof window !== 'undefined') {
       localStorage.setItem('sent_card_ids', JSON.stringify(this.cardIds));
+      // Dispatch event to notify other instances
+      window.dispatchEvent(new Event('card-created'));
     }
   }
 }

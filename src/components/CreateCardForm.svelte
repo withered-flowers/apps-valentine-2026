@@ -8,6 +8,7 @@
       const saved = localStorage.getItem('sent_card_ids');
       const ids = saved ? JSON.parse(saved) : [];
       localStorage.setItem('sent_card_ids', JSON.stringify([...ids, id]));
+      window.dispatchEvent(new Event('card-created'));
     }
   }
 </script>
