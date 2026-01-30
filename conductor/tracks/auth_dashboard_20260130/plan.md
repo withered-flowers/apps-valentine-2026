@@ -1,6 +1,6 @@
 # Implementation Plan: User Authentication and Private Dashboard
 
-## Phase 1: User Data Model & Service
+## Phase 1: User Data Model & Service [checkpoint: 26b5618]
 - [x] Task: Update the data model to support a `users` collection. 2c7dcbe
     - [x] Write failing unit tests for user creation and retrieval. 2c7dcbe
     - [x] Implement `src/lib/auth.ts` to handle user lookup and creation in Firestore. 2c7dcbe
