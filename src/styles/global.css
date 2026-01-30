@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+@theme {
+  --color-lavender-blush: #fff0f5;
+  --color-vivid-pink: #ff1493;
+  --color-deep-raspberry: #872657;
+}
