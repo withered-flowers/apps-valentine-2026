@@ -2,9 +2,21 @@
   import { CreateCardFormState } from '../lib/create-card.svelte';
 
   const form = new CreateCardFormState();
+
+  function onCardCreated(id: string) {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('sent_card_ids');
+      const ids = saved ? JSON.parse(saved) : [];
+      localStorage.setItem('sent_card_ids', JSON.stringify([...ids, id]));
+    }
+  }
 </script>
 
-<form onsubmit={(e) => { e.preventDefault(); form.submit(); }} class="glass p-8 rounded-2xl flex flex-col gap-4 max-w-md w-full mx-auto">
+<form onsubmit={async (e) => { 
+  e.preventDefault(); 
+  await form.submit(); 
+  if (form.success) onCardCreated(form.success); 
+}} class="glass p-8 rounded-2xl flex flex-col gap-4 max-w-md w-full mx-auto">
   <h2 class="text-2xl font-bold text-deep-raspberry mb-4">Create Your Valentine</h2>
   
   <div class="flex flex-col gap-1">
