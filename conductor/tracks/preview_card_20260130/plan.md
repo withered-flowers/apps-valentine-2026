@@ -15,13 +15,15 @@ To ensure 100% visual parity between the preview and the final card, we'll extra
 ## Phase 2: Preview Implementation & Desktop Layout [checkpoint: pending]
 Implement the real-time synchronization and the split-screen view for desktop.
 
-- [ ] Task: Update `CreateCardForm.svelte` with a split-screen layout.
-    - [ ] Wrap the form and the new `CardDisplay` in a flex container (hidden preview on mobile for now).
-    - [ ] Pass the live form state (`form.sender`, `form.receiver`, etc.) into `CardDisplay`.
-- [ ] Task: Verify real-time updates.
-    - [ ] Write tests to ensure form changes are reflected in the state correctly.
-    - [ ] Manually verify that typing in the form updates the preview instantly on desktop.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Preview Implementation & Desktop Layout' (Protocol in workflow.md)
+- [x] Task: Update `CreateCardForm.svelte` with a split-screen layout. [52ea1c6]
+    - [x] Wrap the form and the new `CardDisplay` in a flex container (hidden preview on mobile for now).
+    - [x] Pass the live form state (`form.sender`, `form.receiver`, etc.) into `CardDisplay`.
+- [x] Task: Verify real-time updates. [52ea1c6]
+    - [x] Fix theme styling in `CardDisplay.svelte` (specificity issue).
+    - [x] Enhance theme differentiation (Fonts & Colors).
+    - [x] Write tests to ensure form changes are reflected in the state correctly.
+    - [x] Manually verify that typing in the form updates the preview instantly on desktop.
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Preview Implementation & Desktop Layout' (Protocol in workflow.md) [52ea1c6]
 
 ## Phase 3: Mobile Responsive Tabs [checkpoint: pending]
 Add the tabbed interface for mobile and ensure the "Send Love" button is always accessible.
