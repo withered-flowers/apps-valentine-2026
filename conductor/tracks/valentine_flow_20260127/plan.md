@@ -23,8 +23,8 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Sender Experience (Form & Dashboard)' (Protocol in workflow.md) 0fc3a7d
 
 ## Phase 4: Recipient Experience (Interactive Card)
-- [ ] Task: Create the base layout for the Recipient View with floating heart animations.
-- [ ] Task: Write tests for `ReceiverView.svelte` interaction logic (Yes/No buttons).
+- [x] Task: Create the base layout for the Recipient View with floating heart animations. 4e93107
+- [~] Task: Write tests for `ReceiverView.svelte` interaction logic (Yes/No buttons).
 - [ ] Task: Implement `ReceiverView.svelte` with the playful "No" button logic.
 - [ ] Task: Write tests for the celebratory animations and status update on "Yes".
 - [ ] Task: Implement celebratory animations using `canvas-confetti`.
