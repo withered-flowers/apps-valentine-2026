@@ -12,7 +12,7 @@ To ensure 100% visual parity between the preview and the final card, we'll extra
     - [x] Verify existing functionality (Yes/No buttons, status updates) still works via tests.
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Shared Component Refactoring' (Protocol in workflow.md) [7ed9c2a]
 
-## Phase 2: Preview Implementation & Desktop Layout [checkpoint: pending]
+## Phase 2: Preview Implementation & Desktop Layout [checkpoint: bfd31ae]
 Implement the real-time synchronization and the split-screen view for desktop.
 
 - [x] Task: Update `CreateCardForm.svelte` with a split-screen layout. [52ea1c6]
