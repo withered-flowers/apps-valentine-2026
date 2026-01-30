@@ -1,6 +1,6 @@
 # Implementation Plan: Real-time Card Preview
 
-## Phase 1: Shared Component Refactoring [checkpoint: pending]
+## Phase 1: Shared Component Refactoring [checkpoint: 404c1d4]
 To ensure 100% visual parity between the preview and the final card, we'll extract the core card UI into a reusable component.
 
 - [x] Task: Create a `CardDisplay` component for shared usage. [7ed9c2a]
