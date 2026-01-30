@@ -3,3 +3,8 @@
 This file tracks all major tracks for the project. Each track has its own detailed plan in its respective folder.
 
 ---
+
+---
+
+- [x] **Track: Implement lightweight authentication and a private sender dashboard where users only see their own cards.**
+*Link: [./tracks/auth_dashboard_20260130/](./tracks/auth_dashboard_20260130/)*
