@@ -1,7 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { updateCardStatus, type Card } from '../lib/cards';
+  import { type Card } from '../lib/cards';
   import { CardState } from '../lib/cards.svelte';
+  import { ReceiverViewLogic } from '../lib/receiver.svelte';
 
   interface Props {
     id: string;
@@ -12,38 +13,20 @@
   
   const cardState = new CardState(id);
   let card = $derived(cardState.data || initialCard);
-
-  let noButtonPos = $state({ x: 0, y: 0 });
-  let noButtonScale = $state(1);
-  let yesButtonScale = $state(1);
-  let responded = $state(false);
+  
+  const logic = new ReceiverViewLogic(id, initialCard);
 
   onMount(async () => {
-    // Mark as viewed if it's currently 'sent'
-    if (card.status === 'sent') {
-      await updateCardStatus(id, 'viewed');
-    }
+    await logic.markAsViewed();
   });
 
-  function handleNoHover() {
-    // Playful behavior: move the button away
-    noButtonPos = {
-      x: (Math.random() - 0.5) * 200,
-      y: (Math.random() - 0.5) * 200
-    };
-    // Make yes button grow slightly each time
-    yesButtonScale += 0.1;
-  }
-
   async function handleYes() {
-    responded = true;
-    await updateCardStatus(id, 'accepted');
-    // canvas-confetti will be added in the next task
+    await logic.accept();
+    // Confetti will be added in Phase 4 Task 5
   }
 
   async function handleNo() {
-    responded = true;
-    await updateCardStatus(id, 'declined');
+    await logic.decline();
   }
 
   const themeClasses = {
@@ -75,16 +58,16 @@
     <div class="flex justify-center gap-6 mt-4 items-center h-20">
       <button
         onclick={handleYes}
-        style="transform: scale({yesButtonScale})"
+        style="transform: scale({logic.yesButtonScale})"
         class="bg-vivid-pink text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-deep-raspberry transition-all z-20"
       >
         Yes!
       </button>
 
       <button
-        onmouseenter={handleNoHover}
+        onmouseenter={() => logic.handleNoHover()}
         onclick={handleNo}
-        style="transform: translate({noButtonPos.x}px, {noButtonPos.y}px) scale({noButtonScale})"
+        style="transform: translate({logic.noButtonPos.x}px, {logic.noButtonPos.y}px)"
         class="bg-gray-200 text-gray-700 font-bold py-3 px-8 rounded-full shadow-md hover:bg-gray-300 transition-all z-10"
       >
         No
