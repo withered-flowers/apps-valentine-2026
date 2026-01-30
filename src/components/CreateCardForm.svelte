@@ -1,6 +1,7 @@
 <script lang="ts">
   import { CreateCardFormState } from '../lib/create-card.svelte';
   import type { AuthState } from '../lib/auth.svelte';
+  import CardDisplay from './CardDisplay.svelte';
 
   interface Props {
     authState: AuthState;
@@ -9,76 +10,93 @@
   let { authState }: Props = $props();
 
   const form = new CreateCardFormState(authState.user?.senderName, authState.user?.username);
+
+  let previewCard = $derived({
+    sender: form.sender,
+    senderUsername: form.senderUsername,
+    receiver: form.receiver,
+    message: form.message,
+    theme: form.theme,
+    status: 'sent' as const,
+    createdAt: new Date()
+  });
 </script>
 
-<form onsubmit={async (e) => { 
-  e.preventDefault(); 
-  await form.submit(); 
-}} class="glass p-8 rounded-2xl flex flex-col gap-4 max-w-md w-full mx-auto">
-  <h2 class="text-2xl font-bold text-deep-raspberry mb-4">Create Your Valentine</h2>
-  
-  <div class="flex flex-col gap-1">
-    <label for="sender" class="text-sm font-medium text-deep-raspberry">From</label>
-    <input
-      type="text"
-      id="sender"
-      bind:value={form.sender}
-      readonly
-      class="p-2 rounded-lg bg-gray-100/50 border border-gray-300 text-gray-500 outline-none"
-    />
-  </div>
-
-  <div class="flex flex-col gap-1">
-    <label for="receiver" class="text-sm font-medium text-deep-raspberry">To (Their Name)</label>
-    <input
-      type="text"
-      id="receiver"
-      bind:value={form.receiver}
-      required
-      placeholder="e.g. Juliet"
-      class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all"
-    />
-  </div>
-
-  <div class="flex flex-col gap-1">
-    <label for="message" class="text-sm font-medium text-deep-raspberry">Message</label>
-    <textarea
-      id="message"
-      bind:value={form.message}
-      required
-      placeholder="Write something sweet..."
-      class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all min-h-[100px]"
-    ></textarea>
-  </div>
-
-  <div class="flex flex-col gap-1">
-    <label for="theme" class="text-sm font-medium text-deep-raspberry">Theme</label>
-    <select
-      id="theme"
-      bind:value={form.theme}
-      class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all"
-    >
-      <option value="romantic">Romantic</option>
-      <option value="playful">Playful</option>
-      <option value="elegant">Elegant</option>
-    </select>
-  </div>
-
-  <button
-    type="submit"
-    disabled={form.submitting}
-    class="mt-4 bg-vivid-pink text-white font-bold py-3 rounded-xl skeuo-button disabled:opacity-50 animate-heartbeat"
-  >
-    {form.submitting ? 'Sending...' : 'Send Love'}
-  </button>
-
-  {#if form.error}
-    <p class="text-red-600 text-sm mt-2">{form.error}</p>
-  {/if}
-
-  {#if form.success}
-    <div class="mt-4 p-4 bg-green-100/50 rounded-lg border border-green-500/30 text-green-800 text-sm break-all">
-      Card created! Share this link: {window.location.origin}/card/{form.success}
+<div class="flex flex-col lg:flex-row gap-8 items-start justify-center max-w-6xl mx-auto w-full px-4 py-8">
+  <form onsubmit={async (e) => { 
+    e.preventDefault(); 
+    await form.submit(); 
+  }} class="glass p-8 rounded-2xl flex flex-col gap-4 max-w-md w-full">
+    <h2 class="text-2xl font-bold text-deep-raspberry mb-4">Create Your Valentine</h2>
+    
+    <div class="flex flex-col gap-1">
+      <label for="sender" class="text-sm font-medium text-deep-raspberry">From</label>
+      <input
+        type="text"
+        id="sender"
+        bind:value={form.sender}
+        readonly
+        class="p-2 rounded-lg bg-gray-100/50 border border-gray-300 text-gray-500 outline-none"
+      />
     </div>
-  {/if}
-</form>
+
+    <div class="flex flex-col gap-1">
+      <label for="receiver" class="text-sm font-medium text-deep-raspberry">To (Their Name)</label>
+      <input
+        type="text"
+        id="receiver"
+        bind:value={form.receiver}
+        required
+        placeholder="e.g. Juliet"
+        class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="message" class="text-sm font-medium text-deep-raspberry">Message</label>
+      <textarea
+        id="message"
+        bind:value={form.message}
+        required
+        placeholder="Write something sweet..."
+        class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all min-h-[100px]"
+      ></textarea>
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="theme" class="text-sm font-medium text-deep-raspberry">Theme</label>
+      <select
+        id="theme"
+        bind:value={form.theme}
+        class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all"
+      >
+        <option value="romantic">Romantic</option>
+        <option value="playful">Playful</option>
+        <option value="elegant">Elegant</option>
+      </select>
+    </div>
+
+    <button
+      type="submit"
+      disabled={form.submitting}
+      class="mt-4 bg-vivid-pink text-white font-bold py-3 rounded-xl skeuo-button disabled:opacity-50"
+    >
+      {form.submitting ? 'Sending...' : 'Send Love'}
+    </button>
+
+    {#if form.error}
+      <p class="text-red-600 text-sm mt-2">{form.error}</p>
+    {/if}
+
+    {#if form.success}
+      <div class="mt-4 p-4 bg-green-100/50 rounded-lg border border-green-500/30 text-green-800 text-sm break-all">
+        Card created! Share this link: {window.location.origin}/card/{form.success}
+      </div>
+    {/if}
+  </form>
+
+  <div class="hidden lg:flex flex-col gap-4 w-full max-w-lg sticky top-8">
+    <h3 class="text-xl font-bold text-deep-raspberry/60 px-2 uppercase tracking-widest text-sm">Live Preview</h3>
+    <CardDisplay card={previewCard} previewMode={true} />
+  </div>
+</div>

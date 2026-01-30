@@ -1,9 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Comic+Neue:wght@300;400;700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --color-lavender-blush: #fff0f5;
   --color-vivid-pink: #ff1493;
   --color-deep-raspberry: #872657;
+  --color-silver-grey: #c0c0c0;
+
+  --font-rounded: "Comic Neue", cursive;
+  --font-script: "Dancing Script", cursive;
 
   @keyframes heartbeat {
     0%, 100% { transform: scale(1); }

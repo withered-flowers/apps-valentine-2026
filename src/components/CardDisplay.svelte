@@ -22,9 +22,9 @@
   }: Props = $props();
 
   const themeClasses = {
-    romantic: 'border-vivid-pink bg-white/30',
-    playful: 'border-orange-400 bg-orange-50/30',
-    elegant: 'border-deep-raspberry bg-white/20'
+    romantic: 'border-vivid-pink !bg-white/30 font-sans',
+    playful: 'border-blue-400 !bg-blue-50/50 font-rounded',
+    elegant: 'border-silver-grey !bg-purple-50/40 font-script'
   };
 </script>
 

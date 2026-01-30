@@ -35,6 +35,20 @@ describe('CreateCardFormState', () => {
     expect(form.isValid).toBe(true);
   });
 
+  it('should update theme correctly', () => {
+    const form = new CreateCardFormState();
+    form.theme = 'playful';
+    expect(form.theme).toBe('playful');
+    form.theme = 'elegant';
+    expect(form.theme).toBe('elegant');
+  });
+
+  it('should initialize with provided sender info', () => {
+    const form = new CreateCardFormState('Romeo', 'romeo123');
+    expect(form.sender).toBe('Romeo');
+    expect(form.senderUsername).toBe('romeo123');
+  });
+
   it('should set error if submitting when invalid', async () => {
     const form = new CreateCardFormState();
     await form.submit();
