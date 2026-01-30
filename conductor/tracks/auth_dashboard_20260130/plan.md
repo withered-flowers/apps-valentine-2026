@@ -34,9 +34,9 @@
 - [~] Task: Conductor - User Manual Verification 'Phase 3: Private Dashboard & Security' (Protocol in workflow.md)
 
 ## Phase 4: Final Polish & UX
-- [ ] Task: Implement "Logout" functionality.
-    - [ ] Add a logout button to the dashboard.
-    - [ ] Verify that logout clears the session and redirects to the login step.
-- [ ] Task: Final UX review for mobile responsiveness and skeuomorphic details.
-    - [ ] Check all touch targets and animations on mobile emulation.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Final Polish & UX' (Protocol in workflow.md)
+- [x] Task: Implement "Logout" functionality. dcb5e4b
+    - [x] Add a logout button to the dashboard. dcb5e4b
+    - [x] Verify that logout clears the session and redirects to the login step. dcb5e4b
+- [x] Task: Final UX review for mobile responsiveness and skeuomorphic details. dcb5e4b
+    - [x] Check all touch targets and animations on mobile emulation. dcb5e4b
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Final Polish & UX' (Protocol in workflow.md) dcb5e4b
