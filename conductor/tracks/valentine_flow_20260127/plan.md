@@ -7,12 +7,12 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Project Initialization & Configuration' (Protocol in workflow.md) aef54b4
 
 ## Phase 2: Data Layer & Firebase Setup
-- [ ] Task: Set up Firebase project and Firestore database.
-- [ ] Task: Write tests for Firebase initialization and basic CRUD operations.
-- [ ] Task: Implement Firebase client module with Svelte 5 rune compatibility.
-- [ ] Task: Write tests for real-time subscription logic using `$effect`.
-- [ ] Task: Implement a generic Firestore real-time listener using `$effect`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Data Layer & Firebase Setup' (Protocol in workflow.md)
+- [x] Task: Set up Firebase project and Firestore database. fb04e42
+- [x] Task: Write tests for Firebase initialization and basic CRUD operations. e97273f
+- [x] Task: Implement Firebase client module with Svelte 5 rune compatibility. a9e632b
+- [x] Task: Write tests for real-time subscription logic using `$effect`. 8f3f7ad
+- [x] Task: Implement a generic Firestore real-time listener using `$effect`. 8f3f7ad
+- [~] Task: Conductor - User Manual Verification 'Phase 2: Data Layer & Firebase Setup' (Protocol in workflow.md)
 
 ## Phase 3: Sender Experience (Creation Form & Dashboard)
 - [ ] Task: Create UI components for the Card Creation form with Glassmorphism and heartbeat animations.
