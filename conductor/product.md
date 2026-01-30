@@ -15,7 +15,7 @@ A modern, delightful, and romantic Progressive Web App (PWA) designed to let use
 
 ## Key Features
 - **Lightweight Authentication:** A simple, password-less login and signup flow using only usernames.
-- **Card Creation:** A streamlined form for authenticated senders to input details (Receiver, Message, and Card Type).
+- **Card Creation:** A streamlined form with **real-time preview** (side-by-side on desktop, tabbed on mobile) allowing senders to see their personalized card update instantly as they type.
 - **Interactive Receiver View:** A dedicated page for the recipient featuring interactive elements (e.g., "Will you be my Valentine?" buttons).
 - **Private Status Dashboard:** A secure, real-time tracker where senders can only monitor the status of their own sent cards.
 - **Easy Sharing:** Generation of unique, shareable links for distribution via messaging apps.

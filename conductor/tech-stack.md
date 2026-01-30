@@ -4,6 +4,7 @@
 - **Core:** Astro 5.0+ (SSR/Hybrid mode)
 - **UI Library:** Svelte 5 (Utilizing Runes: `$state`, `$effect`, `$derived`, `$props`)
 - **Styling:** Tailwind CSS (with custom Valentine theme)
+- **Fonts:** Google Fonts ("Dancing Script", "Comic Neue") via standard CSS import.
 - **Animations:** `svelte-motion` (for physics-based transitions) and `canvas-confetti` (for celebrations)
 
 ## Backend & Infrastructure
