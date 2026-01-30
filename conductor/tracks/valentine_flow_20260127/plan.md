@@ -16,8 +16,8 @@
 
 ## Phase 3: Sender Experience (Creation Form & Dashboard)
 - [x] Task: Create UI components for the Card Creation form with Glassmorphism and heartbeat animations. 923cb4e
-- [~] Task: Write tests for `CreateCard.svelte` form logic and validation.
-- [ ] Task: Implement `CreateCard.svelte` using `$state` for form data.
+- [x] Task: Write tests for `CreateCard.svelte` form logic and validation. 7fd4512
+- [x] Task: Implement `CreateCard.svelte` using `$state` for form data. 7fd4512
 - [ ] Task: Write tests for the Status Tracker dashboard logic.
 - [ ] Task: Implement `StatusTracker.svelte` with real-time Firestore updates using `$effect`.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Sender Experience (Creation Form & Dashboard)' (Protocol in workflow.md)
