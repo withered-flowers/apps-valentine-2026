@@ -7,9 +7,21 @@ export class CreateCardFormState {
   message = $state('');
   theme = $state<'romantic' | 'playful' | 'elegant'>('romantic');
   
+  submitting = $state(false);
+  error = $state<string | null>(null);
+  success = $state<string | null>(null);
+  
   constructor(sender: string = '', senderUsername: string = '') {
     this.sender = sender;
     this.senderUsername = senderUsername;
+  }
+
+  get isValid() {
+    return (
+      this.sender.trim() !== '' &&
+      this.receiver.trim() !== '' &&
+      this.message.trim() !== ''
+    );
   }
 
   async submit() {
@@ -41,9 +53,9 @@ export class CreateCardFormState {
   }
 
   reset() {
-    this.sender = '';
     this.receiver = '';
     this.message = '';
     this.theme = 'romantic';
+    // Don't reset sender info as it might be from auth
   }
 }
