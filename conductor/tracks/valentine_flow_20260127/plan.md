@@ -18,9 +18,9 @@
 - [x] Task: Create UI components for the Card Creation form with Glassmorphism and heartbeat animations. 923cb4e
 - [x] Task: Write tests for `CreateCard.svelte` form logic and validation. 7fd4512
 - [x] Task: Implement `CreateCard.svelte` using `$state` for form data. 7fd4512
-- [ ] Task: Write tests for the Status Tracker dashboard logic.
-- [ ] Task: Implement `StatusTracker.svelte` with real-time Firestore updates using `$effect`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Sender Experience (Creation Form & Dashboard)' (Protocol in workflow.md)
+- [x] Task: Write tests for the Status Tracker dashboard logic. ac7f425
+- [x] Task: Implement `StatusTracker.svelte` with real-time Firestore updates using `$effect`. ac7f425
+- [ ] Task: Conductor - User Manual Verification 'Phase 3: Sender Experience (Form & Dashboard)' (Protocol in workflow.md)
 
 ## Phase 4: Recipient Experience (Interactive Card)
 - [ ] Task: Create the base layout for the Recipient View with floating heart animations.
