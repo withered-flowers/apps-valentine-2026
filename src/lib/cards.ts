@@ -5,6 +5,7 @@ import {
   getDoc, 
   doc, 
   updateDoc, 
+  onSnapshot,
   serverTimestamp,
   type Timestamp 
 } from 'firebase/firestore';
@@ -47,5 +48,20 @@ export async function updateCardStatus(id: string, status: Card['status']) {
   await updateDoc(docRef, {
     status,
     updatedAt: serverTimestamp(),
+  });
+}
+
+/**
+ * Subscribes to a card's updates.
+ * In Svelte 5, this should be used inside an $effect or a custom state class.
+ */
+export function subscribeToCard(id: string, callback: (card: Card | null) => void) {
+  const docRef = doc(db, 'cards', id);
+  return onSnapshot(docRef, (docSnap) => {
+    if (docSnap.exists()) {
+      callback({ id: docSnap.id, ...docSnap.data() } as Card);
+    } else {
+      callback(null);
+    }
   });
 }
