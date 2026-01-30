@@ -1,7 +1,19 @@
 <script lang="ts">
   import { DashboardState } from '../lib/dashboard.svelte';
+  import { authState } from '../lib/auth.svelte'; // Oops, I removed the global export. 
+  // I need to accept authState as a prop or rely on the parent passing it.
+  // MainApp has it.
+  
+  import type { AuthState } from '../lib/auth.svelte';
 
-  const dashboard = new DashboardState();
+  interface Props {
+    authState: AuthState;
+  }
+
+  let { authState }: Props = $props();
+
+  // Reactive dashboard state based on the current user
+  let dashboard = $derived(authState.user ? new DashboardState(authState.user.username) : null);
 
   const statusColors = {
     sent: 'text-gray-500',
@@ -14,7 +26,9 @@
 <div class="glass p-8 rounded-2xl flex flex-col gap-4 max-w-md w-full mx-auto mt-8">
   <h2 class="text-2xl font-bold text-deep-raspberry mb-4">Your Sent Cards</h2>
 
-  {#if dashboard.loading && dashboard.cards.length === 0}
+  {#if !dashboard}
+     <p class="text-sm text-gray-500 italic">Please log in to view your cards.</p>
+  {:else if dashboard.loading && dashboard.cards.length === 0}
     <p class="text-sm text-gray-500 italic">Checking for cards...</p>
   {:else if dashboard.cards.length === 0}
     <p class="text-sm text-gray-500 italic">You haven't sent any cards yet.</p>

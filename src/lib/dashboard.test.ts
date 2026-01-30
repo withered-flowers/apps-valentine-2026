@@ -8,8 +8,9 @@ beforeAll(() => {
 
 // Mock the dashboard service
 mock.module('./dashboard', () => ({
-  subscribeToCards: (ids: string[], cb: any) => {
-    cb(ids.map(id => ({ id, sender: 'test', senderUsername: 'test', receiver: 'test', status: 'sent' })));
+  subscribeToCards: (username: string, cb: any) => {
+    // Simulate finding cards for this username
+    cb([{ id: 'card-1', senderUsername: username, sender: 'test', receiver: 'test', status: 'sent' }]);
     return () => {};
   }
 }));
@@ -18,13 +19,14 @@ import { DashboardState } from './dashboard.svelte';
 
 describe('DashboardState', () => {
   it('should initialize with empty cards', () => {
-    const dashboard = new DashboardState();
+    const dashboard = new DashboardState('');
     expect(dashboard.cards.length).toBe(0);
   });
 
-  it('should add a card and update cardIds', () => {
-    const dashboard = new DashboardState();
-    dashboard.addCard('test-1');
-    expect(dashboard.cardIds).toContain('test-1');
+  it('should load cards for the username', () => {
+    const dashboard = new DashboardState('testuser');
+    // The mock immediately calls back, so cards should be populated
+    expect(dashboard.cards.length).toBe(1);
+    expect(dashboard.cards[0].senderUsername).toBe('testuser');
   });
 });

@@ -9,21 +9,11 @@
   let { authState }: Props = $props();
 
   const form = new CreateCardFormState(authState.user?.senderName, authState.user?.username);
-
-  function onCardCreated(id: string) {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('sent_card_ids');
-      const ids = saved ? JSON.parse(saved) : [];
-      localStorage.setItem('sent_card_ids', JSON.stringify([...ids, id]));
-      window.dispatchEvent(new Event('card-created'));
-    }
-  }
 </script>
 
 <form onsubmit={async (e) => { 
   e.preventDefault(); 
   await form.submit(); 
-  if (form.success) onCardCreated(form.success); 
 }} class="glass p-8 rounded-2xl flex flex-col gap-4 max-w-md w-full mx-auto">
   <h2 class="text-2xl font-bold text-deep-raspberry mb-4">Create Your Valentine</h2>
   

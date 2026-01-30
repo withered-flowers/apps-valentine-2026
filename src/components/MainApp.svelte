@@ -27,7 +27,7 @@
       </div>
       
       <CreateCardForm {authState} />
-      <StatusTracker />
+      <StatusTracker {authState} />
     {/if}
   </div>
 </main>

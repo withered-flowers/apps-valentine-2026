@@ -10,18 +10,18 @@ import type { Card } from './cards';
 
 /**
  * Subscribes to cards sent by a specific user.
- * In a real app, this might use auth.uid, but for this MVP we can use a list of IDs stored in localStorage
- * or just query by sender name if it's unique enough for the demo.
- * Let's assume we pass an array of card IDs.
  */
-export function subscribeToCards(ids: string[], callback: (cards: Card[]) => void) {
-  if (ids.length === 0) {
+export function subscribeToCards(username: string, callback: (cards: Card[]) => void) {
+  if (!username) {
     callback([]);
     return () => {};
   }
 
-  // Firestore "in" queries are limited to 10-30 items, but for MVP it's fine.
-  const q = query(collection(db, 'cards'), where('__name__', 'in', ids));
+  const q = query(
+    collection(db, 'cards'), 
+    where('senderUsername', '==', username),
+    orderBy('createdAt', 'desc')
+  );
   
   return onSnapshot(q, (snapshot) => {
     const cards = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as Card);
