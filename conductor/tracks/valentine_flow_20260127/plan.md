@@ -14,7 +14,7 @@
 - [x] Task: Implement a generic Firestore real-time listener using `$effect`. 8f3f7ad
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Data Layer & Firebase Setup' (Protocol in workflow.md) a09324a
 
-## Phase 3: Sender Experience (Creation Form & Dashboard)
+## Phase 3: Sender Experience (Creation Form & Dashboard) [checkpoint: 6400480]
 - [x] Task: Create UI components for the Card Creation form with Glassmorphism and heartbeat animations. 923cb4e
 - [x] Task: Write tests for `CreateCard.svelte` form logic and validation. 7fd4512
 - [x] Task: Implement `CreateCard.svelte` using `$state` for form data. 7fd4512
