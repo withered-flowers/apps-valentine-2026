@@ -24,14 +24,14 @@
 - [~] Task: Conductor - User Manual Verification 'Phase 2: Lightweight Authentication UI' (Protocol in workflow.md)
 
 ## Phase 3: Private Dashboard & Security
-- [ ] Task: Secure Firestore with Security Rules.
-    - [ ] Draft `firestore.rules` to allow card reading only if `senderUsername` matches.
-    - [ ] (Note: Manual step to apply rules in Firebase console or CLI).
-- [ ] Task: Update the Status Tracker to fetch user-specific cards.
-    - [ ] Write failing tests for filtered card subscription.
-    - [ ] Update `src/lib/dashboard.ts` to query Firestore by `senderUsername`.
-    - [ ] Verify tests pass.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Private Dashboard & Security' (Protocol in workflow.md)
+- [x] Task: Secure Firestore with Security Rules. 58cdf7a
+    - [x] Draft `firestore.rules` to allow card reading only if `senderUsername` matches. 58cdf7a
+    - [x] (Note: Manual step to apply rules in Firebase console or CLI). 58cdf7a
+- [x] Task: Update the Status Tracker to fetch user-specific cards. 0b11c76
+    - [x] Write failing tests for filtered card subscription. 0b11c76
+    - [x] Update `src/lib/dashboard.ts` to query Firestore by `senderUsername`. 0b11c76
+    - [x] Verify tests pass. 0b11c76
+- [~] Task: Conductor - User Manual Verification 'Phase 3: Private Dashboard & Security' (Protocol in workflow.md)
 
 ## Phase 4: Final Polish & UX
 - [ ] Task: Implement "Logout" functionality.
