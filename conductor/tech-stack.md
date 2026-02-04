@@ -6,6 +6,7 @@
 - **Styling:** Tailwind CSS (with custom Valentine theme)
 - **Fonts:** Google Fonts ("Dancing Script", "Comic Neue") via standard CSS import.
 - **Animations:** `svelte-motion` (for physics-based transitions) and `canvas-confetti` (for celebrations)
+- **Utilities:** `qrcode` (for client-side QR code generation)
 
 ## Backend & Infrastructure
 - **Platform:** Firebase

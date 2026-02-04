@@ -15,10 +15,11 @@ A modern, delightful, and romantic Progressive Web App (PWA) designed to let use
 
 ## Key Features
 - **Lightweight Authentication:** A simple, password-less login and signup flow using only usernames.
-- **Card Creation:** A streamlined form with **real-time preview** (side-by-side on desktop, tabbed on mobile) allowing senders to see their personalized card update instantly as they type.
-- **Interactive Receiver View:** A dedicated page for the recipient featuring interactive elements (e.g., "Will you be my Valentine?" buttons).
-- **Private Status Dashboard:** A secure, real-time tracker where senders can only monitor the status of their own sent cards.
-- **Easy Sharing:** Generation of unique, shareable links for distribution via messaging apps.
+- **Single Card Limit:** Emphasizing the "one special person" concept by restricting each account to creating exactly one unique card.
+- **Customizable Interactions:** Senders can personalize the interactive buttons (e.g., custom "Yes/No" labels) or enable a **Text Reply** feature for receivers.
+- **Interactive Receiver View:** A dedicated page for the recipient featuring interactive elements, including custom buttons and a personal message response form.
+- **Response Inbox:** A private dashboard where senders can monitor card status and read heartfelt text replies from their receivers in real-time.
+- **QR Code Sharing:** Instant generation of unique scannable QR codes and shareable links for easy distribution.
 
 ## Design Philosophy
 - **Aesthetic:** Soft, vibrant, and tactile. Using a "Lavender Blush" background with "Vivid Pink" highlights and "Deep Raspberry" text for high contrast and romantic feel.
