@@ -30,7 +30,7 @@
     - [ ] Update `ReceiverView.svelte` to conditionally render labels from the card data.
     - [ ] Ensure button clicks save the specific custom label as the response in Firestore.
     - [ ] Verify tests pass.
-- [ ] Task: Implement Reply Form in `ReceiverView.svelte`.
+- [x] Task: Implement Reply Form in `ReceiverView.svelte`. 207274f
     - [ ] Write failing test for the reply text area and submission process.
     - [ ] Add a text area and "Send Reply" button to `ReceiverView.svelte`, visible only if `allowReply` is true.
     - [ ] Implement the `submitReply` logic to update the card document in Firestore.
