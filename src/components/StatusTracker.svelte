@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { AuthState } from "../lib/auth.svelte";
   import { DashboardState } from "../lib/dashboard.svelte";
+  import ShareModal from "./ShareModal.svelte";
 
   interface Props {
     authState: AuthState;
@@ -19,6 +20,15 @@
     accepted: "text-green-500 font-bold",
     declined: "text-red-500",
   };
+
+  // Share Modal State
+  let shareModalUrl = $state("");
+  let isShareModalOpen = $state(false);
+
+  function openShareModal(cardId: string) {
+    shareModalUrl = `${window.location.origin}/card/${cardId}`;
+    isShareModalOpen = true;
+  }
 </script>
 
 <div class="glass p-8 rounded-2xl flex flex-col gap-4 max-w-md w-full mx-auto">
@@ -49,14 +59,10 @@
               >{card.status}</span
             >
             <button
-              onclick={() => {
-                const url = `${window.location.origin}/card/${card.id}`;
-                navigator.clipboard.writeText(url);
-                alert("Link copied!");
-              }}
+              onclick={() => openShareModal(card.id!)}
               class="text-[10px] text-vivid-pink hover:underline mt-1"
             >
-              Copy Link
+              Share Card
             </button>
           </div>
         </div>
@@ -64,3 +70,9 @@
     </div>
   {/if}
 </div>
+
+<ShareModal
+  url={shareModalUrl}
+  isOpen={isShareModalOpen}
+  onClose={() => (isShareModalOpen = false)}
+/>
