@@ -1,6 +1,6 @@
 # Implementation Plan: UI Refactor - Card Option Ordering
 
-## Phase 1: Form UI Refactor
+## Phase 1: Form UI Refactor [checkpoint: 4b82c30]
 - [x] Task: Reorder and Add Dependency to Toggles in `CreateCardForm.svelte`. b395820
     - [ ] Update `CreateCardForm.svelte` to move the "Hide Choice Buttons" toggle above "Custom Choice Buttons".
     - [ ] Update the "Custom Choice Buttons" checkbox to be disabled when `form.hideButtons` is true.
