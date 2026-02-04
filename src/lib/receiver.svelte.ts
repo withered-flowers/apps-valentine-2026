@@ -7,9 +7,11 @@ export class ReceiverViewLogic {
   yesButtonScale = $state(1);
   onAccept?: () => void;
 
-  constructor(id: string, initialCard: Card, onAccept?: () => void) {
+  constructor(id: string = '', initialCard?: Card, onAccept?: () => void) {
     this.id = id;
-    this.card = initialCard;
+    if (initialCard) {
+      this.card = initialCard;
+    }
     this.onAccept = onAccept;
   }
 

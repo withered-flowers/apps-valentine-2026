@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { type Card } from '../lib/cards';
   import { CardState } from '../lib/cards.svelte';
   import { ReceiverViewLogic } from '../lib/receiver.svelte';
@@ -13,10 +12,13 @@
 
   let { id, initialCard }: Props = $props();
   
-  const cardState = new CardState(id);
+  // Pass getter to ensure reactivity and avoid state_referenced_locally warning
+  const cardState = new CardState(() => id);
   let card = $derived(cardState.data || initialCard);
   
-  const logic = new ReceiverViewLogic(id, initialCard, () => {
+  // Initialize logic with empty defaults to avoid capturing reactive props in constructor
+  // The $effect below will sync the actual values immediately
+  const logic = new ReceiverViewLogic('', undefined, () => {
     const duration = 5 * 1000;
     const animationEnd = Date.now() + duration;
     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
@@ -39,8 +41,15 @@
     }, 250);
   });
 
-  onMount(async () => {
-    await logic.markAsViewed();
+  // Sync logic state when props change
+  $effect(() => {
+    logic.id = id;
+    logic.card = initialCard;
+  });
+
+  // Mark as viewed when card/id changes
+  $effect(() => {
+    logic.markAsViewed();
   });
 
   async function handleYes() {

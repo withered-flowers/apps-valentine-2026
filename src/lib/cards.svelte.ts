@@ -5,8 +5,9 @@ export class CardState {
   loading = $state(true);
   error = $state<Error | null>(null);
 
-  constructor(id: string) {
+  constructor(idOrGetter: string | (() => string)) {
     $effect(() => {
+      const id = typeof idOrGetter === 'function' ? idOrGetter() : idOrGetter;
       this.loading = true;
       const unsubscribe = subscribeToCard(id, (card) => {
         this.data = card;
