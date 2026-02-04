@@ -5,7 +5,7 @@
     - [ ] Write failing test in `src/lib/cards.test.ts` to ensure `createCard` fails if a card already exists for the user.
     - [ ] Implement check in `src/lib/cards.ts` using a Firestore query or by checking the local session state.
     - [ ] Verify tests pass.
-- [ ] Task: Implement redirection logic on the Home page.
+- [x] Task: Implement redirection logic on the Home page. 1897cc6
     - [ ] Write failing test for `src/pages/index.astro` (or relevant state controller) to verify redirect when a card already exists.
     - [ ] Update `src/pages/index.astro` logic to redirect to the Dashboard if `user.hasCard` is detected.
     - [ ] Verify tests pass.
