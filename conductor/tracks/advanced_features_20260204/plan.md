@@ -51,7 +51,7 @@
     - [x] Verify the flow manually.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Share Modal & QR Code' (Protocol in workflow.md)
 
-## Phase 5: Response Inbox
+## Phase 5: Response Inbox [checkpoint: d8e7b42]
 - [x] Task: Implement Inbox logic in `src/lib/dashboard.ts`. 4dcf74a
     - [ ] Write failing test for retrieving the `replyText` field from a card.
     - [ ] Ensure the dashboard state correctly reflects the presence of a reply.
