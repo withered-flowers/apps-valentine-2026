@@ -38,7 +38,7 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Receiver Interaction' (Protocol in workflow.md)
 
 ## Phase 4: Share Modal & QR Code
-- [ ] Task: Add QR Code library.
+- [x] Task: Add QR Code library. fd2305b
     - [ ] Add `qrcode` (or `qrious`) package using `npm install`.
     - [ ] Verify installation in `package.json`.
 - [ ] Task: Create `ShareModal.svelte` component.
