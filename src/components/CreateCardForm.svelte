@@ -141,20 +141,6 @@
     <div class="border-t border-vivid-pink/10 pt-4 mt-2 flex flex-col gap-4">
       <div class="flex items-center justify-between">
         <label
-          for="useCustomButtons"
-          class="text-sm font-bold text-deep-raspberry cursor-pointer"
-          >Custom Choice Buttons</label
-        >
-        <input
-          type="checkbox"
-          id="useCustomButtons"
-          bind:checked={form.useCustomButtons}
-          class="w-5 h-5 accent-vivid-pink cursor-pointer"
-        />
-      </div>
-
-      <div class="flex items-center justify-between">
-        <label
           for="hideButtons"
           class="text-sm font-bold text-deep-raspberry cursor-pointer"
           >Hide Choice Buttons</label
@@ -167,7 +153,26 @@
         />
       </div>
 
-      {#if form.useCustomButtons}
+      <div
+        class="flex items-center justify-between transition-opacity {form.hideButtons
+          ? 'opacity-40 pointer-events-none'
+          : 'opacity-100'}"
+      >
+        <label
+          for="useCustomButtons"
+          class="text-sm font-bold text-deep-raspberry cursor-pointer"
+          >Custom Choice Buttons</label
+        >
+        <input
+          type="checkbox"
+          id="useCustomButtons"
+          bind:checked={form.useCustomButtons}
+          disabled={form.hideButtons}
+          class="w-5 h-5 accent-vivid-pink cursor-pointer"
+        />
+      </div>
+
+      {#if form.useCustomButtons && !form.hideButtons}
         <div class="grid grid-cols-2 gap-2 animate-fade-in">
           <div class="flex flex-col gap-1">
             <label
