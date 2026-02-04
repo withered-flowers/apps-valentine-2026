@@ -16,7 +16,7 @@
     - [ ] Update `Card` interface in `src/lib/cards.ts` to include `useCustomButtons` (boolean), `button1Text` (string), `button2Text` (string), `allowReply` (boolean), and `replyText` (string).
     - [ ] Write failing test for card creation with these new fields.
     - [ ] Verify tests pass.
-- [ ] Task: Enhance `CreateCardForm.svelte` with new feature toggles.
+- [x] Task: Enhance `CreateCardForm.svelte` with new feature toggles. 8c08a12
     - [ ] Add Svelte Runes (`$state`) for the new toggles and text inputs in `CreateCardForm.svelte`.
     - [ ] Implement UI for "Custom Choice Buttons" toggle and its nested text inputs.
     - [ ] Implement UI for "Allow Text Reply" toggle.
