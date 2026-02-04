@@ -9,6 +9,11 @@
     onNoHover?: () => void;
     yesButtonScale?: number;
     noButtonPos?: { x: number; y: number };
+    // Reply props
+    replyText?: string;
+    replySubmitting?: boolean;
+    replySuccess?: boolean;
+    onReplySubmit?: () => void;
   }
 
   let {
@@ -19,6 +24,10 @@
     onNoHover,
     yesButtonScale = 1,
     noButtonPos = { x: 0, y: 0 },
+    replyText = $bindable(""),
+    replySubmitting = false,
+    replySuccess = false,
+    onReplySubmit,
   }: Props = $props();
 
   const themeClasses = {
@@ -78,6 +87,35 @@
         {card.useCustomButtons ? card.button2Text : "No"}
       </button>
     </div>
+
+    {#if card.allowReply && !previewMode}
+      <div class="mt-8 pt-6 border-t border-vivid-pink/10 flex flex-col gap-3">
+        <label for="reply" class="text-xs font-bold text-deep-raspberry/60 uppercase tracking-widest">
+          Leave a message back
+        </label>
+        {#if replySuccess}
+          <p class="text-sm text-green-600 font-medium animate-fade-in">
+            💖 Message sent to {card.sender}!
+          </p>
+        {:else}
+          <div class="flex flex-col gap-2">
+            <textarea
+              id="reply"
+              bind:value={replyText}
+              placeholder="Type your reply here..."
+              class="p-3 rounded-xl bg-white/50 border border-vivid-pink/20 focus:border-vivid-pink outline-none text-sm min-h-[80px] transition-all"
+            ></textarea>
+            <button
+              onclick={onReplySubmit}
+              disabled={replySubmitting || !replyText.trim()}
+              class="bg-vivid-pink/10 text-vivid-pink font-bold py-2 rounded-xl hover:bg-vivid-pink/20 transition-colors disabled:opacity-30 text-sm"
+            >
+              {replySubmitting ? "Sending..." : "Send Reply"}
+            </button>
+          </div>
+        {/if}
+      </div>
+    {/if}
 
     <span class="text-xs text-deep-raspberry/40 mt-4">From: {card.sender}</span>
   {/if}

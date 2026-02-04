@@ -67,6 +67,10 @@
   async function handleNo() {
     await logic.decline();
   }
+
+  async function handleReplySubmit() {
+    await logic.submitReply();
+  }
 </script>
 
 <CardDisplay
@@ -76,4 +80,8 @@
   onNoHover={() => logic.handleNoHover()}
   yesButtonScale={logic.yesButtonScale}
   noButtonPos={logic.noButtonPos}
+  bind:replyText={logic.replyText}
+  replySubmitting={logic.replySubmitting}
+  replySuccess={logic.replySuccess}
+  onReplySubmit={handleReplySubmit}
 />
