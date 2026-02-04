@@ -41,14 +41,14 @@
 - [x] Task: Add QR Code library. fd2305b
     - [ ] Add `qrcode` (or `qrious`) package using `npm install`.
     - [ ] Verify installation in `package.json`.
-- [ ] Task: Create `ShareModal.svelte` component.
-    - [ ] Implement a glassmorphic modal displaying the link and a canvas/image for the QR code.
-    - [ ] Use a Svelte `$effect` to generate the QR code dynamically when the modal is active.
-    - [ ] Include a "Copy Link" button with visual feedback.
+- [x] Task: Create `ShareModal.svelte` component. ee99241
+    - [x] Implement a glassmorphic modal displaying the link and a canvas/image for the QR code.
+    - [x] Use a Svelte `$effect` to generate the QR code dynamically when the modal is active.
+    - [x] Include a "Copy Link" button with visual feedback.
     - [ ] Write unit tests for the `ShareModal.svelte` visibility and content.
-- [ ] Task: Integrate `ShareModal` into `StatusTracker.svelte`.
-    - [ ] Replace the simple "Copy" action in `StatusTracker.svelte` with a trigger for the `ShareModal`.
-    - [ ] Verify the flow manually.
+- [x] Task: Integrate `ShareModal` into `StatusTracker.svelte`. ee99241
+    - [x] Replace the simple "Copy" action in `StatusTracker.svelte` with a trigger for the `ShareModal`.
+    - [x] Verify the flow manually.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Share Modal & QR Code' (Protocol in workflow.md)
 
 ## Phase 5: Response Inbox
