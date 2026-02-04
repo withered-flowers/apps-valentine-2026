@@ -21,6 +21,11 @@ export interface Card {
 	message: string;
 	theme: "romantic" | "playful" | "elegant";
 	status: "sent" | "viewed" | "accepted" | "declined";
+	useCustomButtons?: boolean;
+	button1Text?: string;
+	button2Text?: string;
+	allowReply?: boolean;
+	replyText?: string;
 	createdAt: Timestamp;
 	updatedAt: Timestamp;
 }

@@ -47,4 +47,28 @@ describe('Cards Service', () => {
       expect(error.message).toBe('A card already exists for this user.');
     }
   });
+
+  it('should create a card with new optional fields', async () => {
+    const username = `user_new_fields_${Date.now()}`;
+    const cardData = {
+      sender: 'Romeo',
+      senderUsername: username,
+      receiver: 'Juliet',
+      message: 'Love is all',
+      theme: 'romantic' as const,
+      useCustomButtons: true,
+      button1Text: 'Of course!',
+      button2Text: 'Maybe later',
+      allowReply: true
+    };
+
+    const id = await createCard(cardData);
+    const card = await getCard(id);
+
+    expect(card).not.toBeNull();
+    expect(card?.useCustomButtons).toBe(true);
+    expect(card?.button1Text).toBe('Of course!');
+    expect(card?.button2Text).toBe('Maybe later');
+    expect(card?.allowReply).toBe(true);
+  });
 });
