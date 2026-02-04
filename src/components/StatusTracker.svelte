@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { DashboardState } from "../lib/dashboard.svelte";
   import type { AuthState } from "../lib/auth.svelte";
+  import { DashboardState } from "../lib/dashboard.svelte";
 
   interface Props {
     authState: AuthState;

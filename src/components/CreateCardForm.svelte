@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { CreateCardFormState } from "../lib/create-card.svelte";
+  import { Timestamp } from "firebase/firestore";
   import type { AuthState } from "../lib/auth.svelte";
+  import { CreateCardFormState } from "../lib/create-card.svelte";
   import CardDisplay from "./CardDisplay.svelte";
 
   interface Props {
@@ -32,7 +33,8 @@
     message: form.message,
     theme: form.theme,
     status: "sent" as const,
-    createdAt: new Date(),
+    createdAt: Timestamp.now(),
+    updatedAt: Timestamp.now(),
   });
 </script>
 
