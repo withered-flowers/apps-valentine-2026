@@ -25,7 +25,7 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Data Model & Card Creation' (Protocol in workflow.md)
 
 ## Phase 3: Receiver Interaction (Custom Buttons & Text Reply)
-- [ ] Task: Implement Custom Buttons in `ReceiverView.svelte`.
+- [x] Task: Implement Custom Buttons in `ReceiverView.svelte`. 30d8ed8
     - [ ] Write failing test in `src/components/ReceiverView.repro.test.ts` to ensure custom button labels are displayed when enabled.
     - [ ] Update `ReceiverView.svelte` to conditionally render labels from the card data.
     - [ ] Ensure button clicks save the specific custom label as the response in Firestore.
