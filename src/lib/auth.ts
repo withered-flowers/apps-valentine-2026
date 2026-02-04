@@ -28,6 +28,7 @@ export async function getUser(username: string): Promise<User | null> {
 export async function createUser(username: string, senderName: string): Promise<void> {
   const docRef = doc(db, 'users', username);
   await setDoc(docRef, {
+    username, // Store explicitly as field too
     senderName,
     createdAt: serverTimestamp(),
     lastLoginAt: serverTimestamp()

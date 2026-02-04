@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Card } from '../lib/cards';
+  import type { Card } from "../lib/cards";
 
   interface Props {
     card: Card;
@@ -11,36 +11,47 @@
     noButtonPos?: { x: number; y: number };
   }
 
-  let { 
-    card, 
-    previewMode = false, 
-    onYes, 
-    onNo, 
+  let {
+    card,
+    previewMode = false,
+    onYes,
+    onNo,
     onNoHover,
     yesButtonScale = 1,
-    noButtonPos = { x: 0, y: 0 }
+    noButtonPos = { x: 0, y: 0 },
   }: Props = $props();
 
   const themeClasses = {
-    romantic: 'border-vivid-pink !bg-white/30 font-sans',
-    playful: 'border-blue-400 !bg-blue-50/50 font-rounded',
-    elegant: 'border-silver-grey !bg-purple-50/40 font-script'
+    romantic: "border-vivid-pink !bg-white/30 font-romantic",
+    playful: "border-blue-400 !bg-blue-50/50 font-playful",
+    elegant: "border-silver-grey !bg-purple-50/40 font-elegant",
   };
 </script>
 
-<div class="glass max-w-lg w-full p-8 rounded-3xl text-center flex flex-col gap-6 relative z-10 {themeClasses[card.theme]}">
-  {#if card.status === 'accepted'}
-    <h1 class="text-4xl font-bold text-deep-raspberry animate-heartbeat">YAY! ❤️</h1>
+<div
+  class="glass max-w-lg w-full p-8 rounded-3xl text-center flex flex-col gap-6 relative z-10 {themeClasses[
+    card.theme
+  ]}"
+>
+  {#if card.status === "accepted"}
+    <h1 class="text-4xl font-bold text-deep-raspberry animate-heartbeat">
+      YAY! ❤️
+    </h1>
     <p class="text-xl text-deep-raspberry">I'm so happy, {card.sender}!</p>
     <div class="text-6xl mt-4">🥰🌹✨</div>
-  {:else if card.status === 'declined'}
+  {:else if card.status === "declined"}
     <h1 class="text-3xl font-bold text-gray-700">Oh no... 💔</h1>
     <p class="text-lg text-gray-600">Maybe next time, {card.sender}?</p>
     <div class="text-6xl mt-4">😢🥀</div>
   {:else}
     <div class="flex flex-col gap-2">
-      <span class="text-vivid-pink font-medium tracking-widest uppercase text-sm">To: {card.receiver}</span>
-      <h1 class="text-4xl font-bold text-deep-raspberry">Will you be my Valentine?</h1>
+      <span
+        class="text-vivid-pink font-medium tracking-widest uppercase text-sm"
+        >To: {card.receiver}</span
+      >
+      <h1 class="text-4xl font-bold text-deep-raspberry">
+        Will you be my Valentine?
+      </h1>
     </div>
 
     <p class="text-lg text-deep-raspberry/80 italic leading-relaxed py-4">
@@ -67,7 +78,7 @@
         No
       </button>
     </div>
-    
+
     <span class="text-xs text-deep-raspberry/40 mt-4">From: {card.sender}</span>
   {/if}
 </div>

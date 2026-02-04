@@ -1,4 +1,4 @@
-# Track fix_reactivity_20260204 Context
+# Track auth_dashboard_20260130 Context
 
 - [Specification](./spec.md)
 - [Implementation Plan](./plan.md)

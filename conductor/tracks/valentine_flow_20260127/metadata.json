@@ -1,8 +1,0 @@
-{
-  "track_id": "valentine_flow_20260127",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-01-27T00:00:00Z",
-  "updated_at": "2026-01-27T00:00:00Z",
-  "description": "Build the core Valentine's Card flow, including the creation form, the interactive recipient view with a playful \"No\" button, and real-time status tracking via Firebase."
-}

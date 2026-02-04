@@ -1,48 +1,55 @@
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Comic+Neue:wght@300;400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Dancing+Script:wght@400..700&family=Oooh+Baby&family=Licorice&display=swap");
+
 @import "tailwindcss";
 
 @theme {
-  --color-lavender-blush: #fff0f5;
-  --color-vivid-pink: #ff1493;
-  --color-deep-raspberry: #872657;
-  --color-silver-grey: #c0c0c0;
+	--color-lavender-blush: #fff0f5;
+	--color-vivid-pink: #ff1493;
+	--color-deep-raspberry: #872657;
+	--color-silver-grey: #c0c0c0;
 
-  --font-rounded: "Comic Neue", cursive;
-  --font-script: "Dancing Script", cursive;
+	--font-romantic: "Licorice", cursive;
+	--font-playful: "Oooh Baby", cursive;
+	--font-elegant: "Dancing Script", cursive;
 
-  @keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-  }
+	@keyframes heartbeat {
+		0%,
+		100% {
+			transform: scale(1);
+		}
+		50% {
+			transform: scale(1.1);
+		}
+	}
 
-  --animate-heartbeat: heartbeat 1.5s ease-in-out infinite;
+	--animate-heartbeat: heartbeat 1.5s ease-in-out infinite;
 }
 
 @layer utilities {
-  .glass {
-    @apply bg-white/30 backdrop-blur-xl border border-white/40;
-    box-shadow: 
-      0 10px 15px -3px rgba(255, 20, 147, 0.1),
-      0 4px 6px -4px rgba(255, 20, 147, 0.1),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-  }
-  
-  .glass-dark {
-    @apply bg-deep-raspberry/10 backdrop-blur-xl border border-deep-raspberry/20;
-    box-shadow: 0 20px 25px -5px rgba(135, 38, 87, 0.2);
-  }
+	.glass {
+		@apply bg-white/30 backdrop-blur-xl border border-white/40;
+		box-shadow:
+			0 10px 15px -3px rgba(255, 20, 147, 0.1),
+			0 4px 6px -4px rgba(255, 20, 147, 0.1),
+			inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+	}
 
-  .skeuo-button {
-    @apply relative transition-all duration-200 active:translate-y-0.5 active:shadow-inner;
-    box-shadow: 
-      0 4px 0 0 rgba(135, 38, 87, 0.8),
-      0 8px 15px rgba(0, 0, 0, 0.1);
-  }
+	.glass-dark {
+		@apply bg-deep-raspberry/10 backdrop-blur-xl border border-deep-raspberry/20;
+		box-shadow: 0 20px 25px -5px rgba(135, 38, 87, 0.2);
+	}
 
-  .skeuo-button:hover {
-    @apply -translate-y-0.5;
-    box-shadow: 
-      0 6px 0 0 rgba(135, 38, 87, 0.8),
-      0 12px 20px rgba(255, 20, 147, 0.2);
-  }
+	.skeuo-button {
+		@apply relative transition-all duration-200 active:translate-y-0.5 active:shadow-inner;
+		box-shadow:
+			0 4px 0 0 rgba(135, 38, 87, 0.8),
+			0 8px 15px rgba(0, 0, 0, 0.1);
+	}
+
+	.skeuo-button:hover {
+		@apply -translate-y-0.5;
+		box-shadow:
+			0 6px 0 0 rgba(135, 38, 87, 0.8),
+			0 12px 20px rgba(255, 20, 147, 0.2);
+	}
 }
