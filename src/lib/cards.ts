@@ -3,8 +3,11 @@ import {
 	collection,
 	doc,
 	getDoc,
+	getDocs,
 	onSnapshot,
+	query,
 	serverTimestamp,
+	where,
 	type Timestamp,
 	updateDoc,
 } from "firebase/firestore";
@@ -26,6 +29,15 @@ export async function createCard(
 	cardData: Omit<Card, "id" | "status" | "createdAt" | "updatedAt">,
 ) {
 	const cardsCol = collection(db, "cards");
+
+	// Check if a card already exists for this user
+	const q = query(cardsCol, where("senderUsername", "==", cardData.senderUsername));
+	const querySnapshot = await getDocs(q);
+
+	if (!querySnapshot.empty) {
+		throw new Error("A card already exists for this user.");
+	}
+
 	const newCard = {
 		...cardData,
 		status: "sent",
