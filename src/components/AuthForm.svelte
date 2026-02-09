@@ -1,5 +1,7 @@
 <script lang="ts">
   import { Motion } from "svelte-motion";
+  import { fly } from "svelte/transition";
+  import { cubicOut } from "svelte/easing";
   import type { AuthState } from "../lib/auth.svelte";
 
   interface Props {
@@ -34,80 +36,95 @@
 >
   <div
     use:motion
-    class="glass p-8 rounded-2xl flex flex-col gap-6 max-w-md w-full mx-auto"
+    class="glass p-8 rounded-2xl flex flex-col gap-6 max-w-md w-full mx-auto overflow-hidden transition-all duration-500 {authState.isSignupRequired ? 'valentine-glow border-vivid-pink/50' : ''}"
   >
-    {#if !authState.isSignupRequired}
-      <form onsubmit={handleLogin} class="flex flex-col gap-4">
-        <h2 class="text-2xl font-bold text-deep-raspberry">Welcome Back</h2>
-        <p class="text-sm text-deep-raspberry/70">
-          Enter your username to continue.
-        </p>
-
-        <div class="flex flex-col gap-1">
-          <label for="username" class="text-sm font-medium text-deep-raspberry"
-            >Username</label
+    <div class="grid grid-cols-1 grid-rows-1">
+      {#key authState.isSignupRequired}
+        {#if !authState.isSignupRequired}
+          <form
+            in:fly={{ x: -50, duration: 500, easing: cubicOut, opacity: 0 }}
+            out:fly={{ x: 50, duration: 400, easing: cubicOut, opacity: 0 }}
+            onsubmit={handleLogin}
+            class="flex flex-col gap-4 col-start-1 row-start-1"
           >
-          <input
-            type="text"
-            id="username"
-            bind:value={username}
-            required
-            placeholder="e.g. romeo123"
-            class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all focus:scale-[1.01] focus:shadow-md"
-          />
-        </div>
+            <h2 class="text-2xl font-bold text-deep-raspberry">Welcome Back</h2>
+            <p class="text-sm text-deep-raspberry/70">
+              Enter your username to continue.
+            </p>
 
-        <button
-          type="submit"
-          disabled={authState.loading}
-          class="mt-2 bg-vivid-pink text-white font-bold py-3 rounded-xl skeuo-button disabled:opacity-50 transition-all hover:scale-[1.02] active:scale-[0.98]"
-        >
-          {authState.loading ? "Verifying..." : "Login / Join"}
-        </button>
-      </form>
-    {:else}
-      <form onsubmit={handleSignup} class="flex flex-col gap-4">
-        <h2 class="text-2xl font-bold text-deep-raspberry">
-          Nice to meet you!
-        </h2>
-        <p class="text-sm text-deep-raspberry/70">
-          We couldn't find your username. Please tell us your display name to
-          create an account.
-        </p>
+            <div class="flex flex-col gap-1">
+              <label
+                for="username"
+                class="text-sm font-medium text-deep-raspberry">Username</label
+              >
+              <input
+                type="text"
+                id="username"
+                bind:value={username}
+                required
+                placeholder="e.g. romeo123"
+                class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all focus:scale-[1.01] focus:shadow-md"
+              />
+            </div>
 
-        <div class="flex flex-col gap-1">
-          <label
-            for="senderName"
-            class="text-sm font-medium text-deep-raspberry"
-            >Your Display Name</label
+            <button
+              type="submit"
+              disabled={authState.loading}
+              class="mt-2 bg-vivid-pink text-white font-bold py-3 rounded-xl skeuo-button disabled:opacity-50 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              {authState.loading ? "Verifying..." : "Login / Join"}
+            </button>
+          </form>
+        {:else}
+          <form
+            in:fly={{ x: 50, duration: 500, easing: cubicOut, opacity: 0 }}
+            out:fly={{ x: -50, duration: 400, easing: cubicOut, opacity: 0 }}
+            onsubmit={handleSignup}
+            class="flex flex-col gap-4 col-start-1 row-start-1"
           >
-          <input
-            type="text"
-            id="senderName"
-            bind:value={senderName}
-            required
-            placeholder="e.g. Romeo Montague"
-            class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all focus:scale-[1.01] focus:shadow-md"
-          />
-        </div>
+            <h2 class="text-2xl font-bold text-deep-raspberry">
+              Nice to meet you!
+            </h2>
+            <p class="text-sm text-deep-raspberry/70">
+              We couldn't find your username. Please tell us your display name to
+              create an account.
+            </p>
 
-        <button
-          type="submit"
-          disabled={authState.loading}
-          class="mt-2 bg-vivid-pink text-white font-bold py-3 rounded-xl skeuo-button disabled:opacity-50 transition-all hover:scale-[1.02] active:scale-[0.98]"
-        >
-          {authState.loading ? "Creating Account..." : "Complete Signup"}
-        </button>
+            <div class="flex flex-col gap-1">
+              <label
+                for="senderName"
+                class="text-sm font-medium text-deep-raspberry"
+                >Your Display Name</label
+              >
+              <input
+                type="text"
+                id="senderName"
+                bind:value={senderName}
+                required
+                placeholder="e.g. Romeo Montague"
+                class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all focus:scale-[1.01] focus:shadow-md"
+              />
+            </div>
 
-        <button
-          type="button"
-          onclick={() => authState.logout()}
-          class="text-xs text-deep-raspberry/50 hover:underline transition-all hover:scale-105"
-        >
-          Cancel
-        </button>
-      </form>
-    {/if}
+            <button
+              type="submit"
+              disabled={authState.loading}
+              class="mt-2 bg-vivid-pink text-white font-bold py-3 rounded-xl skeuo-button disabled:opacity-50 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              {authState.loading ? "Creating Account..." : "Complete Signup"}
+            </button>
+
+            <button
+              type="button"
+              onclick={() => authState.logout()}
+              class="text-xs text-deep-raspberry/50 hover:underline transition-all hover:scale-105"
+            >
+              Cancel
+            </button>
+          </form>
+        {/if}
+      {/key}
+    </div>
 
     {#if authState.error}
       <Motion
