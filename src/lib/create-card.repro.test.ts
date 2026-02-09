@@ -8,28 +8,53 @@ beforeAll(() => {
 
 import { CreateCardFormState } from './create-card.svelte';
 
-// Mock the cards service
+// We want to test the interaction with the cards service
+// but we'll mock the actual firebase call to see what it receives.
+const mockCreateCard = mock(async () => 'test-id');
 mock.module('./cards', () => ({
-  createCard: async () => 'test-id-123'
+  createCard: mockCreateCard
 }));
 
-describe('CreateCardForm Repro', () => {
-  it('should allow authenticated user to submit valid form', async () => {
-    // authenticated user: senderName and senderUsername are present
-    const form = new CreateCardFormState('Romeo', 'romeo_user');
-    
+describe('CreateCardForm Bug Reproduction', () => {
+  it('should be valid when hideButtons is true', () => {
+    const form = new CreateCardFormState('Romeo', 'romeo123');
     form.receiver = 'Juliet';
-    form.message = 'My Valentine';
-    form.theme = 'romantic';
-
-    await form.submit();
-
-    // The Bug: 
-    // 1. isValid is undefined -> validation fails
-    // 2. error is set but not reactive -> no UI feedback
+    form.message = 'Will you be my Valentine?';
+    form.hideButtons = true;
+    form.useCustomButtons = false; // Mutually exclusive in UI, but let's be explicit
     
-    // We expect success to be populated if it was working
-    expect(form.success).toBe('test-id-123');
+    expect(form.isValid).toBe(true);
+  });
+
+  it('should call createCard with correct data when hideButtons is true', async () => {
+    const form = new CreateCardFormState('Romeo', 'romeo123');
+    form.receiver = 'Juliet';
+    form.message = 'Will you be my Valentine?';
+    form.hideButtons = true;
+    form.allowReply = true;
+    
+    await form.submit();
+    
     expect(form.error).toBeNull();
+    expect(form.success).toBe('test-id');
+    
+    const lastCall = mockCreateCard.mock.calls[0][0];
+    expect(lastCall.hideButtons).toBe(true);
+    expect(lastCall.allowReply).toBe(true);
+  });
+
+  it('should handle failures from the service gracefully', async () => {
+    mockCreateCard.mockImplementationOnce(async () => {
+        throw new Error('Firestore Error');
+    });
+
+    const form = new CreateCardFormState('Romeo', 'romeo123');
+    form.receiver = 'Juliet';
+    form.message = 'Will you be my Valentine?';
+    form.hideButtons = true;
+    
+    await form.submit();
+    
+    expect(form.error).toBe('Firestore Error');
   });
 });

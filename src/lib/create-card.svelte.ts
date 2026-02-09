@@ -116,9 +116,9 @@ export class CreateCardFormState {
 
               this.reset();
 
-            } catch (err) {
+            } catch (err: any) {
 
-              this.error = 'Failed to create card. Please try again.';
+              this.error = err.message || 'Failed to create card. Please try again.';
 
               console.error(err);
 
