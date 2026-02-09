@@ -58,7 +58,9 @@ export class CreateCardFormState {
 
       this.message.trim() !== '' &&
 
-      (!this.useCustomButtons || (this.button1Text.trim() !== '' && this.button2Text.trim() !== ''))
+      (!this.useCustomButtons || (this.button1Text.trim() !== '' && this.button2Text.trim() !== '')) &&
+
+      (!this.hideButtons || this.allowReply)
 
     );
 
@@ -102,21 +104,27 @@ export class CreateCardFormState {
 
         useCustomButtons: this.useCustomButtons,
 
-                button1Text: this.useCustomButtons ? this.button1Text : undefined,
+        // Only include button text if custom buttons are used
 
-                button2Text: this.useCustomButtons ? this.button2Text : undefined,
+        ...(this.useCustomButtons ? {
 
-                hideButtons: this.hideButtons,
+          button1Text: this.button1Text,
 
-                allowReply: this.allowReply
+          button2Text: this.button2Text,
 
-              });
+        } : {}),
 
-              this.success = id;
+        hideButtons: this.hideButtons,
 
-              this.reset();
+        allowReply: this.allowReply
 
-            } catch (err: any) {
+      });
+
+      this.success = id;
+
+      this.reset();
+
+    } catch (err: any) {
 
               this.error = err.message || 'Failed to create card. Please try again.';
 

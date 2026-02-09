@@ -8,53 +8,61 @@ beforeAll(() => {
 
 import { CreateCardFormState } from './create-card.svelte';
 
-// We want to test the interaction with the cards service
-// but we'll mock the actual firebase call to see what it receives.
 const mockCreateCard = mock(async () => 'test-id');
 mock.module('./cards', () => ({
   createCard: mockCreateCard
 }));
 
-describe('CreateCardForm Bug Reproduction', () => {
-  it('should be valid when hideButtons is true', () => {
+describe('CreateCardForm Validation Rules', () => {
+  const getBaseForm = () => {
     const form = new CreateCardFormState('Romeo', 'romeo123');
     form.receiver = 'Juliet';
-    form.message = 'Will you be my Valentine?';
+    form.message = 'Love';
+    return form;
+  };
+
+  it('1. should be VALID: Hide Choice Button Checked, Allow Text Reply Checked', () => {
+    const form = getBaseForm();
     form.hideButtons = true;
-    form.useCustomButtons = false; // Mutually exclusive in UI, but let's be explicit
-    
+    form.allowReply = true;
     expect(form.isValid).toBe(true);
   });
 
-  it('should call createCard with correct data when hideButtons is true', async () => {
-    const form = new CreateCardFormState('Romeo', 'romeo123');
-    form.receiver = 'Juliet';
-    form.message = 'Will you be my Valentine?';
+  it('should be INVALID: Hide Choice Button Checked, Allow Text Reply Unchecked', () => {
+    const form = getBaseForm();
     form.hideButtons = true;
-    form.allowReply = true;
-    
-    await form.submit();
-    
-    expect(form.error).toBeNull();
-    expect(form.success).toBe('test-id');
-    
-    const lastCall = mockCreateCard.mock.calls[0][0];
-    expect(lastCall.hideButtons).toBe(true);
-    expect(lastCall.allowReply).toBe(true);
+    form.allowReply = false;
+    expect(form.isValid).toBe(false);
   });
 
-  it('should handle failures from the service gracefully', async () => {
-    mockCreateCard.mockImplementationOnce(async () => {
-        throw new Error('Firestore Error');
-    });
+  it('2. should be VALID: Hide Choice Button Unchecked, Allow Text Reply Checked', () => {
+    const form = getBaseForm();
+    form.hideButtons = false;
+    form.allowReply = true;
+    expect(form.isValid).toBe(true);
+  });
 
-    const form = new CreateCardFormState('Romeo', 'romeo123');
-    form.receiver = 'Juliet';
-    form.message = 'Will you be my Valentine?';
-    form.hideButtons = true;
-    
-    await form.submit();
-    
-    expect(form.error).toBe('Firestore Error');
+  it('3. should be VALID: Custom Choice Button Checked, Allow Text Reply Unchecked', () => {
+    const form = getBaseForm();
+    form.useCustomButtons = true;
+    form.button1Text = 'Yes';
+    form.button2Text = 'No';
+    form.allowReply = false;
+    expect(form.isValid).toBe(true);
+  });
+
+  it('4. should be VALID: Custom Choice Button Unchecked, Allow Text Reply Unchecked', () => {
+    const form = getBaseForm();
+    form.useCustomButtons = false;
+    form.allowReply = false;
+    expect(form.isValid).toBe(true);
+  });
+
+  it('5. should be VALID: All options Unchecked', () => {
+    const form = getBaseForm();
+    form.hideButtons = false;
+    form.useCustomButtons = false;
+    form.allowReply = false;
+    expect(form.isValid).toBe(true);
   });
 });

@@ -47,8 +47,13 @@ export async function createCard(
 		throw new Error("A card already exists for this user.");
 	}
 
+	// Filter out undefined values to prevent Firestore errors
+	const cleanCardData = Object.fromEntries(
+		Object.entries(cardData).filter(([_, v]) => v !== undefined),
+	);
+
 	const newCard = {
-		...cardData,
+		...cleanCardData,
 		status: "sent",
 		createdAt: serverTimestamp(),
 		updatedAt: serverTimestamp(),

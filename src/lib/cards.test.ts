@@ -67,8 +67,49 @@ describe('Cards Service', () => {
 
     expect(card).not.toBeNull();
     expect(card?.useCustomButtons).toBe(true);
-    expect(card?.button1Text).toBe('Of course!');
-    expect(card?.button2Text).toBe('Maybe later');
-    expect(card?.allowReply).toBe(true);
-  });
-});
+        expect(card?.button1Text).toBe('Of course!');
+        expect(card?.button2Text).toBe('Maybe later');
+        expect(card?.allowReply).toBe(true);
+      });
+    
+      it('should create a card with hideButtons enabled', async () => {
+        const username = `user_hide_buttons_${Date.now()}`;
+        const cardData = {
+          sender: 'Romeo',
+          senderUsername: username,
+          receiver: 'Juliet',
+          message: 'Will you be my Valentine?',
+          theme: 'romantic' as const,
+          hideButtons: true,
+          allowReply: true
+        };
+    
+        const id = await createCard(cardData);
+        const card = await getCard(id);
+    
+        expect(card).not.toBeNull();
+            expect(card?.hideButtons).toBe(true);
+            expect(card?.allowReply).toBe(true);
+          });
+        
+          it('should handle explicit undefined values if passed (reproducing form state behavior)', async () => {
+            const username = `user_undefined_fields_${Date.now()}`;
+            const cardData = {
+              sender: 'Romeo',
+              senderUsername: username,
+              receiver: 'Juliet',
+              message: 'Will you be my Valentine?',
+              theme: 'romantic' as const,
+              useCustomButtons: false,
+              button1Text: undefined,
+              button2Text: undefined,
+              hideButtons: true,
+              allowReply: true
+            };
+        
+            // If this fails, we found the bug!
+            const id = await createCard(cardData);
+            expect(id).toBeDefined();
+          });
+        });
+        
