@@ -21,10 +21,10 @@ This plan outlines the steps to introduce a new `replied` status for cards witho
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Receiver Logic & TDD' (Protocol in workflow.md)
 
 ## Phase 3: UI Updates (Receiver & Sender)
-- [ ] Task: Update `CardDisplay.svelte` for `replied` status
+- [x] Task: Update `CardDisplay.svelte` for `replied` status <!-- cd44641 -->
     - [ ] Ensure the component handles the `replied` state similarly to `accepted` or `declined` if necessary, or simply relies on `replySuccess` for the message.
     - [ ] Verify that the "replied" success message is shown and inputs are disabled when status is `replied`.
-- [ ] Task: Update `StatusTracker.svelte` for Sender Dashboard
+- [x] Task: Update `StatusTracker.svelte` for Sender Dashboard <!-- bfd02c8 -->
     - [ ] Add `replied: "text-purple-500 font-semibold"` (or similar romantic color) to `statusColors`.
     - [ ] Ensure "Replied" badge or text appears correctly in the card list.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: UI Updates' (Protocol in workflow.md)
