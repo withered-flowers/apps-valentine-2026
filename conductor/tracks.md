@@ -11,5 +11,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Fix bug in the apps: preview pages font size, Custom Choice Buttons logic, Send Love disclaimer modal, and auto-show QR preview.**
+- [x] **Track: Fix bug in the apps: preview pages font size, Custom Choice Buttons logic, Send Love disclaimer modal, and auto-show QR preview.**
 *Link: [./tracks/ui_enhancements_20260209/](./tracks/ui_enhancements_20260209/)*
