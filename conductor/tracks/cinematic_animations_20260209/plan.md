@@ -1,12 +1,12 @@
 # Implementation Plan: Cinematic UI & Animation Enhancements
 
-## Phase 1: Animation Utilities & Accessibility
+## Phase 1: Animation Utilities & Accessibility [checkpoint: 8a03cca]
 - [x] Task: Create animation utility for "Reduced Motion" and randomization. 21743a8
     - [x] Write tests for a `prefersReducedMotion` store or utility. 21743a8
     - [x] Implement `src/lib/ui.svelte.ts` (or update) to include a helper that checks system motion preferences. 21743a8
     - [x] Write tests for the "Sending Animation" randomizer logic. 21743a8
     - [x] Implement the randomizer function to return one of the three defined animation types. 21743a8
-- [~] Task: Conductor - User Manual Verification 'Phase 1: Animation Utilities & Accessibility' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Animation Utilities & Accessibility' (Protocol in workflow.md) 8a03cca
 
 ## Phase 2: Reactive Card Preview (Svelte Motion)
 - [ ] Task: Implement layout morphing in `CardDisplay.svelte`.
