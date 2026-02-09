@@ -23,6 +23,13 @@
     }
   });
 
+  // Enforce exclusion logic: Custom Choice Buttons vs Hide Choice Buttons
+  $effect(() => {
+    if (form.useCustomButtons) {
+      form.hideButtons = false;
+    }
+  });
+
   // Tab state for mobile
   let activeTab = $state<"edit" | "preview">("edit");
 
@@ -139,25 +146,26 @@
     </div>
 
     <div class="border-t border-vivid-pink/10 pt-4 mt-2 flex flex-col gap-4">
-      <div class="flex items-center justify-between">
+      <div
+        class="flex items-center justify-between transition-opacity {form.useCustomButtons
+          ? 'opacity-40 pointer-events-none'
+          : 'opacity-100'}"
+      >
         <label
           for="hideButtons"
           class="text-sm font-bold text-deep-raspberry cursor-pointer"
-          >Hide Choice Buttons</label
+          >Hide Choice Button</label
         >
         <input
           type="checkbox"
           id="hideButtons"
           bind:checked={form.hideButtons}
+          disabled={form.useCustomButtons}
           class="w-5 h-5 accent-vivid-pink cursor-pointer"
         />
       </div>
 
-      <div
-        class="flex items-center justify-between transition-opacity {form.hideButtons
-          ? 'opacity-40 pointer-events-none'
-          : 'opacity-100'}"
-      >
+      <div class="flex items-center justify-between">
         <label
           for="useCustomButtons"
           class="text-sm font-bold text-deep-raspberry cursor-pointer"
@@ -167,12 +175,11 @@
           type="checkbox"
           id="useCustomButtons"
           bind:checked={form.useCustomButtons}
-          disabled={form.hideButtons}
           class="w-5 h-5 accent-vivid-pink cursor-pointer"
         />
       </div>
 
-      {#if form.useCustomButtons && !form.hideButtons}
+      {#if form.useCustomButtons}
         <div class="grid grid-cols-2 gap-2 animate-fade-in">
           <div class="flex flex-col gap-1">
             <label
