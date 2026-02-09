@@ -1,11 +1,11 @@
 # Implementation Plan: UI Enhancements and Flow Fixes
 
-## Phase 1: Dashboard Preview Readability
+## Phase 1: Dashboard Preview Readability [checkpoint: b881d49]
 - [x] Task: Increase font size in `CardDisplay.svelte` 3f6e30e
     - [ ] Write failing test in `src/styles/theme.test.ts` (or create a new component test) to verify text elements in `CardDisplay` have larger font sizes/classes.
     - [ ] Update `src/components/CardDisplay.svelte` to use larger Tailwind font size classes (e.g., `text-lg`, `text-xl`) for headers, labels, and buttons.
     - [ ] Verify the UI looks consistent and balanced on mobile.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Dashboard Preview Readability' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Dashboard Preview Readability' (Protocol in workflow.md) b881d49
 
 ## Phase 2: Card Creation Form Logic
 - [ ] Task: Implement Custom Choice vs. Hide Button exclusion logic
