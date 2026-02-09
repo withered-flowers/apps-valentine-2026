@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { Card } from "../lib/cards";
-  import { slide, fade, scale } from 'svelte/transition';
-  import { cubicOut } from 'svelte/easing';
+  import { AnimateSharedLayout, motion } from "svelte-motion";
 
   interface Props {
     card: Card;
@@ -59,113 +58,138 @@
   };
 </script>
 
-<div
-  transition:scale={{ duration: 300, easing: cubicOut, start: 0.95 }}
-  class="glass max-w-lg w-full p-8 rounded-3xl text-center flex flex-col gap-6 relative z-10 transition-all duration-500 ease-out {themeClasses[
-    card.theme
-  ]}"
->
-  {#if card.status === "accepted"}
-    <div in:scale>
+<AnimateSharedLayout>
+  <motion.div
+    layout
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+    class="glass max-w-lg w-full p-8 rounded-3xl text-center flex flex-col gap-6 relative z-10 {themeClasses[
+      card.theme
+    ]}"
+  >
+    <motion.div layout>
+      {#if card.status === "accepted"}
         <h1 class="text-4xl font-bold text-deep-raspberry animate-heartbeat">
-        YAY! ❤️
+          YAY! ❤️
         </h1>
         <p class="text-xl text-deep-raspberry">I'm so happy, {card.sender}!</p>
         <div class="text-6xl mt-4">🥰🌹✨</div>
-    </div>
-  {:else if card.status === "declined"}
-    <div in:scale>
+      {:else if card.status === "declined"}
         <h1 class="text-3xl font-bold text-gray-700">Oh no... 💔</h1>
         <p class="text-lg text-gray-600">Maybe next time, {card.sender}?</p>
         <div class="text-6xl mt-4">😢🥀</div>
-    </div>
-  {:else if card.status === "replied"}
-    <div in:scale>
+      {:else if card.status === "replied"}
         <h1 class="text-4xl font-bold text-vivid-pink animate-pulse">
-        Replied! 💌
+          Replied! 💌
         </h1>
-        <p class="text-xl text-deep-raspberry">Message sent to {card.sender}!</p>
-        <div class="text-6xl mt-4">📨✨</div>
-    </div>
-  {:else}
-    <div class="flex flex-col gap-2">
-      <span
-        class="text-vivid-pink font-medium tracking-widest uppercase text-lg"
-        >To: {card.receiver}</span
-      >
-      <h1 class="text-5xl font-bold text-deep-raspberry">
-        Will you be my Valentine?
-      </h1>
-    </div>
-
-    <p class="text-2xl text-deep-raspberry/80 italic leading-relaxed py-4 transition-all duration-300">
-      "{card.message}"
-    </p>
-
-    {#if !card.hideButtons}
-      <div transition:slide={{ duration: 300 }} class="flex justify-center gap-6 mt-4 items-center h-20">
-        <button
-          onclick={handleYesClick}
-          disabled={previewMode}
-          style="transform: scale({yesButtonScale})"
-          class="bg-vivid-pink text-white font-bold py-3 px-8 rounded-full skeuo-button z-20 disabled:opacity-50 disabled:cursor-not-allowed transition-transform duration-200"
-        >
-          {card.useCustomButtons ? card.button1Text : "Yes!"}
-        </button>
-
-        <button
-          onmouseenter={onNoHover}
-          onclick={handleNoClick}
-          disabled={previewMode}
-          style="transform: translate({noButtonPos.x}px, {noButtonPos.y}px)"
-          class="bg-gray-200 text-gray-700 font-bold py-3 px-8 rounded-full shadow-md hover:bg-gray-300 transition-all z-10 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none duration-200"
-        >
-          {card.useCustomButtons ? card.button2Text : "No"}
-        </button>
-      </div>
-
-      {#if validationError}
-        <p transition:slide={{ duration: 200 }} class="text-xs text-vivid-pink font-bold animate-shake">
-          {validationError}
+        <p class="text-xl text-deep-raspberry">
+          Message sent to {card.sender}!
         </p>
-      {/if}
-    {/if}
+        <div class="text-6xl mt-4">📨✨</div>
+      {:else}
+        <motion.div layout class="flex flex-col gap-2">
+          <span
+            class="text-vivid-pink font-medium tracking-widest uppercase text-lg"
+            >To: {card.receiver}</span
+          >
+          <h1 class="text-5xl font-bold text-deep-raspberry">
+            Will you be my Valentine?
+          </h1>
+        </motion.div>
 
-    {#if card.allowReply}
-      <div transition:slide={{ duration: 400, easing: cubicOut }} class="mt-8 pt-6 border-t border-vivid-pink/10 flex flex-col gap-3">
-        <label
-          for="reply"
-          class="text-xs font-bold text-deep-raspberry/60 uppercase tracking-widest"
+        <motion.p
+          layout
+          class="text-2xl text-deep-raspberry/80 italic leading-relaxed py-4"
         >
-          Leave a message back
-        </label>
-        {#if replySuccess || card.status === "replied"}
-          <p in:fade class="text-sm text-green-600 font-medium animate-fade-in">
-            💖 Message sent to {card.sender}!
-          </p>
-        {:else}
-          <div class="flex flex-col gap-2" in:slide>
-            <textarea
-              id="reply"
-              bind:value={replyText}
-              disabled={previewMode}
-              placeholder={previewMode
-                ? "Receiver will type here..."
-                : "Type your reply here..."}
-              class="p-3 rounded-xl bg-white/50 border border-vivid-pink/20 focus:border-vivid-pink outline-none text-sm min-h-[80px] transition-all"
-            ></textarea>
-            <button
-              onclick={onReplySubmit}
-              disabled={previewMode || replySubmitting || !replyText.trim()}
-              class="bg-vivid-pink/10 text-vivid-pink font-bold py-2 rounded-xl hover:bg-vivid-pink/20 transition-colors disabled:opacity-30 text-sm"
-            >
-              {replySubmitting ? "Sending..." : "Send Reply"}
-            </button>
-          </div>
-        {/if}
-      </div>
-    {/if}
+          "{card.message}"
+        </motion.p>
 
-    <span class="text-sm text-deep-raspberry/40 mt-4">From: {card.sender}</span>
-  {/if}
-</div>
+        {#if !card.hideButtons}
+          <motion.div
+            layout
+            class="flex justify-center gap-6 mt-4 items-center h-20"
+          >
+            <button
+              onclick={handleYesClick}
+              disabled={previewMode}
+              style="transform: scale({yesButtonScale})"
+              class="bg-vivid-pink text-white font-bold py-3 px-8 rounded-full skeuo-button z-20 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {card.useCustomButtons ? card.button1Text : "Yes!"}
+            </button>
+
+            <button
+              onmouseenter={onNoHover}
+              onclick={handleNoClick}
+              disabled={previewMode}
+              style="transform: translate({noButtonPos.x}px, {noButtonPos.y}px)"
+              class="bg-gray-200 text-gray-700 font-bold py-3 px-8 rounded-full shadow-md hover:bg-gray-300 transition-all z-10 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            >
+              {card.useCustomButtons ? card.button2Text : "No"}
+            </button>
+          </motion.div>
+
+          {#if validationError}
+            <motion.p
+              layout
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              class="text-xs text-vivid-pink font-bold animate-shake"
+            >
+              {validationError}
+            </motion.p>
+          {/if}
+        {/if}
+
+        {#if card.allowReply}
+          <motion.div
+            layout
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            class="mt-8 pt-6 border-t border-vivid-pink/10 flex flex-col gap-3"
+          >
+            <label
+              for="reply"
+              class="text-xs font-bold text-deep-raspberry/60 uppercase tracking-widest"
+            >
+              Leave a message back
+            </label>
+            {#if replySuccess || card.status === "replied"}
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                class="text-sm text-green-600 font-medium animate-fade-in"
+              >
+                💖 Message sent to {card.sender}!
+              </motion.p>
+            {:else}
+              <div class="flex flex-col gap-2">
+                <textarea
+                  id="reply"
+                  bind:value={replyText}
+                  disabled={previewMode}
+                  placeholder={previewMode
+                    ? "Receiver will type here..."
+                    : "Type your reply here..."}
+                  class="p-3 rounded-xl bg-white/50 border border-vivid-pink/20 focus:border-vivid-pink outline-none text-sm min-h-[80px] transition-all"
+                ></textarea>
+                <button
+                  onclick={onReplySubmit}
+                  disabled={previewMode || replySubmitting || !replyText.trim()}
+                  class="bg-vivid-pink/10 text-vivid-pink font-bold py-2 rounded-xl hover:bg-vivid-pink/20 transition-colors disabled:opacity-30 text-sm"
+                >
+                  {replySubmitting ? "Sending..." : "Send Reply"}
+                </button>
+              </div>
+            {/if}
+          </motion.div>
+        {/if}
+
+        <motion.span layout class="text-sm text-deep-raspberry/40 mt-4"
+          >From: {card.sender}</motion.span
+        >
+      {/if}
+    </motion.div>
+  </motion.div>
+</AnimateSharedLayout>
