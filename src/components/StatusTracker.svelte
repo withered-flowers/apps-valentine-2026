@@ -1,38 +1,38 @@
 <script lang="ts">
-  import type { AuthState } from "../lib/auth.svelte";
-  import { DashboardState } from "../lib/dashboard.svelte";
-  import { uiState } from "../lib/ui.svelte";
+import type { AuthState } from "../lib/auth.svelte";
+import { DashboardState } from "../lib/dashboard.svelte";
+import { uiState } from "../lib/ui.svelte";
 
-  interface Props {
-    authState: AuthState;
-  }
+interface Props {
+	authState: AuthState;
+}
 
-  let { authState }: Props = $props();
+let { authState }: Props = $props();
 
-  // Reactive dashboard state based on the current user
-  let dashboard = $derived(
-    authState.user ? new DashboardState(authState.user.username) : null,
-  );
+// Reactive dashboard state based on the current user
+let dashboard = $derived(
+	authState.user ? new DashboardState(authState.user.username) : null,
+);
 
-  const statusColors = {
-    sent: "text-gray-500",
-    viewed: "text-blue-500",
-    accepted: "text-green-500 font-bold",
-    declined: "text-red-500",
-    replied: "text-purple-600 font-bold",
-  };
+const statusColors = {
+	sent: "text-gray-500",
+	viewed: "text-blue-500",
+	accepted: "text-green-500 font-bold",
+	declined: "text-red-500",
+	replied: "text-purple-600 font-bold",
+};
 
-  // Reply Toggle State
-  let expandedReplies = $state<Set<string>>(new Set());
+// Reply Toggle State
+let expandedReplies = $state<Set<string>>(new Set());
 
-  function toggleReply(cardId: string) {
-    if (expandedReplies.has(cardId)) {
-      expandedReplies.delete(cardId);
-    } else {
-      expandedReplies.add(cardId);
-    }
-    expandedReplies = new Set(expandedReplies); // Trigger reactivity
-  }
+function toggleReply(cardId: string) {
+	if (expandedReplies.has(cardId)) {
+		expandedReplies.delete(cardId);
+	} else {
+		expandedReplies.add(cardId);
+	}
+	expandedReplies = new Set(expandedReplies); // Trigger reactivity
+}
 </script>
 
 <div class="glass p-8 rounded-2xl flex flex-col gap-4 max-w-md w-full mx-auto">

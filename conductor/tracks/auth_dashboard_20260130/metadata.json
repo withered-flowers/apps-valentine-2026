@@ -1,8 +1,8 @@
 {
-  "track_id": "auth_dashboard_20260130",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-01-30T10:55:00Z",
-  "updated_at": "2026-01-30T10:55:00Z",
-  "description": "Implement a new feature: before user can use the feature to send the message from sender to receiver, user must log in first. BUT for the user to do login, user only need to provide the username (no password needed). When the user want to signup, they need to provide the username and the sender name. For each user, they will have their own windows to track the message (only can see and track sender's own message)."
+	"track_id": "auth_dashboard_20260130",
+	"type": "feature",
+	"status": "new",
+	"created_at": "2026-01-30T10:55:00Z",
+	"updated_at": "2026-01-30T10:55:00Z",
+	"description": "Implement a new feature: before user can use the feature to send the message from sender to receiver, user must log in first. BUT for the user to do login, user only need to provide the username (no password needed). When the user want to signup, they need to provide the username and the sender name. For each user, they will have their own windows to track the message (only can see and track sender's own message)."
 }

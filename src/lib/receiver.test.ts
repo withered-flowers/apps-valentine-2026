@@ -1,14 +1,14 @@
-import { describe, it, expect, mock, beforeAll } from 'bun:test';
+import { beforeAll, describe, expect, it, mock } from "bun:test";
 
 // Mock Svelte 5 runes globally
 beforeAll(() => {
-  (globalThis as any).$state = (v: any) => v;
+	(globalThis as any).$state = (v: any) => v;
 });
 
 // Mock the cards service
 const mockUpdateStatus = mock(async () => {});
-mock.module('./cards', () => ({
-  updateCardStatus: mockUpdateStatus
+mock.module("./cards", () => ({
+	updateCardStatus: mockUpdateStatus,
 }));
 
 // Mock firebase/firestore
@@ -17,140 +17,103 @@ const mockUpdateDoc = mock(async () => {});
 
 const mockDoc = mock(() => ({}));
 
-mock.module('firebase/firestore', () => ({
+mock.module("firebase/firestore", () => ({
+	updateDoc: mockUpdateDoc,
 
-  updateDoc: mockUpdateDoc,
+	doc: mockDoc,
 
-  doc: mockDoc,
+	serverTimestamp: () => ({}),
 
-  serverTimestamp: () => ({}),
+	collection: () => ({}),
 
-  collection: () => ({}),
+	getFirestore: () => ({}),
 
-  getFirestore: () => ({}),
+	onSnapshot: () => () => {},
 
-  onSnapshot: () => () => {},
+	getDoc: async () => ({ exists: () => false }),
 
-  getDoc: async () => ({ exists: () => false }),
+	addDoc: async () => ({ id: "new-id" }),
 
-  addDoc: async () => ({ id: 'new-id' }),
+	query: () => ({}),
 
-  query: () => ({}),
+	where: () => ({}),
 
-  where: () => ({}),
-
-  getDocs: async () => ({ empty: true, docs: [] })
-
+	getDocs: async () => ({ empty: true, docs: [] }),
 }));
 
+import { Timestamp } from "firebase/firestore";
 
-
-import { ReceiverViewLogic } from './receiver.svelte';
-
-import type { Card } from './cards';
-
-import { Timestamp } from 'firebase/firestore';
-
-
+import type { Card } from "./cards";
+import { ReceiverViewLogic } from "./receiver.svelte";
 
 const fakeCard: Card = {
+	sender: "Romeo",
 
-  sender: 'Romeo',
+	senderUsername: "romeo",
 
-  senderUsername: 'romeo',
+	receiver: "Juliet",
 
-  receiver: 'Juliet',
+	message: "Love",
 
-  message: 'Love',
+	theme: "romantic",
 
-  theme: 'romantic',
+	status: "sent",
 
-  status: 'sent',
+	createdAt: {} as Timestamp,
 
-  createdAt: {} as Timestamp,
-
-  updatedAt: {} as Timestamp
-
+	updatedAt: {} as Timestamp,
 };
 
+describe("ReceiverViewLogic", () => {
+	it("should initialize with provided card", () => {
+		const logic = new ReceiverViewLogic("id-1", fakeCard);
 
+		expect(logic.card?.sender).toBe("Romeo");
+	});
 
-describe('ReceiverViewLogic', () => {
+	it("should move No button and grow Yes button on hover", () => {
+		const logic = new ReceiverViewLogic("id-1", fakeCard);
 
-  it('should initialize with provided card', () => {
+		const initialPos = { ...logic.noButtonPos };
 
-    const logic = new ReceiverViewLogic('id-1', fakeCard);
+		const initialScale = logic.yesButtonScale;
 
-    expect(logic.card?.sender).toBe('Romeo');
+		logic.handleNoHover();
 
-  });
+		expect(logic.noButtonPos).not.toEqual(initialPos);
 
+		expect(logic.yesButtonScale).toBeGreaterThan(initialScale);
+	});
 
+	it("should mark as viewed if status is sent", async () => {
+		const logic = new ReceiverViewLogic("id-1", fakeCard);
 
-  it('should move No button and grow Yes button on hover', () => {
+		await logic.markAsViewed();
 
-    const logic = new ReceiverViewLogic('id-1', fakeCard);
+		expect(mockUpdateStatus).toHaveBeenCalledWith("id-1", "viewed");
+	});
 
-    const initialPos = { ...logic.noButtonPos };
+	it("should call onAccept callback when card is accepted", async () => {
+		const onAccept = mock(() => {});
 
-    const initialScale = logic.yesButtonScale;
+		const logic = new ReceiverViewLogic("id-1", fakeCard, onAccept);
 
-    
+		await logic.accept();
 
-    logic.handleNoHover();
+		expect(onAccept).toHaveBeenCalled();
+	});
 
-    
+	it("should submit reply and update status", async () => {
+		const logic = new ReceiverViewLogic("id-1", fakeCard);
 
-    expect(logic.noButtonPos).not.toEqual(initialPos);
+		logic.replyText = "I love you too!";
 
-    expect(logic.yesButtonScale).toBeGreaterThan(initialScale);
+		await logic.submitReply();
 
-  });
+		expect(mockUpdateDoc).toHaveBeenCalled();
 
+		expect(logic.replySuccess).toBe(true);
 
-
-  it('should mark as viewed if status is sent', async () => {
-
-    const logic = new ReceiverViewLogic('id-1', fakeCard);
-
-    await logic.markAsViewed();
-
-    expect(mockUpdateStatus).toHaveBeenCalledWith('id-1', 'viewed');
-
-  });
-
-
-
-  it('should call onAccept callback when card is accepted', async () => {
-
-    const onAccept = mock(() => {});
-
-    const logic = new ReceiverViewLogic('id-1', fakeCard, onAccept);
-
-    await logic.accept();
-
-    expect(onAccept).toHaveBeenCalled();
-
-  });
-
-
-
-  it('should submit reply and update status', async () => {
-
-    const logic = new ReceiverViewLogic('id-1', fakeCard);
-
-    logic.replyText = 'I love you too!';
-
-    await logic.submitReply();
-
-    
-
-    expect(mockUpdateDoc).toHaveBeenCalled();
-
-    expect(logic.replySuccess).toBe(true);
-
-    expect(logic.replyText).toBe('');
-
-  });
-
+		expect(logic.replyText).toBe("");
+	});
 });

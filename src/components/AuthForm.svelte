@@ -1,28 +1,28 @@
 <script lang="ts">
-  import type { AuthState } from "../lib/auth.svelte";
+import type { AuthState } from "../lib/auth.svelte";
 
-  interface Props {
-    authState: AuthState;
-  }
+interface Props {
+	authState: AuthState;
+}
 
-  let { authState }: Props = $props();
+let { authState }: Props = $props();
 
-  let username = $state("");
-  let senderName = $state("");
+let username = $state("");
+let senderName = $state("");
 
-  async function handleLogin(e: SubmitEvent) {
-    e.preventDefault();
-    if (username.trim()) {
-      await authState.login(username.trim().toLowerCase());
-    }
-  }
+async function handleLogin(e: SubmitEvent) {
+	e.preventDefault();
+	if (username.trim()) {
+		await authState.login(username.trim().toLowerCase());
+	}
+}
 
-  async function handleSignup(e: SubmitEvent) {
-    e.preventDefault();
-    if (senderName.trim()) {
-      await authState.signup(senderName.trim());
-    }
-  }
+async function handleSignup(e: SubmitEvent) {
+	e.preventDefault();
+	if (senderName.trim()) {
+		await authState.signup(senderName.trim());
+	}
+}
 </script>
 
 <div

@@ -1,21 +1,21 @@
 ---
-import '../../styles/global.css';
-import { getCard } from '../../lib/cards';
-import ReceiverView from '../../components/ReceiverView.svelte';
-import FloatingHearts from '../../components/FloatingHearts.svelte';
+import "../../styles/global.css";
+import FloatingHearts from "../../components/FloatingHearts.svelte";
+import ReceiverView from "../../components/ReceiverView.svelte";
+import { getCard } from "../../lib/cards";
 
 export const prerender = false;
 
 const { id } = Astro.params;
 
 if (!id) {
-    return Astro.redirect('/404');
+	return Astro.redirect("/404");
 }
 
 const card = await getCard(id);
 
 if (!card) {
-    return Astro.redirect('/404');
+	return Astro.redirect("/404");
 }
 ---
 

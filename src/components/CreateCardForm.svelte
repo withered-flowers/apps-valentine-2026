@@ -1,83 +1,83 @@
 <script lang="ts">
-  import { Timestamp } from "firebase/firestore";
-  import type { AuthState } from "../lib/auth.svelte";
-  import { CreateCardFormState } from "../lib/create-card.svelte";
-  import { uiState } from "../lib/ui.svelte";
-  import CardDisplay from "./CardDisplay.svelte";
-  import ConfirmModal from "./ConfirmModal.svelte";
+import { Timestamp } from "firebase/firestore";
+import type { AuthState } from "../lib/auth.svelte";
+import { CreateCardFormState } from "../lib/create-card.svelte";
+import { uiState } from "../lib/ui.svelte";
+import CardDisplay from "./CardDisplay.svelte";
+import ConfirmModal from "./ConfirmModal.svelte";
 
-  interface Props {
-    authState: AuthState;
-  }
+interface Props {
+	authState: AuthState;
+}
 
-  let { authState }: Props = $props();
+let { authState }: Props = $props();
 
-  // Initialize with empty defaults to avoid capturing reactive props in non-reactive constructor
-  const form = new CreateCardFormState();
+// Initialize with empty defaults to avoid capturing reactive props in non-reactive constructor
+const form = new CreateCardFormState();
 
-  // Reactively sync user data to the form state
-  // This ensures that if the user info updates, the form reflects it,
-  // without resetting the entire form state (message, receiver, etc.)
-  $effect(() => {
-    if (authState.user) {
-      form.sender = authState.user.senderName;
-      form.senderUsername = authState.user.username;
-    }
-  });
+// Reactively sync user data to the form state
+// This ensures that if the user info updates, the form reflects it,
+// without resetting the entire form state (message, receiver, etc.)
+$effect(() => {
+	if (authState.user) {
+		form.sender = authState.user.senderName;
+		form.senderUsername = authState.user.username;
+	}
+});
 
-  // Automatically open Share Modal on success
-  $effect(() => {
-    if (form.success) {
-      uiState.openShareModal(form.success);
-    }
-  });
+// Automatically open Share Modal on success
+$effect(() => {
+	if (form.success) {
+		uiState.openShareModal(form.success);
+	}
+});
 
-  // Enforce mutual exclusivity: Custom Choice Buttons vs Hide Choice Buttons
-  $effect(() => {
-    if (form.useCustomButtons) {
-      form.hideButtons = false;
-    }
-  });
+// Enforce mutual exclusivity: Custom Choice Buttons vs Hide Choice Buttons
+$effect(() => {
+	if (form.useCustomButtons) {
+		form.hideButtons = false;
+	}
+});
 
-  $effect(() => {
-    if (form.hideButtons) {
-      form.useCustomButtons = false;
-    }
-  });
+$effect(() => {
+	if (form.hideButtons) {
+		form.useCustomButtons = false;
+	}
+});
 
-  // Tab state for mobile
-  let activeTab = $state<"edit" | "preview">("edit");
-  let showConfirmModal = $state(false);
+// Tab state for mobile
+let activeTab = $state<"edit" | "preview">("edit");
+let showConfirmModal = $state(false);
 
-  function handleSubmitRequest(e?: Event) {
-    if (e) e.preventDefault();
-    if (!form.isValid) {
-      form.error = "Please fill in all fields.";
-      return;
-    }
-    showConfirmModal = true;
-  }
+function handleSubmitRequest(e?: Event) {
+	if (e) e.preventDefault();
+	if (!form.isValid) {
+		form.error = "Please fill in all fields.";
+		return;
+	}
+	showConfirmModal = true;
+}
 
-  async function handleConfirmSubmit() {
-    showConfirmModal = false;
-    await form.submit();
-  }
+async function handleConfirmSubmit() {
+	showConfirmModal = false;
+	await form.submit();
+}
 
-  let previewCard = $derived({
-    sender: form.sender,
-    senderUsername: form.senderUsername,
-    receiver: form.receiver,
-    message: form.message,
-    theme: form.theme,
-    status: "sent" as const,
-    useCustomButtons: form.useCustomButtons,
-    button1Text: form.button1Text,
-    button2Text: form.button2Text,
-    hideButtons: form.hideButtons,
-    allowReply: form.allowReply,
-    createdAt: Timestamp.now(),
-    updatedAt: Timestamp.now(),
-  });
+let previewCard = $derived({
+	sender: form.sender,
+	senderUsername: form.senderUsername,
+	receiver: form.receiver,
+	message: form.message,
+	theme: form.theme,
+	status: "sent" as const,
+	useCustomButtons: form.useCustomButtons,
+	button1Text: form.button1Text,
+	button2Text: form.button2Text,
+	hideButtons: form.hideButtons,
+	allowReply: form.allowReply,
+	createdAt: Timestamp.now(),
+	updatedAt: Timestamp.now(),
+});
 </script>
 
 <div

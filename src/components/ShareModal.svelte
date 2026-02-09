@@ -1,41 +1,46 @@
 <script lang="ts">
-  import QRCode from "qrcode";
+import QRCode from "qrcode";
 
-  interface Props {
-    url: string;
-    isOpen: boolean;
-    onClose: () => void;
-  }
+interface Props {
+	url: string;
+	isOpen: boolean;
+	onClose: () => void;
+}
 
-  let { url, isOpen, onClose }: Props = $props();
+let { url, isOpen, onClose }: Props = $props();
 
-  let canvas = $state<HTMLCanvasElement | null>(null);
-  let copySuccess = $state(false);
+let canvas = $state<HTMLCanvasElement | null>(null);
+let copySuccess = $state(false);
 
-  $effect(() => {
-    if (isOpen && canvas && url) {
-      QRCode.toCanvas(canvas, url, {
-        width: 200,
-        margin: 2,
-        color: {
-          dark: "#000000", // Black for best scannability
-          light: "#FFFFFF", // Pure white for best contrast
-        },
-      }, (error) => {
-        if (error) console.error("QR Code Error:", error);
-      });
-    }
-  });
+$effect(() => {
+	if (isOpen && canvas && url) {
+		QRCode.toCanvas(
+			canvas,
+			url,
+			{
+				width: 200,
+				margin: 2,
+				color: {
+					dark: "#000000", // Black for best scannability
+					light: "#FFFFFF", // Pure white for best contrast
+				},
+			},
+			(error) => {
+				if (error) console.error("QR Code Error:", error);
+			},
+		);
+	}
+});
 
-  async function copyToClipboard() {
-    try {
-      await navigator.clipboard.writeText(url);
-      copySuccess = true;
-      setTimeout(() => (copySuccess = false), 2000);
-    } catch (err) {
-      console.error("Failed to copy:", err);
-    }
-  }
+async function copyToClipboard() {
+	try {
+		await navigator.clipboard.writeText(url);
+		copySuccess = true;
+		setTimeout(() => (copySuccess = false), 2000);
+	} catch (err) {
+		console.error("Failed to copy:", err);
+	}
+}
 </script>
 
 {#if isOpen}

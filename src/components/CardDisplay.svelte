@@ -1,60 +1,60 @@
 <script lang="ts">
-    import type { Card } from "../lib/cards";
+import type { Card } from "../lib/cards";
 
-    interface Props {
-        card: Card;
-        previewMode?: boolean;
-        onYes?: () => void;
-        onNo?: () => void;
-        onNoHover?: () => void;
-        yesButtonScale?: number;
-        noButtonPos?: { x: number; y: number };
-        // Reply props
-        replyText?: string;
-        replySubmitting?: boolean;
-        replySuccess?: boolean;
-        onReplySubmit?: () => void;
-    }
+interface Props {
+	card: Card;
+	previewMode?: boolean;
+	onYes?: () => void;
+	onNo?: () => void;
+	onNoHover?: () => void;
+	yesButtonScale?: number;
+	noButtonPos?: { x: number; y: number };
+	// Reply props
+	replyText?: string;
+	replySubmitting?: boolean;
+	replySuccess?: boolean;
+	onReplySubmit?: () => void;
+}
 
-    let {
-        card,
-        previewMode = false,
-        onYes,
-        onNo,
-        onNoHover,
-        yesButtonScale = 1,
-        noButtonPos = { x: 0, y: 0 },
-        replyText = $bindable(""),
-        replySubmitting = false,
-        replySuccess = false,
-        onReplySubmit,
-    }: Props = $props();
+let {
+	card,
+	previewMode = false,
+	onYes,
+	onNo,
+	onNoHover,
+	yesButtonScale = 1,
+	noButtonPos = { x: 0, y: 0 },
+	replyText = $bindable(""),
+	replySubmitting = false,
+	replySuccess = false,
+	onReplySubmit,
+}: Props = $props();
 
-    let validationError = $state<string | null>(null);
+let validationError = $state<string | null>(null);
 
-    function handleYesClick() {
-        if (card.allowReply && !replySuccess) {
-            validationError = "Please send your reply first! ❤️";
-            return;
-        }
-        validationError = null;
-        onYes?.();
-    }
+function handleYesClick() {
+	if (card.allowReply && !replySuccess) {
+		validationError = "Please send your reply first! ❤️";
+		return;
+	}
+	validationError = null;
+	onYes?.();
+}
 
-    function handleNoClick() {
-        if (card.allowReply && !replySuccess) {
-            validationError = "Please send your reply first! ❤️";
-            return;
-        }
-        validationError = null;
-        onNo?.();
-    }
+function handleNoClick() {
+	if (card.allowReply && !replySuccess) {
+		validationError = "Please send your reply first! ❤️";
+		return;
+	}
+	validationError = null;
+	onNo?.();
+}
 
-    const themeClasses = {
-        romantic: "border-vivid-pink !bg-white/30 font-romantic",
-        playful: "border-blue-400 !bg-blue-50/50 font-playful",
-        elegant: "border-silver-grey !bg-purple-50/40 font-elegant",
-    };
+const themeClasses = {
+	romantic: "border-vivid-pink !bg-white/30 font-romantic",
+	playful: "border-blue-400 !bg-blue-50/50 font-playful",
+	elegant: "border-silver-grey !bg-purple-50/40 font-elegant",
+};
 </script>
 
 <div

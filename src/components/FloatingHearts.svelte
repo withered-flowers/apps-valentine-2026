@@ -1,19 +1,21 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+import { onMount } from "svelte";
 
-  let hearts = $state<{ id: number; left: number; size: number; duration: number; delay: number }[]>([]);
+let hearts = $state<
+	{ id: number; left: number; size: number; duration: number; delay: number }[]
+>([]);
 
-  onMount(() => {
-    const heartCount = 20;
-    const newHearts = Array.from({ length: heartCount }).map((_, i) => ({
-      id: i,
-      left: Math.random() * 100,
-      size: Math.random() * (30 - 10) + 10,
-      duration: Math.random() * (15 - 5) + 5,
-      delay: Math.random() * 5
-    }));
-    hearts = newHearts;
-  });
+onMount(() => {
+	const heartCount = 20;
+	const newHearts = Array.from({ length: heartCount }).map((_, i) => ({
+		id: i,
+		left: Math.random() * 100,
+		size: Math.random() * (30 - 10) + 10,
+		duration: Math.random() * (15 - 5) + 5,
+		delay: Math.random() * 5,
+	}));
+	hearts = newHearts;
+});
 </script>
 
 <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">

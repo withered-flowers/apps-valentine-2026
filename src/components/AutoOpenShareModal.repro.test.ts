@@ -1,4 +1,4 @@
-import { describe, it, expect, spyOn } from "bun:test";
+import { describe, expect, it, spyOn } from "bun:test";
 
 // Mock Svelte runes before anything else
 (globalThis as any).$state = (v: any) => v;
@@ -10,11 +10,11 @@ import { describe, it, expect, spyOn } from "bun:test";
 const { uiState } = require("../lib/ui.svelte");
 
 describe("Auto-Open Share Modal Flow", () => {
-    it("should open the share modal when openShareModal is called", () => {
-        const testId = "card-123";
-        uiState.openShareModal(testId);
-        
-        expect(uiState.isShareModalOpen).toBe(true);
-        expect(uiState.shareModalUrl).toBe(`http://localhost:3000/card/${testId}`);
-    });
+	it("should open the share modal when openShareModal is called", () => {
+		const testId = "card-123";
+		uiState.openShareModal(testId);
+
+		expect(uiState.isShareModalOpen).toBe(true);
+		expect(uiState.shareModalUrl).toBe(`http://localhost:3000/card/${testId}`);
+	});
 });

@@ -1,18 +1,18 @@
 <script lang="ts">
-  import { AuthState } from "../lib/auth.svelte";
-  import { DashboardState } from "../lib/dashboard.svelte";
-  import { uiState } from "../lib/ui.svelte";
-  import AuthForm from "./AuthForm.svelte";
-  import CreateCardForm from "./CreateCardForm.svelte";
-  import StatusTracker from "./StatusTracker.svelte";
-  import ShareModal from "./ShareModal.svelte";
+import { AuthState } from "../lib/auth.svelte";
+import { DashboardState } from "../lib/dashboard.svelte";
+import { uiState } from "../lib/ui.svelte";
+import AuthForm from "./AuthForm.svelte";
+import CreateCardForm from "./CreateCardForm.svelte";
+import ShareModal from "./ShareModal.svelte";
+import StatusTracker from "./StatusTracker.svelte";
 
-  const authState = new AuthState();
+const authState = new AuthState();
 
-  // Reactive dashboard state to check for existing cards
-  let dashboard = $derived(
-    authState.user ? new DashboardState(authState.user.username) : null,
-  );
+// Reactive dashboard state to check for existing cards
+let dashboard = $derived(
+	authState.user ? new DashboardState(authState.user.username) : null,
+);
 </script>
 
 <main class="max-w-4xl mx-auto min-h-screen flex flex-col justify-center py-12">

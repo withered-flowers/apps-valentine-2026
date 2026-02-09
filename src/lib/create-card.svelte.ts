@@ -1,167 +1,122 @@
-import { createCard } from './cards';
+import { createCard } from "./cards";
 
 export class CreateCardFormState {
+	sender = $state("");
 
-  sender = $state('');
+	senderUsername = $state("");
 
-  senderUsername = $state('');
+	receiver = $state("");
 
-  receiver = $state('');
+	message = $state("");
 
-  message = $state('');
+	theme = $state<"romantic" | "playful" | "elegant">("romantic");
 
-  theme = $state<'romantic' | 'playful' | 'elegant'>('romantic');
+	// New Features
 
+	useCustomButtons = $state(false);
 
+	button1Text = $state("Yes");
 
-  // New Features
+	button2Text = $state("No");
 
-    useCustomButtons = $state(false);
+	hideButtons = $state(false);
 
-    button1Text = $state('Yes');
+	allowReply = $state(false);
 
-    button2Text = $state('No');
+	submitting = $state(false);
 
-    hideButtons = $state(false);
+	error = $state<string | null>(null);
 
-    allowReply = $state(false);
+	success = $state<string | null>(null);
 
-  
+	constructor(sender: string = "", senderUsername: string = "") {
+		this.sender = sender;
 
-  
+		this.senderUsername = senderUsername;
+	}
 
-  submitting = $state(false);
+	get isValid() {
+		return (
+			this.sender.trim() !== "" &&
+			this.receiver.trim() !== "" &&
+			this.message.trim() !== "" &&
+			(!this.useCustomButtons ||
+				(this.button1Text.trim() !== "" && this.button2Text.trim() !== "")) &&
+			(!this.hideButtons || this.allowReply)
+		);
+	}
 
-  error = $state<string | null>(null);
+	async submit() {
+		if (!this.isValid) {
+			this.error = "Please fill in all fields.";
 
-  success = $state<string | null>(null);
+			return;
+		}
 
-  
+		this.submitting = true;
 
-  constructor(sender: string = '', senderUsername: string = '') {
+		this.error = null;
 
-    this.sender = sender;
+		this.success = null;
 
-    this.senderUsername = senderUsername;
+		try {
+			const id = await createCard({
+				sender: this.sender,
 
-  }
+				senderUsername: this.senderUsername,
 
+				receiver: this.receiver,
 
+				message: this.message,
 
-  get isValid() {
+				theme: this.theme,
 
-    return (
+				useCustomButtons: this.useCustomButtons,
 
-      this.sender.trim() !== '' &&
+				// Only include button text if custom buttons are used
 
-      this.receiver.trim() !== '' &&
+				...(this.useCustomButtons
+					? {
+							button1Text: this.button1Text,
 
-      this.message.trim() !== '' &&
+							button2Text: this.button2Text,
+						}
+					: {}),
 
-      (!this.useCustomButtons || (this.button1Text.trim() !== '' && this.button2Text.trim() !== '')) &&
+				hideButtons: this.hideButtons,
 
-      (!this.hideButtons || this.allowReply)
+				allowReply: this.allowReply,
+			});
 
-    );
+			this.success = id;
 
-  }
+			this.reset();
+		} catch (err: any) {
+			this.error = err.message || "Failed to create card. Please try again.";
 
+			console.error(err);
+		} finally {
+			this.submitting = false;
+		}
+	}
 
+	reset() {
+		this.receiver = "";
 
-  async submit() {
+		this.message = "";
 
-    if (!this.isValid) {
+		this.theme = "romantic";
 
-      this.error = 'Please fill in all fields.';
+		this.useCustomButtons = false;
 
-      return;
+		this.button1Text = "Yes";
 
-    }
+		this.button2Text = "No";
 
+		this.hideButtons = false;
 
+		this.allowReply = false;
 
-    this.submitting = true;
-
-    this.error = null;
-
-    this.success = null;
-
-
-
-    try {
-
-      const id = await createCard({
-
-        sender: this.sender,
-
-        senderUsername: this.senderUsername,
-
-        receiver: this.receiver,
-
-        message: this.message,
-
-        theme: this.theme,
-
-        useCustomButtons: this.useCustomButtons,
-
-        // Only include button text if custom buttons are used
-
-        ...(this.useCustomButtons ? {
-
-          button1Text: this.button1Text,
-
-          button2Text: this.button2Text,
-
-        } : {}),
-
-        hideButtons: this.hideButtons,
-
-        allowReply: this.allowReply
-
-      });
-
-      this.success = id;
-
-      this.reset();
-
-    } catch (err: any) {
-
-              this.error = err.message || 'Failed to create card. Please try again.';
-
-              console.error(err);
-
-            } finally {
-
-              this.submitting = false;
-
-            }
-
-          }
-
-        
-
-          reset() {
-
-            this.receiver = '';
-
-            this.message = '';
-
-            this.theme = 'romantic';
-
-            this.useCustomButtons = false;
-
-            this.button1Text = 'Yes';
-
-            this.button2Text = 'No';
-
-            this.hideButtons = false;
-
-            this.allowReply = false;
-
-            // Don't reset sender info as it might be from auth
-
-          }
-
-        }
-
-        
+		// Don't reset sender info as it might be from auth
+	}
+}

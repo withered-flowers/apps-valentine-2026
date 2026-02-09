@@ -1,23 +1,23 @@
 <script lang="ts">
-  interface Props {
-    isOpen: boolean;
-    title?: string;
-    message: string;
-    confirmLabel?: string;
-    cancelLabel?: string;
-    onConfirm: () => void;
-    onCancel: () => void;
-  }
+interface Props {
+	isOpen: boolean;
+	title?: string;
+	message: string;
+	confirmLabel?: string;
+	cancelLabel?: string;
+	onConfirm: () => void;
+	onCancel: () => void;
+}
 
-  let {
-    isOpen,
-    title = "Confirm",
-    message,
-    confirmLabel = "Confirm",
-    cancelLabel = "Cancel",
-    onConfirm,
-    onCancel,
-  }: Props = $props();
+let {
+	isOpen,
+	title = "Confirm",
+	message,
+	confirmLabel = "Confirm",
+	cancelLabel = "Cancel",
+	onConfirm,
+	onCancel,
+}: Props = $props();
 </script>
 
 {#if isOpen}

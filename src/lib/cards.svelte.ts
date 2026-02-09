@@ -1,22 +1,22 @@
-import { subscribeToCard, type Card } from './cards';
+import { type Card, subscribeToCard } from "./cards";
 
 export class CardState {
-  data = $state<Card | null>(null);
-  loading = $state(true);
-  error = $state<Error | null>(null);
+	data = $state<Card | null>(null);
+	loading = $state(true);
+	error = $state<Error | null>(null);
 
-  constructor(idOrGetter: string | (() => string)) {
-    $effect(() => {
-      const id = typeof idOrGetter === 'function' ? idOrGetter() : idOrGetter;
-      this.loading = true;
-      const unsubscribe = subscribeToCard(id, (card) => {
-        this.data = card;
-        this.loading = false;
-      });
+	constructor(idOrGetter: string | (() => string)) {
+		$effect(() => {
+			const id = typeof idOrGetter === "function" ? idOrGetter() : idOrGetter;
+			this.loading = true;
+			const unsubscribe = subscribeToCard(id, (card) => {
+				this.data = card;
+				this.loading = false;
+			});
 
-      return () => {
-        unsubscribe();
-      };
-    });
-  }
+			return () => {
+				unsubscribe();
+			};
+		});
+	}
 }
