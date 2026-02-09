@@ -2,6 +2,7 @@
   import { Timestamp } from "firebase/firestore";
   import type { AuthState } from "../lib/auth.svelte";
   import { CreateCardFormState } from "../lib/create-card.svelte";
+  import { uiState } from "../lib/ui.svelte";
   import CardDisplay from "./CardDisplay.svelte";
   import ConfirmModal from "./ConfirmModal.svelte";
 
@@ -21,6 +22,13 @@
     if (authState.user) {
       form.sender = authState.user.senderName;
       form.senderUsername = authState.user.username;
+    }
+  });
+
+  // Automatically open Share Modal on success
+  $effect(() => {
+    if (form.success) {
+      uiState.openShareModal(form.success);
     }
   });
 

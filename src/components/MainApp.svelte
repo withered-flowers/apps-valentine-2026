@@ -1,9 +1,11 @@
 <script lang="ts">
   import { AuthState } from "../lib/auth.svelte";
   import { DashboardState } from "../lib/dashboard.svelte";
+  import { uiState } from "../lib/ui.svelte";
   import AuthForm from "./AuthForm.svelte";
   import CreateCardForm from "./CreateCardForm.svelte";
   import StatusTracker from "./StatusTracker.svelte";
+  import ShareModal from "./ShareModal.svelte";
 
   const authState = new AuthState();
 
@@ -55,3 +57,9 @@
     {/if}
   </div>
 </main>
+
+<ShareModal
+  url={uiState.shareModalUrl}
+  isOpen={uiState.isShareModalOpen}
+  onClose={() => uiState.closeShareModal()}
+/>

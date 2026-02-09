@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { AuthState } from "../lib/auth.svelte";
   import { DashboardState } from "../lib/dashboard.svelte";
-  import ShareModal from "./ShareModal.svelte";
+  import { uiState } from "../lib/ui.svelte";
 
   interface Props {
     authState: AuthState;
@@ -20,15 +20,6 @@
     accepted: "text-green-500 font-bold",
     declined: "text-red-500",
   };
-
-  // Share Modal State
-  let shareModalUrl = $state("");
-  let isShareModalOpen = $state(false);
-
-  function openShareModal(cardId: string) {
-    shareModalUrl = `${window.location.origin}/card/${cardId}`;
-    isShareModalOpen = true;
-  }
 
   // Reply Toggle State
   let expandedReplies = $state<Set<string>>(new Set());
@@ -88,7 +79,7 @@
                   </button>
                 {/if}
                 <button
-                  onclick={() => openShareModal(card.id!)}
+                  onclick={() => uiState.openShareModal(card.id!)}
                   class="text-[10px] text-vivid-pink hover:underline mt-1"
                 >
                   Share
@@ -115,12 +106,6 @@
   {/if}
 </div>
 
-<ShareModal
-  url={shareModalUrl}
-  isOpen={isShareModalOpen}
-  onClose={() => (isShareModalOpen = false)}
-/>
-
 <style>
   @keyframes slide-down {
     from { opacity: 0; transform: translateY(-10px); }
@@ -130,9 +115,3 @@
     animation: slide-down 0.2s ease-out;
   }
 </style>
-
-<ShareModal
-  url={shareModalUrl}
-  isOpen={isShareModalOpen}
-  onClose={() => (isShareModalOpen = false)}
-/>
