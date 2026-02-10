@@ -6,5 +6,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Fix Auth Page Transitions & Add Valentine Glow**
-*Link: [./tracks/fix_auth_transitions_20260209/](./tracks/fix_auth_transitions_20260209/)*
+- [x] **Track: Fix Auth Page Transitions & Add Valentine Glow**
+*Link: [./archive/fix_auth_transitions_20260209/](./archive/fix_auth_transitions_20260209/)*

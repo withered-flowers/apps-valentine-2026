@@ -16,9 +16,9 @@
     - [x] Apply glow effect to the container during the transition state
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Implementation' (Protocol in workflow.md)
 
-## Phase 3: Verification & Polish
-- [~] Task: Verify Animations on Mobile
-    - [ ] Check for overflow issues
-    - [ ] Adjust transition duration/easing if needed for touch devices
-- [ ] Task: Run final regression tests
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Verification & Polish' (Protocol in workflow.md)
+## Phase 3: Verification & Polish [checkpoint: manual]
+- [x] Task: Verify Animations on Mobile
+    - [x] Check for overflow issues
+    - [x] Adjust transition duration/easing if needed for touch devices
+- [x] Task: Run final regression tests
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Verification & Polish' (Protocol in workflow.md)
