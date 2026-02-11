@@ -18,6 +18,10 @@ export class ReceiverViewLogic {
 		this.id = id;
 		if (initialCard) {
 			this.card = initialCard;
+			if (initialCard.replyText) {
+				this.replyText = initialCard.replyText;
+				this.replySuccess = true;
+			}
 		}
 		this.onAccept = onAccept;
 	}

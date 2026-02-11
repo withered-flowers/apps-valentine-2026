@@ -20,7 +20,10 @@
 
   // Unboxing State
   let isOpening = $state(false); // Envelope flap opens
-  let isOpen = $state(false); // CardDisplay shown
+  const answeredStatuses = ["accepted", "declined", "replied"];
+  let isOpen = $state(
+    answeredStatuses.includes(initialCard.status) || !!initialCard.replyText,
+  ); // CardDisplay shown
 
   function handleOpen() {
     if (isOpening) return;
@@ -78,6 +81,10 @@
   $effect(() => {
     logic.id = id;
     logic.card = initialCard;
+    if (initialCard.replyText) {
+      logic.replyText = initialCard.replyText;
+      logic.replySuccess = true;
+    }
   });
 
   // Mark as viewed when card/id changes
