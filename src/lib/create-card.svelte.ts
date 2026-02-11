@@ -15,7 +15,7 @@ export class CreateCardFormState {
 
 	useCustomButtons = $state(false);
 
-	button1Text = $state("Yes");
+	button1Text = $state("Yes!");
 
 	button2Text = $state("No");
 
@@ -109,7 +109,7 @@ export class CreateCardFormState {
 
 		this.useCustomButtons = false;
 
-		this.button1Text = "Yes";
+		this.button1Text = "Yes!";
 
 		this.button2Text = "No";
 

@@ -78,15 +78,17 @@
   }
 </script>
 
-<CardDisplay
-  {card}
-  onYes={handleYes}
-  onNo={handleNo}
-  onNoHover={() => logic.handleNoHover()}
-  yesButtonScale={logic.yesButtonScale}
-  noButtonPos={logic.noButtonPos}
-  bind:replyText={logic.replyText}
-  replySubmitting={logic.replySubmitting}
-  replySuccess={logic.replySuccess}
-  onReplySubmit={handleReplySubmit}
-/>
+<div class="flex flex-col items-center justify-center min-h-screen">
+  <CardDisplay
+    {card}
+    onYes={handleYes}
+    onNo={handleNo}
+    onNoHover={() => logic.handleNoHover()}
+    yesButtonScale={logic.yesButtonScale}
+    noButtonPos={logic.noButtonPos}
+    bind:replyText={logic.replyText}
+    replySubmitting={logic.replySubmitting}
+    replySuccess={logic.replySuccess}
+    onReplySubmit={handleReplySubmit}
+  />
+</div>
