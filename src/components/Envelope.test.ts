@@ -27,11 +27,12 @@ describe("Envelope Component", () => {
         expect(content).toContain("onclick");
     });
 
-    it("should manage heart seal position via Motion props to avoid jumping", () => {
+    it("should manage heart seal base position via static transform to avoid jumping", () => {
         const content = readFileSync(componentPath, "utf-8");
-        // Ensure we don't have a static transform on the g tag that conflicts with Motion
-        expect(content).not.toContain('<g use:sealMotion transform="translate');
-        // Ensure coordinates are in the Motion props
-        expect(content).toContain('x: 132, y: 115');
+        // Ensure we have a static transform for the base position
+        expect(content).toContain('<g use:sealMotion transform="translate(132, 115)">');
+        // Ensure Motion only handles relative y offsets
+        expect(content).toContain('y: 0');
+        expect(content).toContain('y: -20');
     });
 });
