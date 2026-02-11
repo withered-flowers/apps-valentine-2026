@@ -12,8 +12,14 @@ describe("ReceiverView Unboxing", () => {
     });
 
     it("should conditionally render Envelope or CardDisplay", () => {
-        // We look for logic that hides/shows based on isOpen
         expect(content).toContain("Envelope");
         expect(content).toContain("CardDisplay");
+    });
+    
+    it("should implement an opening sequence", () => {
+        // We expect some delay or sequencing logic
+        expect(content).toContain("setTimeout");
+        // Or specific animation states
+        expect(content).toContain("isOpening");
     });
 });

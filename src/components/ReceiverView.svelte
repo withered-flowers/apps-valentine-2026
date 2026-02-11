@@ -25,14 +25,14 @@
   function handleOpen() {
     if (isOpening) return;
     isOpening = true;
-    
+
     // Sequence:
     // 0ms: Flap opens
     // 400ms: Card starts sliding up (inside SVG)
     // 1400ms: Card slide done
     // 1500ms: Switch view
     setTimeout(() => {
-        isOpen = true;
+      isOpen = true;
     }, 1500);
   }
 
@@ -99,37 +99,53 @@
 </script>
 
 <div class="flex flex-col items-center justify-center min-h-screen">
-  <AnimatePresence let:item list={isOpen ? [{key: 'card'}] : [{key: 'envelope'}]} exitBeforeEnter>
+  <AnimatePresence
+    let:item
+    list={isOpen ? [{ key: "card" }] : [{ key: "envelope" }]}
+    exitBeforeEnter
+  >
     {#if !isOpen}
       <Motion
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)", transition: { duration: 0.5 } }}
+        exit={{
+          opacity: 0,
+          scale: 1.1,
+          filter: "blur(10px)",
+          transition: { duration: 0.5 },
+        }}
         let:motion
       >
-        <div use:motion class="absolute inset-0 flex items-center justify-center">
-            <Envelope onclick={handleOpen} open={isOpening} />
+        <div
+          use:motion
+          class="absolute inset-0 flex items-center justify-center"
+        >
+          <Envelope onclick={handleOpen} open={isOpening} theme={card.theme} />
         </div>
       </Motion>
     {:else}
       <Motion
         initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0, transition: { duration: 0.8, type: "spring", bounce: 0.4 } }}
+        animate={{
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.8, type: "spring", bounce: 0.4 },
+        }}
         let:motion
       >
         <div use:motion class="w-full flex justify-center">
-            <CardDisplay
-                {card}
-                onYes={handleYes}
-                onNo={handleNo}
-                onNoHover={() => logic.handleNoHover()}
-                yesButtonScale={logic.yesButtonScale}
-                noButtonPos={logic.noButtonPos}
-                bind:replyText={logic.replyText}
-                replySubmitting={logic.replySubmitting}
-                replySuccess={logic.replySuccess}
-                onReplySubmit={handleReplySubmit}
-            />
+          <CardDisplay
+            {card}
+            onYes={handleYes}
+            onNo={handleNo}
+            onNoHover={() => logic.handleNoHover()}
+            yesButtonScale={logic.yesButtonScale}
+            noButtonPos={logic.noButtonPos}
+            bind:replyText={logic.replyText}
+            replySubmitting={logic.replySubmitting}
+            replySuccess={logic.replySuccess}
+            onReplySubmit={handleReplySubmit}
+          />
         </div>
       </Motion>
     {/if}
