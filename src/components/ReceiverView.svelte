@@ -1,9 +1,11 @@
 <script lang="ts">
   import confetti from "canvas-confetti";
+  import { AnimatePresence, Motion } from "svelte-motion";
   import { type Card } from "../lib/cards";
   import { CardState } from "../lib/cards.svelte";
   import { ReceiverViewLogic } from "../lib/receiver.svelte";
   import CardDisplay from "./CardDisplay.svelte";
+  import Envelope from "./Envelope.svelte";
 
   interface Props {
     id: string;
@@ -15,6 +17,13 @@
   // Pass getter to ensure reactivity and avoid state_referenced_locally warning
   const cardState = new CardState(() => id);
   let card = $derived(cardState.data || initialCard);
+
+  // Unboxing State
+  let isOpen = $state(false);
+
+  function handleOpen() {
+    isOpen = true;
+  }
 
   // Initialize logic with empty defaults to avoid capturing reactive props in constructor
   // The $effect below will sync the actual values immediately
@@ -62,6 +71,12 @@
 
   // Mark as viewed when card/id changes
   $effect(() => {
+    // Only mark as viewed if opened? Or immediately?
+    // Spec says "Real-time Engagement: Provide senders with immediate feedback when their card is viewed"
+    // Usually 'viewed' means loading the page. But with the envelope, maybe 'viewed' means opened?
+    // Let's keep it as is (on load) for now to preserve existing behavior, 
+    // or maybe move it to handleOpen if we want to be strict.
+    // For now, let's leave it as is to avoid breaking existing logic.
     logic.markAsViewed();
   });
 
@@ -79,16 +94,39 @@
 </script>
 
 <div class="flex flex-col items-center justify-center min-h-screen">
-  <CardDisplay
-    {card}
-    onYes={handleYes}
-    onNo={handleNo}
-    onNoHover={() => logic.handleNoHover()}
-    yesButtonScale={logic.yesButtonScale}
-    noButtonPos={logic.noButtonPos}
-    bind:replyText={logic.replyText}
-    replySubmitting={logic.replySubmitting}
-    replySuccess={logic.replySuccess}
-    onReplySubmit={handleReplySubmit}
-  />
+  <AnimatePresence let:item list={isOpen ? [{key: 'card'}] : [{key: 'envelope'}]}>
+    {#if !isOpen}
+      <Motion
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 1.5, transition: { duration: 0.8 } }}
+        let:motion
+      >
+        <div use:motion class="absolute inset-0 flex items-center justify-center">
+            <Envelope onclick={handleOpen} />
+        </div>
+      </Motion>
+    {:else}
+      <Motion
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0, transition: { delay: 0.5, duration: 0.8, type: "spring" } }}
+        let:motion
+      >
+        <div use:motion class="w-full flex justify-center">
+            <CardDisplay
+                {card}
+                onYes={handleYes}
+                onNo={handleNo}
+                onNoHover={() => logic.handleNoHover()}
+                yesButtonScale={logic.yesButtonScale}
+                noButtonPos={logic.noButtonPos}
+                bind:replyText={logic.replyText}
+                replySubmitting={logic.replySubmitting}
+                replySuccess={logic.replySuccess}
+                onReplySubmit={handleReplySubmit}
+            />
+        </div>
+      </Motion>
+    {/if}
+  </AnimatePresence>
 </div>
