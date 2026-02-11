@@ -1,8 +1,7 @@
 <script lang="ts">
   import { Timestamp } from "firebase/firestore";
-  import { fly } from "svelte/transition";
+  import { fly, fade } from "svelte/transition";
   import { onMount } from "svelte";
-  import { AnimatePresence, Motion } from "svelte-motion";
   import type { AuthState } from "../lib/auth.svelte";
   import { CreateCardFormState } from "../lib/create-card.svelte";
   import { uiState } from "../lib/ui.svelte";
@@ -15,12 +14,8 @@
 
   let { authState }: Props = $props();
 
-  // Initialize with empty defaults to avoid capturing reactive props in non-reactive constructor
   const form = new CreateCardFormState();
 
-  // Reactively sync user data to the form state
-  // This ensures that if the user info updates, the form reflects it,
-  // without resetting the entire form state (message, receiver, etc.)
   $effect(() => {
     if (authState.user) {
       form.sender = authState.user.senderName;
@@ -28,7 +23,6 @@
     }
   });
 
-  // Enforce mutual exclusivity: Custom Choice Buttons vs Hide Choice Buttons
   $effect(() => {
     if (form.useCustomButtons) {
       form.hideButtons = false;
@@ -45,27 +39,22 @@
   // Tab state for mobile
   let activeTab = $state<"edit" | "preview">("edit");
   let showConfirmModal = $state(false);
+  
+  // Default to false for SSR consistency (Mobile-first)
   let isDesktop = $state(false);
 
   onMount(() => {
-    const media = window.matchMedia("(min-width: 1024px)");
-    isDesktop = media.matches;
-    const listener = (e: MediaQueryListEvent) => (isDesktop = e.matches);
-    media.addEventListener("change", listener);
-    return () => media.removeEventListener("change", listener);
+    const updateMedia = () => {
+      isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+    };
+    updateMedia();
+    window.addEventListener('resize', updateMedia);
+    return () => window.removeEventListener('resize', updateMedia);
   });
 
-  // Determine which sections should be visible based on device and tab
-  let visibleSections = $derived(
-    isDesktop ? [{ key: "edit" }, { key: "preview" }] : [{ key: activeTab }]
-  );
-
-  // Animation variants
-  const variants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: 20 },
-  };
+  // Derived visibility state
+  let showEdit = $derived(isDesktop || activeTab === 'edit');
+  let showPreview = $derived(isDesktop || activeTab === 'preview');
 
   function handleSubmitRequest(e?: Event) {
     if (e) e.preventDefault();
@@ -105,7 +94,6 @@
     data-testid="heart-pulse-overlay"
   >
     {#if !isDesktop}
-        <!-- Simple pure CSS or Svelte transition for the pulse to avoid complex orchestration -->
         <div class="text-vivid-pink/20 animate-ping absolute inline-flex h-32 w-32 rounded-full opacity-75"></div>
     {/if}
   </div>
@@ -115,8 +103,9 @@
   class="flex flex-col lg:flex-row gap-8 items-center lg:items-start justify-center max-w-6xl mx-auto w-full px-4 pt-4 pb-8"
 >
   <!-- Mobile Tabs Toggle -->
+  {#if !isDesktop}
   <div
-    class="lg:hidden flex w-full p-1 bg-gray-100 rounded-xl mb-4"
+    class="flex w-full p-1 bg-gray-100 rounded-xl mb-4"
     transition:fly={{ y: -20, duration: 300 }}
   >
     <button
@@ -138,21 +127,18 @@
       Preview
     </button>
   </div>
+  {/if}
 
-  <AnimatePresence list={visibleSections} let:item>
-    {#if item.key === "edit"}
-      <Motion
-        initial={isDesktop ? false : "hidden"}
-        animate="visible"
-        exit="exit"
-        variants={variants}
-        let:motion
-      >
-        <!-- Form Section -->
+  <!-- Form Section -->
+  {#if showEdit}
+    <div
+      class="w-full max-w-md"
+      in:fly={{ x: -20, duration: 300, delay: 150 }}
+      out:fly={{ x: -20, duration: 300 }}
+    >
         <form
-          use:motion
           onsubmit={handleSubmitRequest}
-          class="glass p-8 rounded-2xl flex flex-col gap-4 max-w-md w-full mb-16 lg:mb-0 flex"
+          class="glass p-8 rounded-2xl flex flex-col gap-4 w-full mb-16 lg:mb-0"
         >
           <h2 class="text-2xl font-bold text-deep-raspberry mb-4">
             Create Your Valentine
@@ -331,36 +317,31 @@
             </div>
           {/if}
         </form>
-      </Motion>
-    {:else if item.key === "preview"}
-      <Motion
-        initial={isDesktop ? false : "hidden"}
-        animate="visible"
-        exit="exit"
-        variants={variants}
-        let:motion
-      >
-        <!-- Preview Section -->
-        <div
-          use:motion
-          class="flex flex-col gap-4 w-full max-w-lg lg:sticky lg:top-8 flex"
+    </div>
+  {/if}
+
+  <!-- Preview Section -->
+  {#if showPreview}
+    <div
+      class="flex flex-col gap-4 w-full max-w-lg lg:sticky lg:top-8"
+      in:fly={{ x: 20, duration: 300, delay: 150 }}
+      out:fly={{ x: 20, duration: 300 }}
+    >
+        <h3
+          class="hidden lg:block text-xl font-bold text-deep-raspberry/60 px-2 uppercase tracking-widest"
         >
-          <h3
-            class="hidden lg:block text-xl font-bold text-deep-raspberry/60 px-2 uppercase tracking-widest"
-          >
-            Preview
-          </h3>
-          <div>
-            <CardDisplay card={previewCard} previewMode={true} />
-          </div>
+          Preview
+        </h3>
+        <div>
+          <CardDisplay card={previewCard} previewMode={true} />
         </div>
-      </Motion>
-    {/if}
-  </AnimatePresence>
+    </div>
+  {/if}
 
   <!-- Sticky Mobile Action Button -->
+  {#if !isDesktop}
   <div
-    class="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-gray-200 z-50"
+    class="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-gray-200 z-50"
   >
     <button
       onclick={() => handleSubmitRequest()}
@@ -370,6 +351,7 @@
       {form.submitting ? "Sending..." : "Send Love"}
     </button>
   </div>
+  {/if}
 </div>
 
 <ConfirmModal

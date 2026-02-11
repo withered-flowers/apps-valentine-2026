@@ -7,16 +7,13 @@ describe("CreateCardForm Animations", () => {
     const componentPath = join(cwd, "src/components/CreateCardForm.svelte");
     const content = readFileSync(componentPath, "utf-8");
 
-    it("should import svelte-motion components", () => {
-        expect(content).toContain('import { AnimatePresence, Motion } from "svelte-motion"');
+    it("should use svelte/transition", () => {
+        expect(content).toContain('import { fly, fade } from "svelte/transition"');
     });
 
-    it("should wrap mobile tab content in AnimatePresence", () => {
-        expect(content).toContain("<AnimatePresence");
-    });
-
-    it("should use Motion components for transitions", () => {
-        expect(content).toContain("<Motion");
+    it("should use in:fly and out:fly", () => {
+        expect(content).toContain("in:fly");
+        expect(content).toContain("out:fly");
     });
 
     it("should include a heart pulse overlay", () => {
