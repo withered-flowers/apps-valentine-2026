@@ -8,14 +8,14 @@
     - [x] Assert that `uiState.isShareModalOpen` becomes `true`
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Reproduction & Setup' (Protocol in workflow.md)
 
-## Phase 2: Implementation
-- [ ] Task: Move auto-open logic to `CreateCardFormState`
-    - [ ] Import `uiState` in `src/lib/create-card.svelte.ts`
-    - [ ] Update `submit()` method to call `uiState.openShareModal(id)` immediately after `this.success = id`
-    - [ ] Ensure this happens before any potential component unmounting triggered by `dashboard.hasCard`
-- [ ] Task: Clean up redundant component logic
-    - [ ] Remove the success-tracking `$effect` from `src/components/CreateCardForm.svelte` to avoid duplicate calls or lifecycle issues
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Implementation' (Protocol in workflow.md)
+## Phase 2: Implementation [checkpoint: 7891ae5]
+- [x] Task: Move auto-open logic to `CreateCardFormState`
+    - [x] Import `uiState` in `src/lib/create-card.svelte.ts`
+    - [x] Update `submit()` method to call `uiState.openShareModal(id)` immediately after `this.success = id`
+    - [x] Ensure this happens before any potential component unmounting triggered by `dashboard.hasCard`
+- [x] Task: Clean up redundant component logic
+    - [x] Remove the success-tracking `$effect` from `src/components/CreateCardForm.svelte` to avoid duplicate calls or lifecycle issues
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Implementation' (Protocol in workflow.md)
 
 ## Phase 3: Verification & Polish
 - [ ] Task: Verify fix with automated tests
