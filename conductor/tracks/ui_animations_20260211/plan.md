@@ -35,8 +35,8 @@ Create a romantic "unboxing" experience for the recipient before they see the ac
 
 ## Phase 3: Polishing & Performance
 
-- [ ] Task: Refine animation timings and easing.
+- [x] Task: Refine animation timings and easing. [cd771c4]
     - Ensure all transitions feel "soft" and "delightful" rather than mechanical.
-- [ ] Task: Verify mobile responsiveness.
+- [x] Task: Verify mobile responsiveness. [cd771c4]
     - Ensure the envelope and transitions look perfect on small screens.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3' (Protocol in workflow.md) [checkpoint: cd771c4]
