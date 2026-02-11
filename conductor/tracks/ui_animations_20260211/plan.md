@@ -13,7 +13,7 @@ Improve the mobile experience by adding themed transitions between the Edit and 
     - Create a temporary heart-shaped overlay that pulses or expands during the tab switch to mask the transition and reinforce the Valentine theme.
 - [x] Task: Write unit tests in `src/components/CreateCardForm.animation.test.ts`. [8cf6025]
     - Verify that switching `activeTab` correctly triggers state changes intended for `svelte-motion`.
-- [~] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1' (Protocol in workflow.md) [checkpoint: 5308e2c]
 
 ## Phase 2: Magical Envelope Unboxing in ReceiverView
 
