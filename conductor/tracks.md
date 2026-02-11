@@ -11,5 +11,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Fix bug: Auto-Open Share Modal**
+- [x] **Track: Fix bug: Auto-Open Share Modal**
 *Link: [./tracks/fix_share_modal_auto_open_20260211/](./tracks/fix_share_modal_auto_open_20260211/)*
