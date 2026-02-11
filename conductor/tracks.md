@@ -16,13 +16,3 @@ This file tracks all major tracks for the project. Each track has its own detail
 - [x] **Track: Fix bug: Auto-Open Share Modal**
 
 *Link: [./tracks/fix_share_modal_auto_open_20260211/](./tracks/fix_share_modal_auto_open_20260211/)*
-
-
-
----
-
-
-
-- [x] **Track: Valentine UI Animations & Transitions**
-
-*Link: [./tracks/ui_animations_20260211/](./tracks/ui_animations_20260211/)*
