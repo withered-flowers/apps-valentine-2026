@@ -114,7 +114,7 @@
     {:else}
       <Motion
         initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0, transition: { duration: 0.8, type: "spring", bounce: 0.3 } }}
+        animate={{ opacity: 1, y: 0, transition: { duration: 0.8, type: "spring", bounce: 0.4 } }}
         let:motion
       >
         <div use:motion class="w-full flex justify-center">

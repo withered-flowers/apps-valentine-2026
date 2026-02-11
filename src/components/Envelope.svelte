@@ -59,7 +59,7 @@
          <Motion 
             initial={{ y: 0, opacity: 0 }}
             animate={open ? { y: -80, opacity: 1 } : { y: 0, opacity: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: "backOut" }}
             let:motion={cardMotion}
          >
             <rect use:cardMotion x="25" y="50" width="250" height="130" fill="white" stroke="#FECDD3" rx="12" />

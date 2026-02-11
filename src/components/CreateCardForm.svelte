@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Timestamp } from "firebase/firestore";
   import { fly, fade, scale } from "svelte/transition";
+  import { backOut } from "svelte/easing";
   import { onMount } from "svelte";
   import type { AuthState } from "../lib/auth.svelte";
   import { CreateCardFormState } from "../lib/create-card.svelte";
@@ -127,7 +128,7 @@
   {#if !isDesktop}
   <div
     class="flex w-full p-1 bg-gray-100 rounded-xl mb-4"
-    transition:fly={{ y: -20, duration: 300 }}
+    transition:fly={{ y: -20, duration: 300, easing: backOut }}
   >
     <button
       onclick={() => { activeTab = "edit"; triggerHeart(); }}
@@ -154,8 +155,8 @@
   {#if showEdit}
     <div
       class="w-full max-w-md"
-      in:fly={{ x: -20, duration: 300, delay: 150 }}
-      out:fly={{ x: -20, duration: 300 }}
+      in:fly={{ x: -20, duration: 400, delay: 150, easing: backOut }}
+      out:fly={{ x: -20, duration: 300, easing: backOut }}
     >
         <form
           onsubmit={handleSubmitRequest}
@@ -345,8 +346,8 @@
   {#if showPreview}
     <div
       class="flex flex-col gap-4 w-full max-w-lg lg:sticky lg:top-8"
-      in:fly={{ x: 20, duration: 300, delay: 150 }}
-      out:fly={{ x: 20, duration: 300 }}
+      in:fly={{ x: 20, duration: 400, delay: 150, easing: backOut }}
+      out:fly={{ x: 20, duration: 300, easing: backOut }}
     >
         <h3
           class="hidden lg:block text-xl font-bold text-deep-raspberry/60 px-2 uppercase tracking-widest"
