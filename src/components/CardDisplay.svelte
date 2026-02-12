@@ -35,14 +35,24 @@
 
   let validationError = $state<string | null>(null);
   let showReview = $state(false);
-  let selectedChoice = $state<"yes" | "no" | null>(
-    // svelte-ignore state_referenced_locally
-    previewMode && previewShowMessagePrompt ? "yes" : null,
+  let selectedChoice = $state<"yes" | "no" | null>(null);
+
+  // Track if user manually triggered the message prompt (for non-preview mode)
+  let userTriggeredPrompt = $state(false);
+
+  // In preview mode, follow the prop; in real mode, follow user interaction
+  let showMessagePrompt = $derived(
+    previewMode ? previewShowMessagePrompt : userTriggeredPrompt,
   );
-  let showMessagePrompt = $state(
-    // svelte-ignore state_referenced_locally
-    previewMode && previewShowMessagePrompt,
-  );
+
+  // Update selectedChoice reactively in preview mode
+  $effect(() => {
+    if (previewMode && previewShowMessagePrompt) {
+      selectedChoice = "yes";
+    } else if (previewMode && !previewShowMessagePrompt) {
+      selectedChoice = null;
+    }
+  });
 
   function handleYesClick() {
     validationError = null;
@@ -50,7 +60,7 @@
     if (card.allowReply && !card.hideButtons) {
       // Show message prompt after choosing Yes
       selectedChoice = "yes";
-      showMessagePrompt = true;
+      userTriggeredPrompt = true;
     } else {
       // No reply option, submit immediately
       onYes?.();
@@ -63,7 +73,7 @@
     if (card.allowReply && !card.hideButtons) {
       // Show message prompt after choosing No
       selectedChoice = "no";
-      showMessagePrompt = true;
+      userTriggeredPrompt = true;
     } else {
       // No reply option, submit immediately
       onNo?.();
@@ -77,12 +87,12 @@
       await onNo?.(replyText.trim() || undefined);
     }
 
-    showMessagePrompt = false;
+    userTriggeredPrompt = false;
     selectedChoice = null;
   }
 
   function handleBackFromPrompt() {
-    showMessagePrompt = false;
+    userTriggeredPrompt = false;
     selectedChoice = null;
     replyText = "";
   }
@@ -156,7 +166,7 @@
         </p>
 
         {#if !card.hideButtons}
-          {#if !showReview && !showMessagePrompt}
+          {#if !showReview && (!showMessagePrompt || previewMode)}
             <div
               class="flex justify-center gap-8 md:gap-6 items-center h-24"
               in:scale={{ duration: 400, start: 0.5, opacity: 0 }}
@@ -182,7 +192,7 @@
               </button>
             </div>
           {:else}
-            <div class="h-20 flex items-center justify-center">
+            <div class="h-4 mt-4 flex items-center justify-center">
               {#if card.status === "accepted"}
                 <p class="text-2xl font-bold text-deep-raspberry animate-pulse">
                   You replied with {card.useCustomButtons
@@ -206,53 +216,49 @@
           {/if}
         {/if}
 
-        {#if card.allowReply}
-          {#if !showMessagePrompt && !showReview}
-            <!-- Step 1: Buttons visible above, no message UI yet -->
-          {:else if showMessagePrompt && !showReview}
-            <!-- Step 2: Message prompt after Yes/No selection -->
-            <div
-              class="mt-4 pt-6 border-t border-vivid-pink/10 flex flex-col gap-3 w-full"
-              in:fly={{ y: 30, duration: 500, opacity: 0 }}
-              out:fly={{ y: -20, duration: 300, opacity: 0 }}
-            >
-              <h3 class="text-xl font-bold text-deep-raspberry">
-                {selectedChoice === "yes" ? "💖 Great!" : "💔 That's okay!"}
-              </h3>
-              <p class="text-lg text-deep-raspberry/70">
-                Want to add a message to {card.sender}? (Optional)
-              </p>
+        {#if card.allowReply && showMessagePrompt && !showReview}
+          <!-- Step 2: Message prompt after Yes/No selection -->
+          <div
+            class="mt-4 pt-6 border-t border-vivid-pink/10 flex flex-col gap-3 w-full"
+            in:fly={{ y: 30, duration: 500, opacity: 0 }}
+            out:fly={{ y: -20, duration: 300, opacity: 0 }}
+          >
+            <h3 class="text-xl font-bold text-deep-raspberry">
+              {selectedChoice === "yes" ? "💖 Great!" : "💔 That's okay!"}
+            </h3>
+            <p class="text-xl text-deep-raspberry/70">
+              Want to add a message to {card.sender}? (Optional)
+            </p>
 
-              <textarea
-                id="reply"
-                bind:value={replyText}
-                placeholder="Type your message here (optional)..."
-                class="p-3 w-full rounded-xl bg-white/50 border border-vivid-pink/20 focus:border-vivid-pink outline-none text-lg text-black/80 min-h-24 transition-all focus:scale-[1.01] focus:shadow-md"
-              ></textarea>
+            <textarea
+              id="reply"
+              bind:value={replyText}
+              placeholder="Type your message here (optional)..."
+              class="p-3 w-full rounded-xl bg-white/50 border border-vivid-pink/20 focus:border-vivid-pink outline-none text-lg text-black/80 min-h-24 transition-all focus:scale-[1.01] focus:shadow-md"
+            ></textarea>
 
-              <div class="flex flex-col gap-3 w-full">
-                <button
-                  onclick={handleFinalSubmit}
-                  disabled={replySubmitting}
-                  class="w-full bg-gradient-to-r from-vivid-pink to-deep-raspberry text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.02] text-lg active:scale-95 hover:from-vivid-pink/90 hover:to-deep-raspberry/90"
-                >
-                  {replySubmitting
-                    ? "💌 Sending..."
-                    : replyText.trim()
-                      ? "💖 Send with Message"
-                      : "✨ Skip Message"}
-                </button>
+            <div class="flex flex-col gap-3 w-full">
+              <button
+                onclick={handleFinalSubmit}
+                disabled={replySubmitting}
+                class="w-full bg-gradient-to-r from-vivid-pink to-deep-raspberry text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.02] text-lg active:scale-95 hover:from-vivid-pink/90 hover:to-deep-raspberry/90"
+              >
+                {replySubmitting
+                  ? "💌 Sending..."
+                  : replyText.trim()
+                    ? "💖 Send with Message"
+                    : "✨ Skip Message"}
+              </button>
 
-                <button
-                  onclick={handleBackFromPrompt}
-                  disabled={replySubmitting}
-                  class="w-full py-2.5 px-6 bg-white/40 backdrop-blur-sm border-2 border-deep-raspberry/20 text-deep-raspberry font-semibold rounded-xl hover:bg-white/60 hover:border-deep-raspberry/40 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.01] active:scale-95"
-                >
-                  ← Back
-                </button>
-              </div>
+              <button
+                onclick={handleBackFromPrompt}
+                disabled={replySubmitting}
+                class="w-full py-2.5 px-6 bg-white/40 backdrop-blur-sm border-2 border-deep-raspberry/20 text-deep-raspberry font-semibold rounded-xl hover:bg-white/60 hover:border-deep-raspberry/40 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.01] active:scale-95"
+              >
+                ← Back
+              </button>
             </div>
-          {/if}
+          </div>
         {/if}
 
         <span class="text-3xl text-deep-raspberry/40 my-4"

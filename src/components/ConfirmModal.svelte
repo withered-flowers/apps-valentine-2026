@@ -26,7 +26,7 @@
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div
     onclick={onCancel}
-    class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4 animate-fade-in"
+    class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4 animate-fade-in font-standard"
   >
     <!-- Modal -->
     <div

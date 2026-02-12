@@ -51,7 +51,7 @@
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div
     onclick={onClose}
-    class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-fade-in"
+    class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-fade-in font-standard"
   >
     <!-- Modal -->
     <div
