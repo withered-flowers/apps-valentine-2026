@@ -5,6 +5,7 @@
   interface Props {
     card: Card;
     previewMode?: boolean;
+    previewShowMessagePrompt?: boolean;
     onYes?: (replyText?: string) => void | Promise<void>;
     onNo?: (replyText?: string) => void | Promise<void>;
     onNoHover?: () => void;
@@ -20,6 +21,7 @@
   let {
     card,
     previewMode = false,
+    previewShowMessagePrompt = false,
     onYes,
     onNo,
     onNoHover,
@@ -33,8 +35,14 @@
 
   let validationError = $state<string | null>(null);
   let showReview = $state(false);
-  let selectedChoice = $state<"yes" | "no" | null>(null);
-  let showMessagePrompt = $state(false);
+  let selectedChoice = $state<"yes" | "no" | null>(
+    // svelte-ignore state_referenced_locally
+    previewMode && previewShowMessagePrompt ? "yes" : null,
+  );
+  let showMessagePrompt = $state(
+    // svelte-ignore state_referenced_locally
+    previewMode && previewShowMessagePrompt,
+  );
 
   function handleYesClick() {
     validationError = null;
@@ -199,7 +207,7 @@
         {/if}
 
         {#if card.allowReply}
-          {#if !showMessagePrompt && !showReview && !card.hideButtons}
+          {#if !showMessagePrompt && !showReview}
             <!-- Step 1: Buttons visible above, no message UI yet -->
           {:else if showMessagePrompt && !showReview}
             <!-- Step 2: Message prompt after Yes/No selection -->
@@ -243,48 +251,6 @@
                   ← Back
                 </button>
               </div>
-            </div>
-          {:else if card.hideButtons && !showReview}
-            <!-- Special case: Cards with hideButtons still use old flow -->
-            <div
-              class="mt-4 pt-6 border-t border-vivid-pink/10 flex flex-col gap-3 w-full"
-              in:fly={{ y: 30, duration: 500, opacity: 0 }}
-              out:fly={{ y: -20, duration: 300, opacity: 0 }}
-            >
-              {#if !replySuccess}
-                <label
-                  for="reply"
-                  class="text-lg font-bold text-deep-raspberry/60 tracking-widest"
-                >
-                  Leave a message back
-                </label>
-              {/if}
-              {#if replySuccess}
-                <p class="text-lg text-green-600 font-medium animate-fade-in">
-                  💖 Message sent to {card.sender}!
-                </p>
-              {:else}
-                <div class="flex flex-col gap-2 w-full">
-                  <textarea
-                    id="reply"
-                    bind:value={replyText}
-                    disabled={previewMode}
-                    placeholder={previewMode
-                      ? "Receiver will type here..."
-                      : "Type your reply here..."}
-                    class="p-3 w-full rounded-xl bg-white/50 border border-vivid-pink/20 focus:border-vivid-pink outline-none text-2xl text-black/80 min-h-20 transition-all focus:scale-[1.01] focus:shadow-md disabled:opacity-70 disabled:cursor-not-allowed"
-                  ></textarea>
-                  <button
-                    onclick={onReplySubmit}
-                    disabled={previewMode
-                      ? true
-                      : replySubmitting || !replyText.trim()}
-                    class="bg-vivid-pink/10 text-vivid-pink font-bold py-2 rounded-xl hover:bg-vivid-pink/20 transition-all disabled:opacity-30 text-sm hover:scale-[1.02] active:scale-95"
-                  >
-                    {replySubmitting ? "Sending..." : "Send Reply"}
-                  </button>
-                </div>
-              {/if}
             </div>
           {/if}
         {/if}

@@ -380,7 +380,12 @@
         Preview
       </h3>
       <div>
-        <CardDisplay card={previewCard} previewMode={true} />
+        <CardDisplay
+          card={previewCard}
+          previewMode={true}
+          previewShowMessagePrompt={previewCard.allowReply &&
+            !previewCard.hideButtons}
+        />
       </div>
     </div>
   {/if}
