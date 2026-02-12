@@ -1,11 +1,10 @@
 <script lang="ts">
   import { Timestamp } from "firebase/firestore";
-  import { fly, fade, scale } from "svelte/transition";
-  import { backOut } from "svelte/easing";
   import { onMount } from "svelte";
+  import { backOut } from "svelte/easing";
+  import { fade, fly, scale } from "svelte/transition";
   import type { AuthState } from "../lib/auth.svelte";
   import { CreateCardFormState } from "../lib/create-card.svelte";
-  import { uiState } from "../lib/ui.svelte";
   import CardDisplay from "./CardDisplay.svelte";
   import ConfirmModal from "./ConfirmModal.svelte";
 
