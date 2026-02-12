@@ -22,6 +22,7 @@
   let isOpening = $state(false); // Envelope flap opens
   const answeredStatuses = ["accepted", "declined", "replied"];
   let isOpen = $state(
+    // svelte-ignore state_referenced_locally
     answeredStatuses.includes(initialCard.status) || !!initialCard.replyText,
   ); // CardDisplay shown
 
