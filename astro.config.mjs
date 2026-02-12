@@ -1,7 +1,6 @@
 // @ts-check
 
-import node from "@astrojs/node";
-
+import netlify from "@astrojs/netlify";
 import svelte from "@astrojs/svelte";
 import tailwindcss from "@tailwindcss/vite";
 import AstroPWA from "@vite-pwa/astro";
@@ -45,7 +44,5 @@ export default defineConfig({
 		plugins: [tailwindcss()],
 	},
 
-	adapter: node({
-		mode: "standalone",
-	}),
+	adapter: netlify(),
 });
