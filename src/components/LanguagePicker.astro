@@ -1,0 +1,24 @@
+---
+import { languages } from "../i18n/ui";
+import { getLangFromUrl, getRouteFromUrl } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const currentRoute = getRouteFromUrl(Astro.url);
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={["language-picker", className]}>
+  <select
+    value={lang}
+    onchange="window.location.href = this.value === 'en' ? (this.getAttribute('data-route') === '/' ? '/' : this.getAttribute('data-route')) : ('/' + this.value + (this.getAttribute('data-route') === '/' ? '' : this.getAttribute('data-route')))"
+    data-route={currentRoute}
+    class="bg-white/80 backdrop-blur-sm border border-pink-200 text-pink-600 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-500 dark:focus:border-pink-500"
+  >
+    {Object.entries(languages).map(([code, label]) => (
+      <option value={code} selected={code === lang}>
+        {label === 'English' ? '🇺🇸 EN' : '🇮🇩 ID'}
+      </option>
+    ))}
+  </select>
+</div>

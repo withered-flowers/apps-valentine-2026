@@ -4,15 +4,17 @@
   import { type Card } from "../lib/cards";
   import { CardState } from "../lib/cards.svelte";
   import { ReceiverViewLogic } from "../lib/receiver.svelte";
+  import type { ui } from "../i18n/ui";
   import CardDisplay from "./CardDisplay.svelte";
   import Envelope from "./Envelope.svelte";
 
   interface Props {
     id: string;
     initialCard: Card;
+    lang: keyof typeof ui;
   }
 
-  let { id, initialCard }: Props = $props();
+  let { id, initialCard, lang }: Props = $props();
 
   // Pass getter to ensure reactivity and avoid state_referenced_locally warning
   const cardState = new CardState(() => id);
@@ -159,6 +161,7 @@
             replySubmitting={logic.replySubmitting}
             replySuccess={logic.replySuccess}
             onReplySubmit={handleReplySubmit}
+            {lang}
           />
         </div>
       </Motion>

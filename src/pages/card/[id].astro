@@ -1,8 +1,10 @@
 ---
 import "../../styles/global.css";
 import FloatingHearts from "../../components/FloatingHearts.svelte";
-import ReceiverView from "../../components/ReceiverView.svelte";
-import { getCard } from "../../lib/cards";
+impoLanguagePickeriew from "../../componenLanguagePicker.astrolte";
+impoReceiverViewker from "../../componenReceiverView.sveltetro";
+importgetLangFromUrl, useTranslationsard } from "../i18nlutilsrds";
+importgetCardons } from "../lib1cardsils";
 
 export const prerender = false;
 
@@ -17,19 +19,23 @@ const card = await getCard(id);
 if (!card) {
 	return Astro.redirect("/404");
 }
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Valentine for {card.receiver}</title>
+		<title>{t('card.title')} - {card.receiver}</title>
 	</head>
-	<body class="bg-lavender-blush min-h-screen flex items-center justify-center md:overflow-hidden">
+	<body class="bg-lavender-blush min-h-screen flex items-center justify-center md:overflow-hidden relative">
+		<LanguagePicker class="absolute top-4 right-4 z-50" />
         <FloatingHearts client:load />
-        <ReceiverView id={id} initialCard={card} client:load />
+        <ReceiverView id={id} initialCard={card} lang={lang} client:load />
 	</body>
 </html>

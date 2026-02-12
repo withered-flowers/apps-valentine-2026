@@ -2,12 +2,16 @@
   import type { AuthState } from "../lib/auth.svelte";
   import { DashboardState } from "../lib/dashboard.svelte";
   import { uiState } from "../lib/ui.svelte";
+  import type { ui } from "../i18n/ui";
+  import { useTranslations } from "../i18n/utils";
 
   interface Props {
     authState: AuthState;
+    lang: keyof typeof ui;
   }
 
-  let { authState }: Props = $props();
+  let { authState, lang }: Props = $props();
+  const t = useTranslations(lang);
 
   // Reactive dashboard state based on the current user
   let dashboard = $derived(
@@ -38,16 +42,18 @@
 <div
   class="glass p-8 rounded-2xl flex flex-col gap-4 max-w-md w-full mx-auto font-standard"
 >
-  <h2 class="text-2xl font-bold text-deep-raspberry mb-4">Your Sent Cards</h2>
+  <h2 class="text-2xl font-bold text-deep-raspberry mb-4">
+    {t("status.title")}
+  </h2>
 
   {#if !dashboard}
     <p class="text-sm text-gray-500 italic">
-      Please log in to view your cards.
+      {t("status.loginRequired")}
     </p>
   {:else if dashboard.loading && dashboard.cards.length === 0}
-    <p class="text-sm text-gray-500 italic">Checking for cards...</p>
+    <p class="text-sm text-gray-500 italic">{t("status.checking")}</p>
   {:else if dashboard.cards.length === 0}
-    <p class="text-sm text-gray-500 italic">You haven't sent any cards yet.</p>
+    <p class="text-sm text-gray-500 italic">{t("status.noCards")}</p>
   {:else}
     <div class="flex flex-col gap-3">
       {#each dashboard.cards as card (card.id)}
@@ -57,15 +63,17 @@
           >
             <div class="flex flex-col">
               <span class="font-lg text-deep-raspberry"
-                >To: {card.receiver}</span
+                >{t("status.to")} {card.receiver}</span
               >
               <div class="flex gap-2 items-center">
-                <span class="text-md text-gray-500">Theme: {card.theme}</span>
+                <span class="text-md text-gray-500"
+                  >{t("status.theme")} {card.theme}</span
+                >
                 {#if card.replyText}
                   <span
                     class="bg-vivid-pink/10 text-vivid-pink text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-tighter"
                   >
-                    Has Reply
+                    {t("status.hasReply")}
                   </span>
                 {/if}
               </div>
@@ -80,14 +88,16 @@
                     onclick={() => toggleReply(card.id!)}
                     class="text-[10px] text-deep-raspberry font-bold hover:underline mt-1"
                   >
-                    {expandedReplies.has(card.id!) ? "Hide" : "View"} Reply
+                    {expandedReplies.has(card.id!)
+                      ? t("status.hideReply")
+                      : t("status.viewReply")}
                   </button>
                 {/if}
                 <button
                   onclick={() => uiState.openShareModal(card.id!)}
                   class="text-md text-vivid-pink hover:underline mt-1"
                 >
-                  Share
+                  {t("status.share")}
                 </button>
               </div>
             </div>
@@ -100,7 +110,7 @@
               <p
                 class="text-xs font-bold text-vivid-pink/60 uppercase tracking-widest mb-1"
               >
-                {card.receiver}'s Message:
+                {card.receiver}{t("status.replyLabel")}
               </p>
               <p
                 class="text-sm text-deep-raspberry italic font-medium leading-relaxed"

@@ -1,6 +1,8 @@
 <script lang="ts">
   import { fly, scale } from "svelte/transition";
   import type { Card } from "../lib/cards";
+  import type { ui } from "../i18n/ui";
+  import { useTranslations } from "../i18n/utils";
 
   interface Props {
     card: Card;
@@ -15,6 +17,7 @@
     replySubmitting?: boolean;
     replySuccess?: boolean;
     onReplySubmit?: () => void;
+    lang?: keyof typeof ui;
   }
 
   let {
@@ -29,14 +32,17 @@
     replySubmitting = false,
     replySuccess = false,
     onReplySubmit,
+    lang = "en",
   }: Props = $props();
+
+  let t = $derived(useTranslations(lang));
 
   let validationError = $state<string | null>(null);
   let showReview = $state(false);
 
   function handleYesClick() {
     if (card.allowReply && !replySuccess) {
-      validationError = "Please send your reply first! ❤️";
+      validationError = t("display.replyFirst");
       return;
     }
     validationError = null;
@@ -45,7 +51,7 @@
 
   function handleNoClick() {
     if (card.allowReply && !replySuccess) {
-      validationError = "Please send your reply first! ❤️";
+      validationError = t("display.replyFirst");
       return;
     }
     validationError = null;
@@ -74,22 +80,24 @@
       >
         {#if card.status === "accepted"}
           <h1 class="text-4xl font-bold text-deep-raspberry animate-heartbeat">
-            YAY! ❤️
+            {t("display.yay")}
           </h1>
           <p class="text-2xl mt-8 mb-4 text-deep-raspberry">
-            I'm so happy, {card.sender}!
+            {t("display.happy").replace("{sender}", card.sender)}
           </p>
           <div class="text-6xl mt-4">🥰🌹✨</div>
         {:else if card.status === "declined"}
-          <h1 class="text-3xl font-bold text-gray-700">Oh no... 💔</h1>
-          <p class="text-lg text-gray-600">Maybe next time, {card.sender}?</p>
+          <h1 class="text-3xl font-bold text-gray-700">{t("display.ohNo")}</h1>
+          <p class="text-lg text-gray-600">
+            {t("display.maybeNextTime").replace("{sender}", card.sender)}
+          </p>
           <div class="text-6xl mt-4">😢🥀</div>
         {:else if card.status === "replied"}
           <h1 class="text-4xl font-bold text-vivid-pink animate-pulse">
-            Replied! 💌
+            {t("display.replied")}
           </h1>
           <p class="text-2xl text-deep-raspberry">
-            Message sent to {card.sender}!
+            {t("display.messageSent").replace("{sender}", card.sender)}
           </p>
           <div class="text-6xl mt-4">📨✨</div>
         {/if}
@@ -98,7 +106,7 @@
           onclick={() => (showReview = true)}
           class="mt-6 text-md bg-deep-raspberry/10 text-deep-raspberry font-bold py-2 px-4 rounded-xl hover:bg-deep-raspberry/20 transition-all hover:scale-105"
         >
-          See your reply
+          {t("display.seeReply")}
         </button>
       </div>
     {:else}
@@ -109,15 +117,16 @@
       >
         <div class="flex flex-col gap-2 w-full">
           <span class="text-vivid-pink font-medium tracking-widest text-3xl">
-            To: {card.receiver || "<Your Valentine>"}
+            {t("display.to")}
+            {card.receiver || "<Your Valentine>"}
           </span>
           <h1 class="my-4 text-5xl font-bold text-deep-raspberry">
-            {card.title || "Will you be my Valentine?"}
+            {card.title || t("display.titleFallback")}
           </h1>
         </div>
 
         <p class="text-2xl text-deep-raspberry/80 italic leading-relaxed">
-          "{card.message || "<Your message here>"}"
+          "{card.message || t("display.messageFallback")}"
         </p>
 
         {#if !card.hideButtons}
@@ -133,7 +142,7 @@
                 style="transform: scale({yesButtonScale})"
                 class="bg-vivid-pink text-white font-bold py-3 px-8 rounded-full skeuo-button z-20 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-110"
               >
-                {card.useCustomButtons ? card.button1Text : "Yes!"}
+                {card.useCustomButtons ? card.button1Text : t("btn.yes")}
               </button>
 
               <button
@@ -143,22 +152,28 @@
                 style="transform: translate({noButtonPos.x}px, {noButtonPos.y}px)"
                 class="bg-gray-200 text-gray-700 font-bold py-3 px-8 rounded-full shadow-md hover:bg-gray-300 transition-all z-10 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
-                {card.useCustomButtons ? card.button2Text : "No"}
+                {card.useCustomButtons ? card.button2Text : t("btn.no")}
               </button>
             </div>
           {:else}
             <div class="h-20 flex items-center justify-center">
               {#if card.status === "accepted"}
                 <p class="text-2xl font-bold text-deep-raspberry animate-pulse">
-                  You replied with {card.useCustomButtons
-                    ? card.button1Text
-                    : "Yes!"} 💖
+                  {t("display.youRepliedWith").replace(
+                    "{buttonText}",
+                    card.useCustomButtons
+                      ? card.button1Text || ""
+                      : t("btn.yes"),
+                  )} 💖
                 </p>
               {:else if card.status === "declined"}
                 <p class="text-2xl font-bold text-gray-600">
-                  You replied with {card.useCustomButtons
-                    ? card.button2Text
-                    : "No"}
+                  {t("display.youRepliedWith").replace(
+                    "{buttonText}",
+                    card.useCustomButtons
+                      ? card.button2Text || ""
+                      : t("btn.no"),
+                  )}
                 </p>
               {/if}
             </div>
@@ -182,12 +197,12 @@
                 for="reply"
                 class="text-lg font-bold text-deep-raspberry/60 tracking-widest"
               >
-                Leave a message back
+                {t("display.leaveMessage")}
               </label>
             {/if}
             {#if replySuccess && !showReview}
               <p class="text-lg text-green-600 font-medium animate-fade-in">
-                💖 Message sent to {card.sender}!
+                💖 {t("display.messageSent").replace("{sender}", card.sender)}
               </p>
             {:else}
               <div class="flex flex-col gap-2 w-full">
@@ -196,8 +211,8 @@
                   bind:value={replyText}
                   disabled={previewMode || showReview}
                   placeholder={previewMode
-                    ? "Receiver will type here..."
-                    : "Type your reply here..."}
+                    ? t("display.placeholder.receiverReply")
+                    : t("display.placeholder.typeReply")}
                   class="p-3 w-full rounded-xl bg-white/50 border border-vivid-pink/20 focus:border-vivid-pink outline-none text-2xl text-black/80 min-h-20 transition-all focus:scale-[1.01] focus:shadow-md disabled:opacity-70 disabled:cursor-not-allowed"
                 ></textarea>
                 {#if !showReview}
@@ -208,7 +223,9 @@
                       : replySubmitting || !replyText.trim()}
                     class="bg-vivid-pink/10 text-vivid-pink font-bold py-2 rounded-xl hover:bg-vivid-pink/20 transition-all disabled:opacity-30 text-sm hover:scale-[1.02] active:scale-95"
                   >
-                    {replySubmitting ? "Sending..." : "Send Reply"}
+                    {replySubmitting
+                      ? t("create.sending")
+                      : t("display.sendReply")}
                   </button>
                 {/if}
               </div>
@@ -217,7 +234,7 @@
         {/if}
 
         <span class="text-3xl text-deep-raspberry/40 my-4"
-          >From: {card.sender}</span
+          >{t("card.from")} {card.sender}</span
         >
 
         {#if showReview}
@@ -225,7 +242,7 @@
             onclick={() => (showReview = false)}
             class="mt-2 text-sm bg-black/5 text-black/60 font-bold py-2 px-6 rounded-xl hover:bg-black/10 transition-all hover:scale-105 mx-auto"
           >
-            Back
+            {t("display.back")}
           </button>
         {/if}
       </div>

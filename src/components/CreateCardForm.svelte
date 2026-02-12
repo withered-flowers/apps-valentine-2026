@@ -5,15 +5,18 @@
   import { onMount } from "svelte";
   import type { AuthState } from "../lib/auth.svelte";
   import { CreateCardFormState } from "../lib/create-card.svelte";
-  import { uiState } from "../lib/ui.svelte";
+  import type { ui } from "../i18n/ui";
+  import { useTranslations } from "../i18n/utils";
   import CardDisplay from "./CardDisplay.svelte";
   import ConfirmModal from "./ConfirmModal.svelte";
 
   interface Props {
     authState: AuthState;
+    lang: keyof typeof ui;
   }
 
-  let { authState }: Props = $props();
+  let { authState, lang }: Props = $props();
+  const t = useTranslations(lang);
 
   const form = new CreateCardFormState();
 
@@ -75,7 +78,7 @@
   function handleSubmitRequest(e?: Event) {
     if (e) e.preventDefault();
     if (!form.isValid) {
-      form.error = "Please fill in all fields.";
+      form.error = t("create.error.fillAll");
       return;
     }
     showConfirmModal = true;
@@ -148,7 +151,7 @@
           ? 'bg-white text-vivid-pink shadow-sm'
           : 'text-gray-500'}"
       >
-        Edit
+        {t("create.edit")}
       </button>
       <button
         onclick={() => {
@@ -160,7 +163,7 @@
           ? 'bg-white text-vivid-pink shadow-sm'
           : 'text-gray-500'}"
       >
-        Preview
+        {t("create.preview")}
       </button>
     </div>
   {/if}
@@ -177,12 +180,12 @@
         class="glass p-8 rounded-2xl flex flex-col gap-4 w-full mb-16 lg:mb-0 font-standard"
       >
         <h2 class="text-2xl font-bold text-deep-raspberry mb-4">
-          Create Your Valentine
+          {t("create.title")}
         </h2>
 
         <div class="flex flex-col gap-1">
           <label for="sender" class="text-sm font-medium text-deep-raspberry"
-            >From</label
+            >{t("create.from")}</label
           >
           <input
             type="text"
@@ -195,56 +198,56 @@
 
         <div class="flex flex-col gap-1">
           <label for="receiver" class="text-sm font-medium text-deep-raspberry"
-            >To (Their Name)</label
+            >{t("create.to")}</label
           >
           <input
             type="text"
             id="receiver"
             bind:value={form.receiver}
             required
-            placeholder="e.g. Juliet"
+            placeholder={t("create.placeholder.to")}
             class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all focus:scale-[1.01] focus:shadow-md"
           />
         </div>
 
         <div class="flex flex-col gap-1">
           <label for="title" class="text-sm font-medium text-deep-raspberry"
-            >Title (Optional)</label
+            >{t("create.cardTitle")}</label
           >
           <input
             type="text"
             id="title"
             bind:value={form.title}
-            placeholder="Will you be my Valentine?"
+            placeholder={t("create.placeholder.cardTitle")}
             class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all focus:scale-[1.01] focus:shadow-md"
           />
         </div>
 
         <div class="flex flex-col gap-1">
           <label for="message" class="text-sm font-medium text-deep-raspberry"
-            >Message</label
+            >{t("create.message")}</label
           >
           <textarea
             id="message"
             bind:value={form.message}
             required
-            placeholder="Write something sweet..."
+            placeholder={t("create.placeholder.message")}
             class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all min-h-[100px] focus:scale-[1.01] focus:shadow-md"
           ></textarea>
         </div>
 
         <div class="flex flex-col gap-1">
           <label for="theme" class="text-sm font-medium text-deep-raspberry"
-            >Theme</label
+            >{t("create.theme")}</label
           >
           <select
             id="theme"
             bind:value={form.theme}
             class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all focus:scale-[1.01] focus:shadow-md"
           >
-            <option value="romantic">Romantic</option>
-            <option value="playful">Playful</option>
-            <option value="elegant">Elegant</option>
+            <option value="romantic">{t("create.theme.romantic")}</option>
+            <option value="playful">{t("create.theme.playful")}</option>
+            <option value="elegant">{t("create.theme.elegant")}</option>
           </select>
         </div>
 
@@ -259,7 +262,7 @@
             <label
               for="hideButtons"
               class="text-sm font-bold text-deep-raspberry cursor-pointer"
-              >Hide Choice Button</label
+              >{t("create.hideButtons")}</label
             >
             <input
               type="checkbox"
@@ -278,7 +281,7 @@
             <label
               for="useCustomButtons"
               class="text-sm font-bold text-deep-raspberry cursor-pointer"
-              >Custom Choice Buttons</label
+              >{t("create.customButtons")}</label
             >
             <input
               type="checkbox"
@@ -295,13 +298,13 @@
                 <label
                   for="button1"
                   class="text-[10px] uppercase font-bold text-gray-400"
-                  >Button 1</label
+                  >{t("create.button1")}</label
                 >
                 <input
                   type="text"
                   id="button1"
                   bind:value={form.button1Text}
-                  placeholder="Yes"
+                  placeholder={t("create.placeholder.yes")}
                   class="p-2 text-sm rounded-lg bg-white/50 border border-vivid-pink/20 outline-none"
                 />
               </div>
@@ -309,13 +312,13 @@
                 <label
                   for="button2"
                   class="text-[10px] uppercase font-bold text-gray-400"
-                  >Button 2</label
+                  >{t("create.button2")}</label
                 >
                 <input
                   type="text"
                   id="button2"
                   bind:value={form.button2Text}
-                  placeholder="No"
+                  placeholder={t("create.placeholder.no")}
                   class="p-2 text-sm rounded-lg bg-white/50 border border-vivid-pink/20 outline-none"
                 />
               </div>
@@ -330,7 +333,7 @@
             <label
               for="allowReply"
               class="text-sm font-bold text-deep-raspberry cursor-pointer"
-              >Allow Text Reply</label
+              >{t("create.allowReply")}</label
             >
             <input
               type="checkbox"
@@ -348,7 +351,7 @@
           disabled={form.submitting}
           class="mt-4 hidden lg:block bg-vivid-pink text-white font-bold py-3 rounded-xl skeuo-button disabled:opacity-50"
         >
-          {form.submitting ? "Sending..." : "Send Love"}
+          {form.submitting ? t("create.sending") : t("create.sendLove")}
         </button>
 
         {#if form.error}
@@ -359,8 +362,8 @@
           <div
             class="mt-4 p-4 bg-green-100/50 rounded-lg border border-green-500/30 text-green-800 text-sm break-all"
           >
-            Card created! Share this link: {window.location
-              .origin}/card/{form.success}
+            {t("create.success")}
+            {window.location.origin}/card/{form.success}
           </div>
         {/if}
       </form>
@@ -377,10 +380,10 @@
       <h3
         class="hidden lg:block text-xl font-bold text-deep-raspberry/60 px-2 uppercase tracking-widest"
       >
-        Preview
+        {t("create.preview")}
       </h3>
       <div>
-        <CardDisplay card={previewCard} previewMode={true} />
+        <CardDisplay card={previewCard} previewMode={true} {lang} />
       </div>
     </div>
   {/if}
@@ -395,7 +398,7 @@
         disabled={form.submitting}
         class="w-full bg-vivid-pink text-white font-bold py-4 rounded-2xl skeuo-button shadow-lg disabled:opacity-50"
       >
-        {form.submitting ? "Sending..." : "Send Love"}
+        {form.submitting ? t("create.sending") : t("create.sendLove")}
       </button>
     </div>
   {/if}
@@ -403,10 +406,10 @@
 
 <ConfirmModal
   isOpen={showConfirmModal}
-  title="Send Your Love? ❤️"
-  message="You can only craft one message per account. Are you sure you want to send this?"
-  confirmLabel="Yes, Send it!"
-  cancelLabel="Not yet"
+  title={t("create.confirmTitle")}
+  message={t("create.confirmMessage")}
+  confirmLabel={t("create.confirmYes")}
+  cancelLabel={t("create.confirmNo")}
   onConfirm={handleConfirmSubmit}
   onCancel={() => (showConfirmModal = false)}
 />

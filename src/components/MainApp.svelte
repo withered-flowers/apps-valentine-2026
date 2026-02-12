@@ -3,11 +3,20 @@
   import { AuthState } from "../lib/auth.svelte";
   import { DashboardState } from "../lib/dashboard.svelte";
   import { uiState } from "../lib/ui.svelte";
+  import { useTranslations } from "../i18n/utils";
+  import type { ui } from "../i18n/ui";
   import AuthForm from "./AuthForm.svelte";
   import CreateCardForm from "./CreateCardForm.svelte";
   import ShareModal from "./ShareModal.svelte";
   import StatusTracker from "./StatusTracker.svelte";
 
+  interface Props {
+    lang: keyof typeof ui;
+  }
+
+  let { lang }: Props = $props();
+
+  const t = useTranslations(lang);
   const authState = new AuthState();
 
   // Reactive dashboard state to check for existing cards
@@ -54,7 +63,7 @@
         use:motion
         class="text-deep-raspberry font-title text-5xl font-bold text-center mb-12 animate-heartbeat"
       >
-        Be My Valentine
+        {t('app.title')}
       </h1>
     </Motion>
 
@@ -62,7 +71,7 @@
       {#if !authState.user}
         <Motion variants={itemVariants} let:motion>
           <div use:motion>
-            <AuthForm {authState} />
+            <AuthForm {authState} {lang} />
           </div>
         </Motion>
       {:else}
@@ -83,7 +92,7 @@
               onclick={() => authState.logout()}
               class="text-xs font-bold text-vivid-pink uppercase tracking-wider hover:opacity-70 transition-opacity"
             >
-              Logout
+              {t('app.logout')}
             </button>
           </div>
         </Motion>
@@ -101,14 +110,14 @@
               class="glass p-4 rounded-2xl max-w-md w-full mx-auto mb-4 text-center border-vivid-pink/30 font-standard"
             >
               <p class="text-deep-raspberry font-lg">
-                💖 You have crafted your special Valentine.
+                {t('app.crafted')}
               </p>
             </div>
           </Motion>
         {:else}
           <Motion variants={itemVariants} let:motion>
             <div use:motion>
-              <CreateCardForm {authState} />
+              <CreateCardForm {authState} {lang} />
             </div>
           </Motion>
         {/if}
@@ -116,7 +125,7 @@
         {#if dashboard?.hasCard}
           <Motion variants={itemVariants} let:motion>
             <div use:motion>
-              <StatusTracker {authState} />
+              <StatusTracker {authState} {lang} />
             </div>
           </Motion>
         {/if}

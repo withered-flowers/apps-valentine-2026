@@ -1,18 +1,24 @@
 ---
-import MainApp from "../components/MainApp.svelte";
+impoLanguagePickerApp from "../componenLanguagePicker.astrolte";
+impoMainAppker from "../componenMainApp.sveltetro";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import "../styles/global.css";
----
 
-<html lang="en">
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---w
+
+<html lang={lang}>
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>2026 - Be My Valentine</title>
+		<title>2026 - {t('app.title')}</title>
 	</head>
 	<body class="bg-lavender-blush min-h-screen px-4">
-		<MainApp client:load />
+		<LanguagePicker class="absolute top-4 right-4 z-50" />
+		<MainApp client:load lang={lang} />
 	</body>
 </html>

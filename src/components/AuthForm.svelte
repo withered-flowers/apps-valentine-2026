@@ -1,12 +1,17 @@
 <script lang="ts">
   import { Motion } from "svelte-motion";
   import type { AuthState } from "../lib/auth.svelte";
+  import { useTranslations } from "../i18n/utils";
+  import type { ui } from "../i18n/ui";
 
   interface Props {
     authState: AuthState;
+    lang: keyof typeof ui;
   }
 
-  let { authState }: Props = $props();
+  let { authState, lang }: Props = $props();
+
+  const t = useTranslations(lang);
 
   let username = $state("");
   let senderName = $state("");
@@ -54,24 +59,24 @@
               class="flex flex-col gap-4 col-start-1 row-start-1"
             >
               <h2 class="text-2xl font-bold font-standard text-deep-raspberry">
-                Welcome Back
+                {t("auth.welcomeBack")}
               </h2>
               <p class="text-sm font-standard text-deep-raspberry/70">
-                Enter your username to continue.
+                {t("auth.enterUsername")}
               </p>
 
               <div class="flex flex-col gap-1 font-standard">
                 <label
                   for="username"
                   class="text-sm font-medium text-deep-raspberry"
-                  >Username</label
+                  >{t("auth.username")}</label
                 >
                 <input
                   type="text"
                   id="username"
                   bind:value={username}
                   required
-                  placeholder="e.g. romeo123"
+                  placeholder={t("auth.placeholder.username")}
                   class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all focus:scale-[1.01] focus:shadow-md"
                 />
               </div>
@@ -81,7 +86,7 @@
                 disabled={authState.loading}
                 class="mt-2 bg-vivid-pink text-white font-bold py-3 rounded-xl skeuo-button font-standard disabled:opacity-50 transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
-                {authState.loading ? "Verifying..." : "Login / Join"}
+                {authState.loading ? t("auth.verifying") : t("auth.loginJoin")}
               </button>
             </form>
           </Motion>
@@ -99,25 +104,24 @@
               class="flex flex-col gap-4 col-start-1 row-start-1"
             >
               <h2 class="text-2xl font-bold text-deep-raspberry">
-                Nice to meet you!
+                {t("auth.niceToMeetYou")}
               </h2>
               <p class="text-sm text-deep-raspberry/70">
-                We couldn't find your username. Please tell us your display name
-                to create an account.
+                {t("auth.signupPrompt")}
               </p>
 
               <div class="flex flex-col gap-1">
                 <label
                   for="senderName"
                   class="text-sm font-medium text-deep-raspberry"
-                  >Your Display Name</label
+                  >{t("auth.displayName")}</label
                 >
                 <input
                   type="text"
                   id="senderName"
                   bind:value={senderName}
                   required
-                  placeholder="e.g. Romeo Montague"
+                  placeholder={t("auth.placeholder.displayName")}
                   class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all focus:scale-[1.01] focus:shadow-md"
                 />
               </div>
@@ -127,7 +131,9 @@
                 disabled={authState.loading}
                 class="mt-2 bg-vivid-pink text-white font-bold py-3 rounded-xl skeuo-button disabled:opacity-50 transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
-                {authState.loading ? "Creating Account..." : "Complete Signup"}
+                {authState.loading
+                  ? t("auth.creatingAccount")
+                  : t("auth.completeSignup")}
               </button>
 
               <button
@@ -135,7 +141,7 @@
                 onclick={() => authState.logout()}
                 class="text-xs text-deep-raspberry/50 hover:underline transition-all hover:scale-105"
               >
-                Cancel
+                {t("auth.cancel")}
               </button>
             </form>
           </Motion>
