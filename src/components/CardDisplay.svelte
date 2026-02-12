@@ -129,7 +129,7 @@
             >
               <button
                 onclick={handleYesClick}
-                disabled={previewMode || showReview}
+                disabled={previewMode || showReview || replySubmitting}
                 style="transform: scale({yesButtonScale})"
                 class="bg-vivid-pink text-white font-bold py-3 px-8 rounded-full skeuo-button z-20 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-110"
               >
@@ -139,7 +139,7 @@
               <button
                 onmouseenter={onNoHover}
                 onclick={handleNoClick}
-                disabled={previewMode || showReview}
+                disabled={previewMode || showReview || replySubmitting}
                 style="transform: translate({noButtonPos.x}px, {noButtonPos.y}px)"
                 class="bg-gray-200 text-gray-700 font-bold py-3 px-8 rounded-full shadow-md hover:bg-gray-300 transition-all z-10 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
