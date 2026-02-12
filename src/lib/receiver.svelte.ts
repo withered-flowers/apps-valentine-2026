@@ -40,13 +40,51 @@ export class ReceiverViewLogic {
 		this.yesButtonScale += 0.1;
 	}
 
-	async accept() {
-		await updateCardStatus(this.id, "accepted");
-		this.onAccept?.();
+	async accept(replyText?: string) {
+		this.replySubmitting = true;
+		try {
+			const docRef = doc(db, "cards", this.id);
+			// biome-ignore lint/suspicious/noExplicitAny: This is for firebase updateDoc
+			const updates: Record<string, any> = {
+				status: "accepted",
+				updatedAt: serverTimestamp(),
+			};
+
+			if (replyText) {
+				updates.replyText = replyText;
+			}
+
+			await updateDoc(docRef, updates);
+			this.replySuccess = true;
+			this.onAccept?.();
+		} catch (err) {
+			console.error("Failed to accept:", err);
+		} finally {
+			this.replySubmitting = false;
+		}
 	}
 
-	async decline() {
-		await updateCardStatus(this.id, "declined");
+	async decline(replyText?: string) {
+		this.replySubmitting = true;
+		try {
+			const docRef = doc(db, "cards", this.id);
+			// biome-ignore lint/suspicious/noExplicitAny: This is for firebase updateDoc
+			const updates: Record<string, any> = {
+				status: "declined",
+				updatedAt: serverTimestamp(),
+			};
+
+			if (replyText) {
+				updates.replyText = replyText;
+			}
+
+			await updateDoc(docRef, updates);
+			this.replySuccess = true;
+		} catch (err) {
+			console.error("Failed to decline:", err);
+		} finally {
+			this.replySubmitting = false;
+		}
 	}
 
 	async submitReply() {

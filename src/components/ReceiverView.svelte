@@ -93,12 +93,12 @@
     logic.markAsViewed();
   });
 
-  async function handleYes() {
-    await logic.accept();
+  async function handleYes(replyText?: string) {
+    await logic.accept(replyText);
   }
 
-  async function handleNo() {
-    await logic.decline();
+  async function handleNo(replyText?: string) {
+    await logic.decline(replyText);
   }
 
   async function handleReplySubmit() {

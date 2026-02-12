@@ -375,7 +375,7 @@
       out:fly={{ x: 20, duration: 300, easing: backOut }}
     >
       <h3
-        class="hidden lg:block text-xl font-bold text-deep-raspberry/60 px-2 uppercase tracking-widest"
+        class="hidden lg:block text-xl font-bold text-deep-raspberry/60 px-2 font-standard tracking-widest"
       >
         Preview
       </h3>

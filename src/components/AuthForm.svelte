@@ -96,7 +96,7 @@
             <form
               use:motion
               onsubmit={handleSignup}
-              class="flex flex-col gap-4 col-start-1 row-start-1"
+              class="flex flex-col gap-4 col-start-1 row-start-1 font-standard"
             >
               <h2 class="text-2xl font-bold text-deep-raspberry">
                 Nice to meet you!

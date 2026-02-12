@@ -5,8 +5,8 @@
   interface Props {
     card: Card;
     previewMode?: boolean;
-    onYes?: () => void;
-    onNo?: () => void;
+    onYes?: (replyText?: string) => void | Promise<void>;
+    onNo?: (replyText?: string) => void | Promise<void>;
     onNoHover?: () => void;
     yesButtonScale?: number;
     noButtonPos?: { x: number; y: number };
@@ -33,23 +33,50 @@
 
   let validationError = $state<string | null>(null);
   let showReview = $state(false);
+  let selectedChoice = $state<"yes" | "no" | null>(null);
+  let showMessagePrompt = $state(false);
 
   function handleYesClick() {
-    if (card.allowReply && !replySuccess) {
-      validationError = "Please send your reply first! ❤️";
-      return;
-    }
     validationError = null;
-    onYes?.();
+
+    if (card.allowReply && !card.hideButtons) {
+      // Show message prompt after choosing Yes
+      selectedChoice = "yes";
+      showMessagePrompt = true;
+    } else {
+      // No reply option, submit immediately
+      onYes?.();
+    }
   }
 
   function handleNoClick() {
-    if (card.allowReply && !replySuccess) {
-      validationError = "Please send your reply first! ❤️";
-      return;
-    }
     validationError = null;
-    onNo?.();
+
+    if (card.allowReply && !card.hideButtons) {
+      // Show message prompt after choosing No
+      selectedChoice = "no";
+      showMessagePrompt = true;
+    } else {
+      // No reply option, submit immediately
+      onNo?.();
+    }
+  }
+
+  async function handleFinalSubmit() {
+    if (selectedChoice === "yes") {
+      await onYes?.(replyText.trim() || undefined);
+    } else if (selectedChoice === "no") {
+      await onNo?.(replyText.trim() || undefined);
+    }
+
+    showMessagePrompt = false;
+    selectedChoice = null;
+  }
+
+  function handleBackFromPrompt() {
+    showMessagePrompt = false;
+    selectedChoice = null;
+    replyText = "";
   }
 
   const themeClasses = {
@@ -121,7 +148,7 @@
         </p>
 
         {#if !card.hideButtons}
-          {#if !showReview}
+          {#if !showReview && !showMessagePrompt}
             <div
               class="flex justify-center gap-8 md:gap-6 items-center h-24"
               in:scale={{ duration: 400, start: 0.5, opacity: 0 }}
@@ -172,35 +199,81 @@
         {/if}
 
         {#if card.allowReply}
-          <div
-            class="mt-4 pt-6 border-t border-vivid-pink/10 flex flex-col gap-3 w-full"
-            in:fly={{ y: 30, duration: 500, opacity: 0 }}
-            out:fly={{ y: -20, duration: 300, opacity: 0 }}
-          >
-            {#if !replySuccess && !showReview}
-              <label
-                for="reply"
-                class="text-lg font-bold text-deep-raspberry/60 tracking-widest"
-              >
-                Leave a message back
-              </label>
-            {/if}
-            {#if replySuccess && !showReview}
-              <p class="text-lg text-green-600 font-medium animate-fade-in">
-                💖 Message sent to {card.sender}!
+          {#if !showMessagePrompt && !showReview && !card.hideButtons}
+            <!-- Step 1: Buttons visible above, no message UI yet -->
+          {:else if showMessagePrompt && !showReview}
+            <!-- Step 2: Message prompt after Yes/No selection -->
+            <div
+              class="mt-4 pt-6 border-t border-vivid-pink/10 flex flex-col gap-3 w-full"
+              in:fly={{ y: 30, duration: 500, opacity: 0 }}
+              out:fly={{ y: -20, duration: 300, opacity: 0 }}
+            >
+              <h3 class="text-xl font-bold text-deep-raspberry">
+                {selectedChoice === "yes" ? "💖 Great!" : "💔 That's okay!"}
+              </h3>
+              <p class="text-lg text-deep-raspberry/70">
+                Want to add a message to {card.sender}? (Optional)
               </p>
-            {:else}
-              <div class="flex flex-col gap-2 w-full">
-                <textarea
-                  id="reply"
-                  bind:value={replyText}
-                  disabled={previewMode || showReview}
-                  placeholder={previewMode
-                    ? "Receiver will type here..."
-                    : "Type your reply here..."}
-                  class="p-3 w-full rounded-xl bg-white/50 border border-vivid-pink/20 focus:border-vivid-pink outline-none text-2xl text-black/80 min-h-20 transition-all focus:scale-[1.01] focus:shadow-md disabled:opacity-70 disabled:cursor-not-allowed"
-                ></textarea>
-                {#if !showReview}
+
+              <textarea
+                id="reply"
+                bind:value={replyText}
+                placeholder="Type your message here (optional)..."
+                class="p-3 w-full rounded-xl bg-white/50 border border-vivid-pink/20 focus:border-vivid-pink outline-none text-lg text-black/80 min-h-24 transition-all focus:scale-[1.01] focus:shadow-md"
+              ></textarea>
+
+              <div class="flex flex-col gap-3 w-full">
+                <button
+                  onclick={handleFinalSubmit}
+                  disabled={replySubmitting}
+                  class="w-full bg-gradient-to-r from-vivid-pink to-deep-raspberry text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.02] text-lg active:scale-95 hover:from-vivid-pink/90 hover:to-deep-raspberry/90"
+                >
+                  {replySubmitting
+                    ? "💌 Sending..."
+                    : replyText.trim()
+                      ? "💖 Send with Message"
+                      : "✨ Skip Message"}
+                </button>
+
+                <button
+                  onclick={handleBackFromPrompt}
+                  disabled={replySubmitting}
+                  class="w-full py-2.5 px-6 bg-white/40 backdrop-blur-sm border-2 border-deep-raspberry/20 text-deep-raspberry font-semibold rounded-xl hover:bg-white/60 hover:border-deep-raspberry/40 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.01] active:scale-95"
+                >
+                  ← Back
+                </button>
+              </div>
+            </div>
+          {:else if card.hideButtons && !showReview}
+            <!-- Special case: Cards with hideButtons still use old flow -->
+            <div
+              class="mt-4 pt-6 border-t border-vivid-pink/10 flex flex-col gap-3 w-full"
+              in:fly={{ y: 30, duration: 500, opacity: 0 }}
+              out:fly={{ y: -20, duration: 300, opacity: 0 }}
+            >
+              {#if !replySuccess}
+                <label
+                  for="reply"
+                  class="text-lg font-bold text-deep-raspberry/60 tracking-widest"
+                >
+                  Leave a message back
+                </label>
+              {/if}
+              {#if replySuccess}
+                <p class="text-lg text-green-600 font-medium animate-fade-in">
+                  💖 Message sent to {card.sender}!
+                </p>
+              {:else}
+                <div class="flex flex-col gap-2 w-full">
+                  <textarea
+                    id="reply"
+                    bind:value={replyText}
+                    disabled={previewMode}
+                    placeholder={previewMode
+                      ? "Receiver will type here..."
+                      : "Type your reply here..."}
+                    class="p-3 w-full rounded-xl bg-white/50 border border-vivid-pink/20 focus:border-vivid-pink outline-none text-2xl text-black/80 min-h-20 transition-all focus:scale-[1.01] focus:shadow-md disabled:opacity-70 disabled:cursor-not-allowed"
+                  ></textarea>
                   <button
                     onclick={onReplySubmit}
                     disabled={previewMode
@@ -210,10 +283,10 @@
                   >
                     {replySubmitting ? "Sending..." : "Send Reply"}
                   </button>
-                {/if}
-              </div>
-            {/if}
-          </div>
+                </div>
+              {/if}
+            </div>
+          {/if}
         {/if}
 
         <span class="text-3xl text-deep-raspberry/40 my-4"
