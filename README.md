@@ -1,43 +1,28 @@
-# Astro Starter Kit: Minimal
+# Apps - Be My Valentine ❤️
 
-```sh
-bun create astro@latest -- --template minimal
-```
+Hey there! 👋 This is a special little app whipped up for the Valentine's Day occasion in 2026. It's designed to spread some love, connect hearts, and maybe sprinkle a little digital confetti.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Under the Hood 🛠️
 
-## 🚀 Project Structure
+We're rocking a pretty sweet tech stack here to make sure everything runs smoother than a cheesy pickup line. You can find the nitty-gritty details in the `conductor` directory, but here's the spark notes:
 
-Inside of your Astro project, you'll see the following folders and files:
+* **Framework**: Astro 5.0 (Hybrid mode for that speed)
+* **UI Library**: Svelte 5 (We're fully embracing Runes like `$state` and `$effect`)
+* **Styling**: Tailwind CSS with a custom Valentine theme
+* **Animations**: `svelte-motion` for the smooth moves and `canvas-confetti` for the celebrations
+* **Backend**: Firebase & Firestore for real-time connection
+* **PWA**: It's installable! Keep the love right on your home screen.
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Getting Started
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Want to feel the love locally?
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+1. `bun install` to get the dependencies.
+2. `bun dev` to start the heartbeat at `localhost:4321`.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Credits
 
-## 🧞 Commands
+This project was built with 💖 using **gemini-cli** and **antigravity**.
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun dev`             | Starts local dev server at `localhost:4321`      |
-| `bun build`           | Build your production site to `./dist/`          |
-| `bun preview`         | Preview your build locally, before deploying     |
-| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+---
+*Happy Valentine's 2026!*
