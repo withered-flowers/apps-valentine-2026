@@ -42,7 +42,7 @@
 <div class="fixed top-4 right-4 z-50 flex items-center gap-3">
   <!-- Antigravity Link -->
   <a
-    href="https://antigravity.dev"
+    href="https://antigravity.google"
     target="_blank"
     rel="noopener noreferrer"
     class="flex items-center p-2 rounded-full glass hover:bg-vivid-pink/20 transition-all duration-500 hover:scale-105 group"
@@ -67,7 +67,7 @@
 
   <!-- Gemini CLI Link -->
   <a
-    href="https://github.com/google-gemini/gemini-cli"
+    href="https://geminicli.com/"
     target="_blank"
     rel="noopener noreferrer"
     class="flex items-center p-2 rounded-full glass hover:bg-vivid-pink/20 transition-all duration-500 hover:scale-105 group"
