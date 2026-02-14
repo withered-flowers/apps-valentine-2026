@@ -95,6 +95,7 @@
                     type="text"
                     id="username"
                     bind:value={username}
+                    autocomplete="username"
                     required
                     placeholder="e.g. romeo123"
                     class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all focus:scale-[1.01] focus:shadow-md"
@@ -141,6 +142,7 @@
                     type="text"
                     id="senderName"
                     bind:value={senderName}
+                    autocomplete="name"
                     required
                     placeholder="e.g. Romeo Montague"
                     class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all focus:scale-[1.01] focus:shadow-md"
