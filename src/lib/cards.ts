@@ -11,7 +11,7 @@ import {
 	updateDoc,
 	where,
 } from "firebase/firestore";
-import { db } from "./firebase";
+import { db, isFirebaseConfigured } from "./firebase";
 
 export interface Card {
 	id?: string;
@@ -64,13 +64,25 @@ export async function createCard(
 }
 
 export async function getCard(id: string): Promise<Card | null> {
-	const docRef = doc(db, "cards", id);
-	const docSnap = await getDoc(docRef);
-
-	if (docSnap.exists()) {
-		return { id: docSnap.id, ...docSnap.data() } as Card;
+	if (!isFirebaseConfigured) {
+		if (import.meta.env.DEV) {
+			return null;
+		}
+		throw new Error("Missing Firebase configuration.");
 	}
-	return null;
+
+	try {
+		const docRef = doc(db, "cards", id);
+		const docSnap = await getDoc(docRef);
+
+		if (docSnap.exists()) {
+			return { id: docSnap.id, ...docSnap.data() } as Card;
+		}
+		return null;
+	} catch (err) {
+		console.warn("getCard failed:", err);
+		return null;
+	}
 }
 
 export async function updateCardStatus(id: string, status: Card["status"]) {
@@ -89,6 +101,15 @@ export function subscribeToCard(
 	id: string,
 	callback: (card: Card | null) => void,
 ) {
+	if (!isFirebaseConfigured) {
+		if (import.meta.env.DEV) {
+			// In dev without Firebase, immediately return null and a noop unsubscribe.
+			callback(null);
+			return () => {};
+		}
+		throw new Error("Missing Firebase configuration.");
+	}
+
 	const docRef = doc(db, "cards", id);
 	return onSnapshot(docRef, (docSnap) => {
 		if (docSnap.exists()) {
