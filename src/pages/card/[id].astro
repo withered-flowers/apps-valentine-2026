@@ -2,19 +2,12 @@
 import "../../styles/global.css";
 import FloatingHearts from "../../components/FloatingHearts.svelte";
 import ReceiverView from "../../components/ReceiverView.svelte";
-import { getCard } from "../../lib/cards";
 
 export const prerender = false;
 
 const { id } = Astro.params;
 
 if (!id) {
-	return Astro.redirect("/404");
-}
-
-const card = await getCard(id);
-
-if (!card) {
 	return Astro.redirect("/404");
 }
 ---
@@ -26,10 +19,10 @@ if (!card) {
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Valentine for {card.receiver}</title>
+		  <title>Valentine</title>
 	</head>
 	<body class="bg-lavender-blush min-h-screen flex items-center justify-center md:overflow-hidden">
         <FloatingHearts client:load />
-        <ReceiverView id={id} initialCard={card} client:load />
+			  <ReceiverView id={id} client:load />
 	</body>
 </html>

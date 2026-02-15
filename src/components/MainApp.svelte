@@ -11,9 +11,12 @@
 
   const authState = new AuthState();
 
-  // Reactive dashboard state to check for existing cards
+  // Reactive dashboard state to check for existing cards.
+  // Guard DashboardState construction so it doesn't run during SSR.
   let dashboard = $derived(
-    authState.user ? new DashboardState(authState.user.username) : null,
+    (typeof window !== "undefined" && authState.user)
+      ? new DashboardState(authState.user.username)
+      : null,
   );
 
   // Animation variants for staggered children
