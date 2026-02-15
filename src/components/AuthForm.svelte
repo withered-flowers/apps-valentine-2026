@@ -1,7 +1,8 @@
 <script lang="ts">
+  /// <reference types="svelte" />
   import { Motion } from "svelte-motion";
   import type { AuthState } from "../lib/auth.svelte";
-  import { getRandomQuote, type Quote } from "../lib/quotes";
+  import { getRandomQuote, type QuoteSegment } from "../lib/quotes";
   import { onMount } from "svelte";
 
   interface Props {
@@ -12,7 +13,7 @@
 
   let username = $state("");
   let senderName = $state("");
-  let randomQuote = $state<Quote | null>(null);
+  let randomQuote = $state<QuoteSegment[]>([]);
 
   onMount(() => {
     randomQuote = getRandomQuote();
@@ -33,7 +34,7 @@
   }
 </script>
 
-{#if randomQuote}
+{#if randomQuote.length}
   <Motion
     initial={{ opacity: 0, scale: 0.95 }}
     animate={{ opacity: 1, scale: 1 }}
@@ -73,7 +74,7 @@
             >
               <form
                 use:motion
-                onsubmit={handleLogin}
+                on:submit|preventDefault={handleLogin}
                 class="flex flex-col gap-4 col-start-1 row-start-1"
               >
                 <h2
@@ -95,6 +96,7 @@
                     type="text"
                     id="username"
                     bind:value={username}
+                    autocomplete="username"
                     required
                     placeholder="e.g. romeo123"
                     class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all focus:scale-[1.01] focus:shadow-md"
@@ -120,7 +122,7 @@
             >
               <form
                 use:motion
-                onsubmit={handleSignup}
+                on:submit|preventDefault={handleSignup}
                 class="flex flex-col gap-4 col-start-1 row-start-1 font-standard"
               >
                 <h2 class="text-2xl font-bold text-deep-raspberry">
@@ -141,6 +143,7 @@
                     type="text"
                     id="senderName"
                     bind:value={senderName}
+                    autocomplete="name"
                     required
                     placeholder="e.g. Romeo Montague"
                     class="p-2 rounded-lg bg-white/50 border border-vivid-pink/30 focus:border-vivid-pink outline-none transition-all focus:scale-[1.01] focus:shadow-md"
@@ -159,7 +162,7 @@
 
                 <button
                   type="button"
-                  onclick={() => authState.logout()}
+                  on:click={() => authState.logout()}
                   class="text-xs text-deep-raspberry/50 hover:underline transition-all hover:scale-105"
                 >
                   Cancel

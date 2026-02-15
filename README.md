@@ -51,16 +51,41 @@ Want to spread some love locally?
 1. **Install dependencies:**
 
    ```bash
-   bun install
+   npm install
    ```
 
-2. **Fire up the dev server:**
+2. **Create a `.env` file** in the project root with your Firebase public config (this project reads `PUBLIC_FIREBASE_*` env vars from `src/lib/firebase.ts`). Example keys (already added for you):
+
+   ```text
+   PUBLIC_FIREBASE_API_KEY=...
+   PUBLIC_FIREBASE_AUTH_DOMAIN=...
+   PUBLIC_FIREBASE_PROJECT_ID=...
+   PUBLIC_FIREBASE_STORAGE_BUCKET=...
+   PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
+   PUBLIC_FIREBASE_APP_ID=...
+   # Optional: PUBLIC_FIREBASE_MEASUREMENT_ID
+   ```
+
+   - If you change `.env`, restart the dev server so Vite picks up the values.
+
+3. **(Optional) Run the Firestore emulator** for local development:
 
    ```bash
-   bun dev
+   # start emulator (requires firebase-tools)
+   firebase emulators:start --only firestore
+   # then in another shell run the app
+   npm run dev
    ```
 
-3. **Open your browser** to `localhost:4321` and start creating cards! 💌
+   - To make the app connect to your emulator, set `PUBLIC_USE_FIRESTORE_EMULATOR=true` in `.env` (defaults to `false`).
+
+4. **Start the dev server:**
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Open your browser** to the local URL printed by Astro (for example `http://localhost:4322/`) and start creating cards! 💌
 
 ## The Bottom Line 💭
 

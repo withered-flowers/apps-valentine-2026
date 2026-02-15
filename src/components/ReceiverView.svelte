@@ -1,29 +1,61 @@
 <script lang="ts">
   import confetti from "canvas-confetti";
   import { AnimatePresence, Motion } from "svelte-motion";
-  import { type Card } from "../lib/cards";
+  import { type Card, getCard } from "../lib/cards";
   import { CardState } from "../lib/cards.svelte";
   import { ReceiverViewLogic } from "../lib/receiver.svelte";
   import CardDisplay from "./CardDisplay.svelte";
   import Envelope from "./Envelope.svelte";
+  import { onMount } from "svelte";
 
   interface Props {
     id: string;
-    initialCard: Card;
+    initialCard?: Card | null;
   }
 
-  let { id, initialCard }: Props = $props();
-
+  let { id, initialCard = null }: Props = $props();
   // Pass getter to ensure reactivity and avoid state_referenced_locally warning
   const cardState = new CardState(() => id);
-  let card = $derived(cardState.data || initialCard);
+
+  // Make initialCard reactive/stateful so derived value can depend on it without
+  // reassigning `$derived` (which is only allowed as an initializer).
+  let initialCardState = $state<Card | null>(initialCard);
+
+  // Derived `card` that prefers the live `cardState.data`, falling back to the
+  // provided `initialCardState` when present. This must be a top-level
+  // initializer and must not be reassigned later.
+  let card = $derived(cardState.data || initialCardState);
+
+  // If no initialCard was provided by the server, fetch it on the client and
+  // update the reactive `initialCardState` so `card` updates automatically.
+  onMount(async () => {
+    if (!initialCardState) {
+      if (typeof navigator !== "undefined" && !navigator.onLine) {
+        // Avoid trying to fetch while the browser is offline.
+        console.warn("Client offline: skipping card fetch");
+        return;
+      }
+
+      try {
+        const fetched = await getCard(id);
+        if (fetched) {
+          initialCardState = fetched;
+        }
+      } catch (err) {
+        // Show non-fatal error state instead of throwing so UI remains stable.
+        console.warn("Failed to fetch card on client:", err);
+      }
+    }
+  });
+
+  let fetchError = $state<string | null>(null);
 
   // Unboxing State
   let isOpening = $state(false); // Envelope flap opens
   const answeredStatuses = ["accepted", "declined", "replied"];
   let isOpen = $state(
     // svelte-ignore state_referenced_locally
-    answeredStatuses.includes(initialCard.status) || !!initialCard.replyText,
+    Boolean(initialCardState && (answeredStatuses.includes(initialCardState.status) || !!initialCardState.replyText)),
   ); // CardDisplay shown
 
   function handleOpen() {
@@ -81,9 +113,9 @@
   // Sync logic state when props change
   $effect(() => {
     logic.id = id;
-    logic.card = initialCard;
-    if (initialCard.replyText) {
-      logic.replyText = initialCard.replyText;
+    logic.card = card;
+    if (card?.replyText) {
+      logic.replyText = card.replyText;
       logic.replySuccess = true;
     }
   });
@@ -132,7 +164,7 @@
             <Envelope
               onclick={handleOpen}
               open={isOpening}
-              theme={card.theme}
+              theme={card?.theme ?? 'romantic'}
             />
           </div>
         </div>
@@ -148,18 +180,28 @@
         let:motion
       >
         <div use:motion class="w-full flex justify-center">
-          <CardDisplay
-            {card}
-            onYes={handleYes}
-            onNo={handleNo}
-            onNoHover={() => logic.handleNoHover()}
-            yesButtonScale={logic.yesButtonScale}
-            noButtonPos={logic.noButtonPos}
-            bind:replyText={logic.replyText}
-            replySubmitting={logic.replySubmitting}
-            replySuccess={logic.replySuccess}
-            onReplySubmit={handleReplySubmit}
-          />
+          {#if card}
+            <CardDisplay
+              {card}
+              onYes={handleYes}
+              onNo={handleNo}
+              onNoHover={() => logic.handleNoHover()}
+              yesButtonScale={logic.yesButtonScale}
+              noButtonPos={logic.noButtonPos}
+              bind:replyText={logic.replyText}
+              replySubmitting={logic.replySubmitting}
+              replySuccess={logic.replySuccess}
+              onReplySubmit={handleReplySubmit}
+            />
+          {:else}
+            {#if fetchError}
+              <div class="py-8 text-center text-sm text-deep-raspberry/80">{fetchError}</div>
+            {:else}
+              <div class="py-12">
+                <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-vivid-pink"></div>
+              </div>
+            {/if}
+          {/if}
         </div>
       </Motion>
     {/if}
