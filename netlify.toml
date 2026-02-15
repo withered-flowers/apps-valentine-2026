@@ -1,4 +1,27 @@
 [build]
+  command = "npm ci --no-audit --prefer-offline --progress=false && npm run build"
+  publish = "dist"
+
+[build.environment]
+# Node pinned via .nvmrc, but set NODE_VERSION for Netlify if needed
+NODE_VERSION = "20.19.0"
+
+# Public Firebase client config (safe to be public client-side)
+PUBLIC_FIREBASE_API_KEY = "AIzaSyB6BAiS3Gfojq1F43N-J7D_tdS_QoYDPZc"
+PUBLIC_FIREBASE_AUTH_DOMAIN = "valentines-af1c7.firebaseapp.com"
+PUBLIC_FIREBASE_PROJECT_ID = "valentines-af1c7"
+PUBLIC_FIREBASE_STORAGE_BUCKET = "valentines-af1c7.firebasestorage.app"
+PUBLIC_FIREBASE_MESSAGING_SENDER_ID = "377028355024"
+PUBLIC_FIREBASE_APP_ID = "1:377028355024:web:dfe525167b17eb1a8fcfd5"
+PUBLIC_FIREBASE_MEASUREMENT_ID = "G-25DKDYV6FE"
+
+# Use CI-style install and avoid extra memory use
+NPM_FLAGS = "--no-audit --prefer-offline --progress=false"
+
+[context.production.environment]
+# Production-specific overrides (optional)
+PUBLIC_USE_FIRESTORE_EMULATOR = "false"
+[build]
   command = "npm ci && npm rebuild && npm run build"
   publish = "dist"
 
