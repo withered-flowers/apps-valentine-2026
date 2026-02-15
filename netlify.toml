@@ -21,10 +21,3 @@ NPM_FLAGS = "--no-audit --prefer-offline --progress=false"
 [context.production.environment]
 # Production-specific overrides (optional)
 PUBLIC_USE_FIRESTORE_EMULATOR = "false"
-[build]
-  command = "npm ci && npm rebuild && npm run build"
-  publish = "dist"
-
-[build.environment]
-  NODE_VERSION = "18"
-  NETLIFY_USE_NPM = "true"
